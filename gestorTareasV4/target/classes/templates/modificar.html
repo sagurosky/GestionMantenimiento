@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="plantillas/plantilla::head">
+        <title>Gestor de mantenimiento</title>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla::header"></header>
+
+        <div class="container">
+            <h2>Editar tarea</h2>
+            <form th:action="@{/guardarEdicion}" method="post" th:object="${tarea}" class="form-group">
+
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <input type="hidden" th:field="${tarea.idTarea}"/>
+                    <input type="hidden" th:field="${tarea.solicita}"/>
+                    <label th:text="maquina" for="maquina"></label>
+                    <input type="text" th:field="${tarea.maquina}"/>
+                    <span th:if="${#fields.hasErrors('maquina')}" th:errors="*{maquina}"/>
+                    <br/>
+                    <label th:text="descripcion" for="descripcion"></label>
+                    <input type="text" th:field="*{descripcion}"/>
+                    <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"/>
+                    <br/>
+                    <label th:text="prioridad" for="prioridad"></label>
+                    <input type="text" th:field="${tarea.prioridad}"/>
+                    <br/>
+                </div>
+                <div sec:authorize="hasRole('ROLE_MANT')">
+                    <div <div sec:authorize="!hasRole('ROLE_ADMIN')">
+                        <input type="hidden" th:field="${tarea.idTarea}"/>
+                        <input type="hidden" th:field="${tarea.maquina}"/>
+                        <input type="hidden" th:field="${tarea.descripcion}"/>
+                        <input type="hidden" th:field="${tarea.solicita}"/>
+                        <input type="hidden" th:field="${tarea.imagen}"/>
+                        <input type="hidden" th:field="${tarea.disponibilidad}"/>
+                    </div>
+                    <label th:text="duracion" for="duracion"></label>
+                    <input  type="time" th:field="${tarea.duracion}" />
+                    <span th:if="${#fields.hasErrors('duracion')}" th:errors="*{duracion}"/>
+                    <br/>
+
+                </div>
+
+                <div sec:authorize="hasRole('ROLE_PROD')">
+                    <div sec:authorize="!hasRole('ROLE_ADMIN')">
+                        <input type="hidden" th:field="${tarea.idTarea}"/>
+                        <input type="hidden" th:field="${tarea.maquina}"/>
+                        <input type="hidden" th:field="${tarea.descripcion}"/>
+                        <input type="hidden" th:field="${tarea.duracion}"/>
+                        <input type="hidden" th:field="${tarea.solicita}"/>
+                        <input type="hidden" th:field="${tarea.imagen}"/>
+                    </div>
+                    <label th:text="disponibilidad" for="disponibilidad"></label>
+                    <input  type="date" th:field="${tarea.disponibilidad}" />
+                    <span th:if="${#fields.hasErrors('disponibilidad')}" th:errors="*{disponibilidad}"/>
+                    <br/>
+
+                </div>
+
+                <input type="submit" th:value="guardar" class="btn btn-primary "/>
+                <a th:href="@{/}" th:text="regresar" class="btn btn-primary "></a>
+            </form>
+        </div>
+        <footer th:replace="plantillas/plantilla::footer"></footer>    
+    </body>
+</html>
