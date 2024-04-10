@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+    <head th:replace="plantillas/plantilla::head">
+        <title>Lista de tareas</title>
+        <meta charset="UTF-8"/>
+  
+    
+   
+
+    
+    
+    
+    </head>
+        
+    <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+<style>
+    /* Define el estilo de las capas superpuestas */
+    .overlay {
+        position: absolute; /* Posición absoluta en relación con el contenedor */
+        background-color: rgba(0, 0, 255, 0.5); /* Color de fondo rojo con 50% de opacidad */
+        pointer-events: none; /* Permite que los eventos de ratón pasen a través de la capa */
+        display: none; /* Por defecto, oculta la capa */
+    }
+</style>
+
+<div style="position: relative;">
+    <img id="layoutImage" src="/recursos/layout.jpg" usemap="#workmap" />
+    <div id="overlayTorreAguaFria" class="overlay"></div> <!-- Capa superpuesta para torreAguaFria -->
+    <div id="overlayZonaReparacion" class="overlay"></div> <!-- Capa superpuesta para zonaDeReparacion -->
+</div>
+
+<map name="workmap">
+    <area target="" alt="torreAguaFria" title="torreAguaFria" th:href="@{/torreAguaFria}"  coords="865,37,984,78" shape="rect" onmouseover="showOverlay('overlayTorreAguaFria', '865', '37', '984', '78')" onmouseout="hideOverlay('overlayTorreAguaFria')" />
+    <area target="" alt="zonaDeReparacion" title="zonaDeReparacion" th:href="@{/zonaReparacion}"  coords="45,267,108,363" shape="rect" onmouseover="showOverlay('overlayZonaReparacion', '45', '267', '108', '363')" onmouseout="hideOverlay('overlayZonaReparacion')" />
+</map>
+
+<script>
+    function showOverlay(overlayId, left, top, right, bottom) {
+        var overlay = document.getElementById(overlayId);
+        var layoutImage = document.getElementById('layoutImage');
+        var layoutImageRect = layoutImage.getBoundingClientRect();
+        overlay.style.left = layoutImageRect.left + parseInt(left) + 'px';
+        overlay.style.top = layoutImageRect.top + parseInt(top)-40 + 'px';
+        overlay.style.width = (parseInt(right) - parseInt(left)) + 'px';
+        overlay.style.height = (parseInt(bottom) - parseInt(top)) + 'px';
+        overlay.style.display = 'block';
+    }
+
+    function hideOverlay(overlayId) {
+        document.getElementById(overlayId).style.display = 'none'; // Oculta la capa superpuesta
+    }
+</script>
+
+
+       
+       
+       
+       
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+    </body>
+</html>

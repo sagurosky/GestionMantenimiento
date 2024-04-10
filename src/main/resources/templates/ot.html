@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="plantillas/plantilla::head">
+        <title>Gestor de mantenimiento</title>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+
+        <h2>Orden de trabajo</h2>
+        <form th:action="@{/otOk}" method="post" th:object="${tarea}" class="card">
+            <div class="card-body">
+                <label >maquina: </label>
+                <label  th:text="${tarea.maquina}"/>
+                <br/>
+                <label >descripcion: </label>
+                <label  th:text="*{descripcion}"/>
+                <br/>
+                <label >prioridad: </label>
+                <label th:text="${tarea.prioridad}"></label>
+                <br/>
+                <label >duracion estimada de la tarea: </label>
+                <label  th:text="${tarea.duracion}"  />
+                <br/>
+                <label >disponibilidad: </label>
+                <label  th:text="${tarea.disponibilidad}" />
+                <br/>
+                <div class="container">
+                    <div th:if="${tarea.imagen!=null}" class="card-body">
+                        <img class="img-thumbnail rounded "
+                             th:src="'/recursos/'+${tarea.imagen}"
+                             th:alt='${tarea.imagen}'
+                             style='max-width: 25%;'/>
+                    </div>
+                </div>
+                <br/>
+                <button class="btn btn-primary " type="submit" th:text="imprimir"></button>
+            </div>
+
+        </form>
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+    </body>
+</html>

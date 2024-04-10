@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="plantillas/plantilla::head">
+        <title>Gestor de mantenimiento</title>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Crear usuarios</h1>
+            <form method="POST" th:action="@{/gestionar}" th:object="${usuario}" class="form-group">
+                <label for="username">Nuevo usuario</label>
+                <input type="text" name="username" id="username" th:field="*{username}"/>
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">error en nombre</span>
+
+                <!--
+                <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"/>
+                -->
+                <br/>
+
+                <label for="password">Password</label>
+                <input type="text" name="password" id="password" />
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error en nombre</span>
+
+                <!-- 
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"/>
+                -->
+                <br/>
+                <br/>
+
+                <h2 >Rol del nuevo usuario: </h2>
+
+                <br/>
+                <label for="rol1">Administrador</label>
+                <input type="radio" id="rol1" name="rol1" th:value="ADMINISTRADOR" th:field="${rol.nombre}" />
+                <br/>
+                <label for="rol2">Mantenimiento</label>
+                <input type="radio" id="rol2" name="rol2" th:value="MANTENIMIENTO" th:field="${rol.nombre}"/>
+                <br/>
+                <label for="rol3">Producción</label>
+                <input type="radio" id="rol3" name="rol3" th:value="PRODUCCION" th:field="${rol.nombre}"/>
+                <br/>
+                <label for="rol4">Técnico</label>
+                <input type="radio" id="rol3" name="rol3" th:value="TECNICO" th:field="${rol.nombre}"/>
+                <br/>
+                <label for="rol5">Monitor</label>
+                <input type="radio" id="rol3" name="rol4" th:value="MONITOR" th:field="${rol.nombre}"/>
+                <br/>
+
+
+                <br/>
+
+                <input type="submit" value="guardar" class="btn btn-primary"/>
+                <a th:href="@{/gestionUsuarios}" th:text="regresar" class="btn btn-primary"></a>
+            </form>
+        </div>
+    </body>
+</html>
+

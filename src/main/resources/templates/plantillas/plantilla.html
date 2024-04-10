@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:fragment="head">
+
+        <title>Gestor de mantenimiento</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/all.css}"/>
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    </head>
+    <body>
+
+        <header th:fragment="header">
+            <nav class="navbar navbar-expand-sm navbar-dark bg-dark p-0">
+                <div class="container">
+                    <a th:href="@{/}" class="navbar-brand" >Gestor de tareas de mantenimiento</a>
+                    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav">
+                            <li class="nav-item px-2">
+                                <a th:href="@{/}" class="nav-link active" >Inicio</a>
+                            </li>
+                        </ul>
+                        <ul sec:authorize="isAuthenticated()" class="navbar-nav ml-auto">
+                            <li class="nav-item mr-3">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-user"></i>
+                                    <span >Bienvenido: </span>
+                                    <span sec:authentication="name">Usuario</span>
+                                </a>
+
+                            </li>
+                            <li class="nav-item mr-3">
+                                <a href="#" class="nav-link">
+                                    <i class="fas fa-user"></i>
+                                    <span >Rol: </span>
+                                    <span id="selRol" th:each='rol:${#authentication.getAuthorities()}'>
+                                        <span hidden="true" th:if='${rol.toString().equals("ROLE_ADMIN")}' th:text='Administrador ' />
+                                        <span hidden="true" th:if='${rol.toString().equals("ROLE_MANT")}' th:text='Mantenimiento '/>
+                                        <span hidden="true" th:if='${rol.toString().equals("ROLE_PROD")}' th:text='Produccion '/>
+                                        <span hidden="true" th:if='${rol.toString().equals("ROLE_TECNICO")}' th:text='Técnico '/>
+                                        <span hidden="true" th:if='${rol.toString().equals("ROLE_MONITOR")}' th:text='Monitor '/>
+                                    </span>
+                                    <span id="rol"></span>
+                                    <script>
+                                        document.getElementById("rol").innerHTML = document.getElementById("selRol").children[0].innerHTML;
+                                    </script>
+                                </a>    
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" th:action="@{/logout}">
+                                    <a href="#" onclick="this.parentNode.submit();" class="nav-link">
+                                        <i class="fas fa-user-times"></i> Logout
+                                    </a>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        </header>
+
+        <footer th:fragment="footer"class="bg-dark text-white mt-5 p-5">
+            <div class="container">
+                <div class="col">
+                    <p class="lead text-center">
+                        <h5>Copyright DanielSagurosky </h5>
+
+                        <span>  &copy; <a href="https://sagurosky.github.io/WebPersonal/index.html" target="_blank">pagina personal</a></span>
+                    </p>
+                </div>
+            </div>
+
+        </footer>
+    </body>
+</html>
