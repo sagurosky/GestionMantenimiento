@@ -55,7 +55,7 @@ public class Controlador {
     public String layout(Model model) {
 //        var tareas = servicio.listar();
 //        model.addAttribute("tareas", tareas);
-        
+        model.addAttribute("prueba", true);
         return "layout";
     }
     
