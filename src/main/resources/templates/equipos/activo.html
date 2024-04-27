@@ -1,0 +1,111 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head th:replace="plantillas/plantilla::head">
+        <title>Gestor de mantenimiento</title>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+        <div class="container">
+            <h2 th:text="${activo.nombre}"></h2>
+            <div class="row container">
+                <div class="col ">
+                    <!--<img th:src="/recursos/${nombreFoto}.jpg" usemap="#workmap" width="600px" height="600px" />-->
+                    <img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />
+
+
+                    <map name="workmap">
+                        <area target="" alt="torreAguaFria" title="torreAguaFria" href="torreAguaFria" coords="865,37,984,78" shape="rect"/>
+                        <area target="" alt="zonaDeReparacion" title="zonaDeReparacion" href="zonaDeReparacion" coords="45,267,108,363" shape="rect"/>
+                    </map>
+                </div>
+                <div class="col ">
+                    <div class="row">
+                        <div class='col'>
+                            Estado de equipo:
+                        </div>
+                        <div class='col'>
+                            <span th:text=" ${activo.estado}"></span>
+                        </div>
+                    </div>
+
+                    <div th:if="${activo.estado=='detenida'}">
+                        <div class="row">
+                            <div class='col'>
+                                detenido desde: 
+                            </div>
+                            <div class='col'>
+                                <span th:text="${#temporals.format(activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class='col'>
+                                tiempo detenido:
+                            </div>
+                            <div class='col'>
+                                <span th:id="tiempoTranscurrido"></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col'>
+                            MTBF:
+                        </div>
+                        <div class='col'>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class='col'>
+                            MTTR: 
+                        </div>
+                        <div class='col'>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+
+                </div>
+
+            </div> 
+
+            <br><br>
+                    <a th:href="@{/layout}" th:text="regresar" class="btn btn-primary"></a>
+                    </div>   
+                    <footer th:replace="plantillas/plantilla::footer"></footer>
+                    <script th:inline="javascript">
+                        // DMS usar este codigo en la pantalla del detalle del activo para que muestre cuanto tiempo transcurrio desde que esta parada
+                        function actualizarTiempo() {
+                            // Obtener el elemento span
+                            var tiempoSpan = document.getElementById("tiempoTranscurrido");
+
+                            // Obtener el tiempo detenido de Thymeleaf
+                            var tiempoDetenido = [[ ${activo.momentoDetencion
+                            }
+                            ]];
+                            console.log(tiempoDetenido);
+                            // Calcular la diferencia de tiempo
+                            var tiempoActual = new Date();
+                            var diferencia = tiempoActual.getTime() - new Date(tiempoDetenido).getTime();
+                            //
+                            //                // Convertir la diferencia de tiempo a horas, minutos y segundos
+                            var horas = Math.floor(diferencia / (1000 * 60 * 60));
+                            var minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                            var segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                            //
+                            //                // Mostrar la diferencia de tiempo en el elemento span
+                            tiempoSpan.textContent = horas + ":" + minutos + ":" + segundos;
+                        }
+
+                        // Llamar a la función actualizarTiempo cada segundo para actualizar dinámicamente el tiempo
+                        setInterval(actualizarTiempo, 1000);
+                    </script>   
+                    </body>
+                    </html>

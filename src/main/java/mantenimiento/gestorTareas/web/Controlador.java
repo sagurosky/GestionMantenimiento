@@ -4,11 +4,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Array;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import mantenimiento.gestorTareas.datos.ActivoDao;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
+import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
+import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +47,10 @@ public class Controlador {
     UsuarioDao usuarioDao;
     @Autowired
     RolDao rolDao;
+    @Autowired
+    ActivoDao activo;
+    @Autowired
+    ActivoService activoService;
     
     @GetMapping("/")
     public String inicio(Model model) {
@@ -47,6 +63,20 @@ public class Controlador {
     public String tareas(Model model) {
         var tareas = servicio.listar();
         model.addAttribute("tareas", tareas);
+
+        List<Activo> activosDetenidos=activoService.findByStatus("detenida");
+        Activo activoAux =new Activo();
+        for (Tarea tareaActivoDetenido : servicio.listar() ) {
+            
+//                Duration.between(tareaActivoDetenido.getTiempoDetenida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now());
+                activoAux=tareaActivoDetenido.getActivo();
+                activosDetenidos.add(tareaActivoDetenido.getActivo());
+                
+            
+        }
+        
+        
+        
         
         return "tareas";
     }
@@ -55,29 +85,48 @@ public class Controlador {
     public String layout(Model model) {
 //        var tareas = servicio.listar();
 //        model.addAttribute("tareas", tareas);
-        model.addAttribute("prueba", true);
-        return "layout";
+
+
+//        model.addAttribute("fallaTorre",activoService.findByName("torre agua fria").getEstado().equals("detenida") );
+//        model.addAttribute("fallaZonaReparacion", activoService.findByName("reparaciones").getEstado().equals("detenida"));
+//        model.addAttribute("fallaLinea1", activoService.findByName("linea 1").getEstado().equals("detenida"));
+        
+        
+        model.addAttribute("fallaAplicadoresDeAdhesivo", activoService.findByName("Aplicadores de adhesivo").getEstado().equals("detenida"));
+        model.addAttribute("fallaAspiracion", activoService.findByName("Aspiración").getEstado().equals("detenida"));
+        model.addAttribute("fallaCambioDeFormato", activoService.findByName("Cambio de formato").getEstado().equals("detenida"));
+        model.addAttribute("fallaBandasDeTransporte", activoService.findByName("Bandas de transporte").getEstado().equals("detenida"));
+        model.addAttribute("fallaCompactador", activoService.findByName("Compactador").getEstado().equals("detenida"));
+        model.addAttribute("fallaCorte", activoService.findByName("Corte").getEstado().equals("detenida"));
+        model.addAttribute("fallaMolino", activoService.findByName("Molino").getEstado().equals("detenida"));
+        
+        
+        
+        return "layoutImaginado";
     }
     
     
-    @PostMapping("/")
+   
+    @PostMapping("/filtrar")
     public String filtro(Model model, @Param("palabraClave")String palabraClave){
-        log.info("palabraClave: "+palabraClave);
         var tareas = servicio.filtrar(palabraClave);
         model.addAttribute("tareas", tareas);
         model.addAttribute("palabraClave", palabraClave);
         
         
-        return "index";
+        return "tareas";
     }
     
     @GetMapping("/crearTarea")
-    public String modificar(Tarea tarea) {
+    public String modificar(Model model,Tarea tarea) {
+        model.addAttribute("activos",activo.findAll());
+        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
+        
         return "crearTarea";
     }
     
     @PostMapping("/guardar")
-    public String guardar(@Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
+    public String guardar(Model model,@Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
         
         if (errores.hasErrors()) {
             log.info("hay errores" + errores.getAllErrors());
@@ -101,20 +150,29 @@ public class Controlador {
         }
         Authentication aut = SecurityContextHolder.getContext().getAuthentication();
         tarea.setSolicita(aut.getName());
-        log.info("img: "+imagen.getOriginalFilename());
+        //al solicitar la tarea pasa a estado abierto automaticamente
+        tarea.setEstado("abierto");
+        //se guarda el momento de la solicitud para calcular el tiempo de parada
+        tarea.getActivo().setMomentoDetencion(LocalDateTime.now());
+        
+        
+        
+        
         servicio.guardar(tarea);
-        return "redirect:/";
+         model.addAttribute("tareas", servicio.listar());
+        return "tareas";
     }
     
     @GetMapping("/editar/{idTarea}")
     public String editar(Tarea tarea, Model model) {
-        
+        model.addAttribute("activos",activo.findAll());
+        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
         model.addAttribute("tarea", servicio.encontrar(tarea));
         return "modificar";
     }
     
     @PostMapping("/guardarEdicion")
-    public String guardarEdicion(@Valid Tarea tarea, Errors errores) {
+    public String guardarEdicion(Model model,@Valid Tarea tarea, Errors errores) {
         log.info("tarea: "+tarea);
         if (errores.hasErrors()) {
             log.info("error de validacion!!"+errores.getAllErrors());
@@ -122,15 +180,40 @@ public class Controlador {
         }
         
         servicio.guardar(tarea);
-        return "redirect:/";
+        
+         model.addAttribute("tareas", servicio.listar());
+        
+        return "tareas";
     }
     
     @GetMapping("/eliminar/{idTarea}")
-    public String eliminar(Tarea tarea) {
+    public String eliminar(Model model,Tarea tarea) {
         
         servicio.eliminar(tarea);
-        return "redirect:/";
+          model.addAttribute("tareas", servicio.listar());
+        return "tareas";
     }
+    
+    @GetMapping("/liberarSolicitud/{idTarea}")
+    public String liberar(Model model,Tarea tarea) {
+        Tarea t= servicio.encontrar(tarea);
+        t.setEstado("liberada");
+        servicio.guardar(t);
+          model.addAttribute("tareas", servicio.listar());
+        return "tareas";
+    }
+    @GetMapping("/CerrarSolicitud/{idTarea}")
+    public String CerrarSolicitud(@RequestParam("evaluacion") String evaluacion,Model model,Tarea tarea) {
+        log.info("evaluacion: "+evaluacion+ " id tarea: "+tarea.getIdTarea());
+        Tarea t= servicio.encontrar(tarea);
+        t.setEstado("cerrada");
+        t.getActivo().setEstado("operativa");
+        servicio.guardar(t);
+        
+          model.addAttribute("tareas", servicio.listar());
+        return "tareas";
+    }
+    
     
     @GetMapping("/generar/{idTarea}")
     public String generar(Tarea tarea, Model model) {

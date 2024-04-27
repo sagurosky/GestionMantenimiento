@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
+import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
+import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,23 +37,85 @@ public class ControladorEquipos {
     UsuarioDao usuarioDao;
     @Autowired
     RolDao rolDao;
+    @Autowired
+    ActivoService activoService;
     
     
     
+//    @GetMapping("/torreAguaFria")
+//    public String torreAguaFria(Model model) {
+//        Activo activo=activoService.findByName("torre agua fria");
+//        model.addAttribute("activo",activo);
+//        model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+//        return "equipos/torreAguaFria";
+//    }
+//    
+//    
+//    @GetMapping("/reparaciones")
+//    public String zonaReparacion(Model model) {
+//        Activo activo=activoService.findByName("reparaciones");
+//         model.addAttribute("activo",activo);
+//          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+//        return "equipos/torreAguaFria";
+//    }
+//    
+//    @GetMapping("/linea1")
+//    public String linea1(Model model) {
+//       Activo activo=activoService.findByName("linea 1");
+//         model.addAttribute("activo",activo);
+//          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+//        return "equipos/torreAguaFria";
+//    }
     
-    @GetMapping("/torreAguaFria")
-    public String torreAguaFria(Model model) {
-//        var tareas = servicio.listar();
-//        model.addAttribute("tareas", tareas);
-        
-        return "equipos/torreAguaFria";
+     @GetMapping("/aplicadoresDeAdhesivo")
+    public String aplicadoresDeAdhesivo(Model model) {
+       Activo activo=activoService.findByName("aplicadores de adhesivo");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
     }
-    @GetMapping("/zonaReparacion")
-    public String zonaReparacion(Model model) {
-//        var tareas = servicio.listar();
-//        model.addAttribute("tareas", tareas);
-        
-        return "equipos/zonaReparacion";
+     @GetMapping("/aspiracion")
+    public String aspiracion(Model model) {
+       Activo activo=activoService.findByName("aspiracion");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
+    }
+     @GetMapping("/cambioDeFormato")
+    public String cambioDeFormato(Model model) {
+       Activo activo=activoService.findByName("cambio de formato");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
+    }
+     @GetMapping("/bandasDeTransporte")
+    public String bandasDeTransporte(Model model) {
+         System.out.println("bandas de transporte");
+       Activo activo=activoService.findByName("Bandas de transporte");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
+    }
+     @GetMapping("/compactador")
+    public String compactador(Model model) {
+       Activo activo=activoService.findByName("compactador");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
+    }
+     @GetMapping("/corte")
+    public String corte(Model model) {
+       Activo activo=activoService.findByName("corte");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
+    }
+     @GetMapping("/molino")
+    public String molino(Model model) {
+       Activo activo=activoService.findByName("molino");
+         model.addAttribute("activo",activo);
+          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+        return "equipos/activo";
     }
     
 }
