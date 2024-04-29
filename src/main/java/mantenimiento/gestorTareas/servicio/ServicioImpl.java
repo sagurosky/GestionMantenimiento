@@ -44,6 +44,8 @@ public class ServicioImpl implements Servicio {
         return tarea = tareaDao.findById(tarea.getIdTarea()).orElse(null);
     }
 
+    
+    
     @Override
     @Transactional(readOnly = true)
     public Usuario encontrarUsuario(Usuario usuario) {

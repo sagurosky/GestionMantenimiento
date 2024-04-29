@@ -21,6 +21,7 @@ import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.servicio.ActivoService;
+import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,8 @@ public class Controlador {
     ActivoDao activo;
     @Autowired
     ActivoService activoService;
+     @Autowired
+    TareaService tareaService;
     
     @GetMapping("/")
     public String inicio(Model model) {
@@ -61,12 +64,12 @@ public class Controlador {
     
     @GetMapping("/tareas")
     public String tareas(Model model) {
-        var tareas = servicio.listar();
+        var tareas = tareaService.traerNoCerradas();
         model.addAttribute("tareas", tareas);
 
         List<Activo> activosDetenidos=activoService.findByStatus("detenida");
         Activo activoAux =new Activo();
-        for (Tarea tareaActivoDetenido : servicio.listar() ) {
+        for (Tarea tareaActivoDetenido : tareas ) {
             
 //                Duration.between(tareaActivoDetenido.getTiempoDetenida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now());
                 activoAux=tareaActivoDetenido.getActivo();
@@ -159,7 +162,7 @@ public class Controlador {
         
         
         servicio.guardar(tarea);
-         model.addAttribute("tareas", servicio.listar());
+         model.addAttribute("tareas",tareaService.traerNoCerradas());
         return "tareas";
     }
     
@@ -181,7 +184,7 @@ public class Controlador {
         
         servicio.guardar(tarea);
         
-         model.addAttribute("tareas", servicio.listar());
+         model.addAttribute("tareas", tareaService.traerNoCerradas());
         
         return "tareas";
     }
@@ -190,7 +193,7 @@ public class Controlador {
     public String eliminar(Model model,Tarea tarea) {
         
         servicio.eliminar(tarea);
-          model.addAttribute("tareas", servicio.listar());
+          model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "tareas";
     }
     
@@ -199,18 +202,19 @@ public class Controlador {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("liberada");
         servicio.guardar(t);
-          model.addAttribute("tareas", servicio.listar());
+          model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "tareas";
     }
     @GetMapping("/CerrarSolicitud/{idTarea}")
-    public String CerrarSolicitud(@RequestParam("evaluacion") String evaluacion,Model model,Tarea tarea) {
-        log.info("evaluacion: "+evaluacion+ " id tarea: "+tarea.getIdTarea());
+    public String CerrarSolicitud(@Param("evaluacion")String evaluacion, Model model, Tarea tarea) {
+        log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getIdTarea());
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("cerrada");
         t.getActivo().setEstado("operativa");
+//        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
         
-          model.addAttribute("tareas", servicio.listar());
+          model.addAttribute("tareas",tareaService.traerNoCerradas());
         return "tareas";
     }
     

@@ -67,7 +67,7 @@
                                 <a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" 
                                    href="#" 
                                    data-toggle="modal" 
-                                   data-target="#myModal" 
+                                   th:data-target="'#myModal' + ${tarea.idTarea}" 
                                    class="btn btn-primary">
                                     Evaluar y Cerrar
                                 </a>
@@ -78,7 +78,7 @@
                             <!--modal-->
 
 
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" th:id="'myModal' + ${tarea.idTarea}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -87,26 +87,15 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
+                                             <form th:id="'evaluarForm+${tarea.idTarea}'" th:action="@{/CerrarSolicitud/}+${tarea.idTarea}" > 
                                         <div class="modal-body">
-                                             <form th:id="'evaluarForm'+${tarea.idTarea}" th:action="@{/CerrarSolicitud/}+${tarea.idTarea}"> 
                                                  <label th:text="'ingrese evaluación del trabajo realizado (opcional): '"/>
-                                                 <textArea th:id="evaluacion" th:name="evaluacion" ></textArea>
-                                                 
-                                             </form> 
+                                                 <textArea th:id="evaluacion" th:name="evaluacion" class="form-control"></textArea>
                                         </div>
                                         <div class="modal-footer">
-                                           
-                                            <script th:inline="javascript">
-                                                //DMS de esta manera copio la variable del modelo a una variable js para usarla en  el llamado al submit
-                                                var taskId = /*[[${tarea.idTarea}]]*/ '0'; // Si tarea.idTarea es null, se asigna '0' como valor predeterminado
-                                            </script>
-
-                                            <button th:onclick="document.getElementById('evaluarForm'+taskId).submit()" class="btn btn-primary">Guardar y cerrar</button>
-
-                                            
-                                            
-                                             <!--Puedes agregar un botón de enviar aquí si quieres--> 
+                                                 <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
                                         </div>
+                                             </form> 
                                     </div>
                                 </div>
                             </div>
