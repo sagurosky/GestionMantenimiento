@@ -59,7 +59,7 @@ public class Controlador {
     public String inicio(Model model) {
         
         
-        return "layoutImaginado";
+        return layout(model);
     }
     
     @GetMapping("/tareas")

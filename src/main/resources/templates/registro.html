@@ -28,6 +28,7 @@
         
         
         <div class="container ">
+        <br/><h2>Registro histórico</h2><br/>
             <table class="table table-bordered table-hover table-sm "  >
                 <thead class="thead-light " >
                     <tr > 
@@ -42,13 +43,72 @@
 
                         <td th:text="${tarea.activo.nombre}" >activo</td>
                         <td th:text="${tarea.descripcion}">descripcion</td>
-                        <td th:id="tiempoDetenido"></td>
-                        <td th:id="tiempoCierre"></td>
+                        <td th:id="tiempoDetenido+${tarea.idTarea}"></td>
+                        <td th:id="tiempoCierre+${tarea.idTarea}"></td>
+                        
+                        
+                <script th:inline="javascript">
+                    
+                        var detencion =  [[${tarea.momentoDetencion}]];
+                        var liberacion = [[${tarea.momentoLiberacion}]];
+                        var cierre = [[${tarea.momentoCierre}]];
+                        var id =         [[${tarea.idTarea}]];
+                        
+                        // Obtener las fechas de momentoDetencion y momentoLiberacion
+                        var momentoDetencion = new Date(detencion); // Convertir a formato ISO-8601
+                        var momentoLiberacion = new Date(liberacion); // Convertir a formato ISO-8601
+                        var momentoCierre = new Date(cierre); // Convertir a formato ISO-8601
+                        // Calcular la diferencia de tiempo en milisegundos
+                        
+                        
+                        var diferenciaMilisegundos = momentoLiberacion - momentoDetencion;
 
+                        // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                        var segundos = Math.floor(diferenciaMilisegundos / 1000);
+                        var minutos = Math.floor(segundos / 60);
+                        var horas = Math.floor(minutos / 60);
+                        var dias = Math.floor(horas / 24);
+
+                        // Calcular los valores restantes para horas, minutos y segundos
+                        horas = horas % 24;
+                        minutos = minutos % 60;
+                        segundos = segundos % 60;
+
+                        // Construir la cadena de texto con la diferencia de tiempo
+                        var diferenciaTiempoDetencion =  horas + " horas, " + minutos + " minutos" ;
+
+                        // Actualizar el contenido de la celda con el ID "diferenciaTiempo"
+                        $("#tiempoDetenido"+id).text(diferenciaTiempoDetencion);
+                        
+                        
+                         diferenciaMilisegundos=momentoCierre-momentoLiberacion;
+                        
+                        // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                         segundos = Math.floor(diferenciaMilisegundos / 1000);
+                         minutos = Math.floor(segundos / 60);
+                         horas = Math.floor(minutos / 60);
+                         dias = Math.floor(horas / 24);
+
+                        // Calcular los valores restantes para horas, minutos y segundos
+                        horas = horas % 24;
+                        minutos = minutos % 60;
+                        segundos = segundos % 60;
+
+                        // Construir la cadena de texto con la diferencia de tiempo
+                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
+    
+                        $("#tiempoCierre"+id).text(diferenciaTiempoCierre);
+
+
+                </script>
 
 
 
                     </tr>
+                    
+                    
+                    
+                    
                 </tbody>
             </table>
         </div>
@@ -65,7 +125,7 @@
             </div>
         </section>
 
-        
+
 
 
         <footer th:replace="plantillas/plantilla::footer"></footer>
