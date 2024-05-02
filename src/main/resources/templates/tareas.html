@@ -64,14 +64,15 @@
                                     sec:authorize="hasRole('ROLE_MANT')" th:href="@{/liberarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary ">liberar</a></span>
                             <!--<span><a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" th:href="@{/cerrarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary">evaluar y cerrar</a></span>-->
                             <span>
-                                <a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" 
+                                <a sec:authorize="hasRole('ROLE_PROD')" 
+                                   th:if="${tarea.estado=='liberada'}" 
                                    href="#" 
                                    data-toggle="modal" 
                                    th:data-target="'#myModal' + ${tarea.idTarea}" 
                                    class="btn btn-primary">
                                     Evaluar y Cerrar
                                 </a>
-                                <label th:if="${#authentication.principal.username != tarea.solicita && tarea.estado=='liberada'}" th:text="' aguardando cierre de usuario '+${tarea.solicita}" />
+                                <label sec:authorize="not hasRole('ROLE_PROD')" th:if="${tarea.estado=='liberada'}" th:text="'aguardando cierre de producción'" />
                             </span>
                             
                             
@@ -121,7 +122,18 @@
                 </tbody>
             </table>
         </div>
+         <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}" class="btn btn-primary btn-block">
+                             Volver
+                        </a>
+                    </div>
 
+                </div>
+            </div>
+        </section>
 
         
 

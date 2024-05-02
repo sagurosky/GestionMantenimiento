@@ -59,7 +59,7 @@ public class Controlador {
     public String inicio(Model model) {
         
         
-        return "index";
+        return "layoutImaginado";
     }
     
     @GetMapping("/tareas")
@@ -67,33 +67,12 @@ public class Controlador {
         var tareas = tareaService.traerNoCerradas();
         model.addAttribute("tareas", tareas);
 
-        List<Activo> activosDetenidos=activoService.findByStatus("detenida");
-        Activo activoAux =new Activo();
-        for (Tarea tareaActivoDetenido : tareas ) {
-            
-//                Duration.between(tareaActivoDetenido.getTiempoDetenida().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), LocalDateTime.now());
-                activoAux=tareaActivoDetenido.getActivo();
-                activosDetenidos.add(tareaActivoDetenido.getActivo());
-                
-            
-        }
-        
-        
-        
         
         return "tareas";
     }
     
     @GetMapping("/layout")
     public String layout(Model model) {
-//        var tareas = servicio.listar();
-//        model.addAttribute("tareas", tareas);
-
-
-//        model.addAttribute("fallaTorre",activoService.findByName("torre agua fria").getEstado().equals("detenida") );
-//        model.addAttribute("fallaZonaReparacion", activoService.findByName("reparaciones").getEstado().equals("detenida"));
-//        model.addAttribute("fallaLinea1", activoService.findByName("linea 1").getEstado().equals("detenida"));
-        
         
         model.addAttribute("fallaAplicadoresDeAdhesivo", activoService.findByName("Aplicadores de adhesivo").getEstado().equals("detenida"));
         model.addAttribute("fallaAspiracion", activoService.findByName("Aspiración").getEstado().equals("detenida"));
@@ -102,7 +81,6 @@ public class Controlador {
         model.addAttribute("fallaCompactador", activoService.findByName("Compactador").getEstado().equals("detenida"));
         model.addAttribute("fallaCorte", activoService.findByName("Corte").getEstado().equals("detenida"));
         model.addAttribute("fallaMolino", activoService.findByName("Molino").getEstado().equals("detenida"));
-        
         
         
         return "layoutImaginado";
@@ -157,7 +135,7 @@ public class Controlador {
         tarea.setEstado("abierto");
         //se guarda el momento de la solicitud para calcular el tiempo de parada
         tarea.getActivo().setMomentoDetencion(LocalDateTime.now());
-        
+        tarea.setMomentoDetencion(LocalDateTime.now());
         
         
         
@@ -201,6 +179,7 @@ public class Controlador {
     public String liberar(Model model,Tarea tarea) {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("liberada");
+        t.setMomentoLiberacion(LocalDateTime.now());
         servicio.guardar(t);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "tareas";
@@ -211,11 +190,12 @@ public class Controlador {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("cerrada");
         t.getActivo().setEstado("operativa");
+         t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
         
           model.addAttribute("tareas",tareaService.traerNoCerradas());
-        return "tareas";
+        return "redirect:/tareas";
     }
     
     
@@ -224,4 +204,36 @@ public class Controlador {
         model.addAttribute("tarea", servicio.encontrar(tarea));
         return "ot";
     }
+    
+    @GetMapping("/registro")
+    public String registroHistorico( Model model) {
+        
+        List<Tarea> tareas=tareaService.traerCerradas();
+        
+        
+        
+        
+        
+        model.addAttribute("tareas", tareaService.traerCerradas());
+        return "registro";
+    }
+    
+//    
+//    // Método para calcular la diferencia de tiempo entre dos LocalDateTime
+//    public String calcularDiferenciaTiempo(LocalDateTime momentoDetencion, LocalDateTime momentoLiberacion) {
+//        // Calcular la diferencia de tiempo
+//        Duration duracion = Duration.between(momentoDetencion, momentoLiberacion);
+//
+//        // Formatear la duración en un formato legible (días, horas, minutos, segundos)
+//        long dias = duracion.toDays();
+//        long horas = duracion.toHours() % 24;
+//        long minutos = duracion.toMinutes() % 60;
+//        long segundos = duracion.getSeconds() % 60;
+//
+//        // Construir la cadena de texto
+//        String diferenciaTiempo = dias + " días, " + horas + " horas, " + minutos + " minutos, " + segundos + " segundos";
+//        
+//        return diferenciaTiempo;
+//    }
+//    
 }
