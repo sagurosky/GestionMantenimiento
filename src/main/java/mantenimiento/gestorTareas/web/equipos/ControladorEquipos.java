@@ -90,8 +90,7 @@ public class ControladorEquipos {
     }
      @GetMapping("/bandasDeTransporte")
     public String bandasDeTransporte(Model model) {
-         System.out.println("bandas de transporte");
-       Activo activo=activoService.findByName("Bandas de transporte");
+       Activo activo=activoService.findByName("bandas de transporte");
          model.addAttribute("activo",activo);
           model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
         return "equipos/activo";

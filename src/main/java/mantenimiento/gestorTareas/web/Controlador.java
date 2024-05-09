@@ -74,13 +74,33 @@ public class Controlador {
     @GetMapping("/layout")
     public String layout(Model model) {
         
-        model.addAttribute("fallaAplicadoresDeAdhesivo", activoService.findByName("Aplicadores de adhesivo").getEstado().equals("detenida"));
-        model.addAttribute("fallaAspiracion", activoService.findByName("Aspiración").getEstado().equals("detenida"));
-        model.addAttribute("fallaCambioDeFormato", activoService.findByName("Cambio de formato").getEstado().equals("detenida"));
-        model.addAttribute("fallaBandasDeTransporte", activoService.findByName("Bandas de transporte").getEstado().equals("detenida"));
-        model.addAttribute("fallaCompactador", activoService.findByName("Compactador").getEstado().equals("detenida"));
-        model.addAttribute("fallaCorte", activoService.findByName("Corte").getEstado().equals("detenida"));
-        model.addAttribute("fallaMolino", activoService.findByName("Molino").getEstado().equals("detenida"));
+        model.addAttribute("fallaAplicadoresDeAdhesivo", 
+                activoService.findByName("aplicadores de adhesivo")!=null?
+                activoService.findByName("aplicadores de adhesivo").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaAspiracion", 
+                activoService.findByName("aspiracion")!=null?
+                activoService.findByName("aspiracion").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaCambioDeFormato",
+                activoService.findByName("cambio de formato")!=null?
+                activoService.findByName("cambio de formato").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaBandasDeTransporte", 
+                activoService.findByName("bandas de transporte")!=null?
+                activoService.findByName("bandas de transporte").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaCompactador", 
+                activoService.findByName("compactador")!=null?
+                activoService.findByName("compactador").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaCorte",
+                activoService.findByName("corte")!=null?
+                activoService.findByName("corte").getEstado().equals("detenida"):false);
+        
+        model.addAttribute("fallaMolino", 
+                activoService.findByName("molino")!=null?
+                activoService.findByName("molino").getEstado().equals("detenida"):false);
         
         
         return "layoutImaginado";
@@ -95,7 +115,7 @@ public class Controlador {
         model.addAttribute("palabraClave", palabraClave);
         
         
-        return "tareas";
+        return "redirect:/tareas";
     }
     
     @GetMapping("/crearTarea")
@@ -141,7 +161,7 @@ public class Controlador {
         
         servicio.guardar(tarea);
          model.addAttribute("tareas",tareaService.traerNoCerradas());
-        return "tareas";
+         return "redirect:/tareas";
     }
     
     @GetMapping("/editar/{idTarea}")
@@ -164,7 +184,7 @@ public class Controlador {
         
          model.addAttribute("tareas", tareaService.traerNoCerradas());
         
-        return "tareas";
+         return "redirect:/tareas";
     }
     
     @GetMapping("/eliminar/{idTarea}")
@@ -172,7 +192,7 @@ public class Controlador {
         
         servicio.eliminar(tarea);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
-        return "tareas";
+        return "redirect:/tareas";
     }
     
     @GetMapping("/liberarSolicitud/{idTarea}")
@@ -182,8 +202,23 @@ public class Controlador {
         t.setMomentoLiberacion(LocalDateTime.now());
         servicio.guardar(t);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
-        return "tareas";
+         return "redirect:/tareas";
     }
+    
+    
+    
+    @GetMapping("/asignarSolicitud/{idTarea}")
+    public String asignar(Model model,Tarea tarea) {
+        Tarea t= servicio.encontrar(tarea);
+        t.setEstado("enProceso");
+//        t.setMomentoLiberacion(LocalDateTime.now());
+        servicio.guardar(t);
+          model.addAttribute("tareas", tareaService.traerNoCerradas());
+         return "redirect:/tareas";
+    }
+    
+    
+    
     @GetMapping("/CerrarSolicitud/{idTarea}")
     public String CerrarSolicitud(@Param("evaluacion")String evaluacion, Model model, Tarea tarea) {
         log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getIdTarea());

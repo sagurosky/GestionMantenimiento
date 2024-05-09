@@ -21,7 +21,8 @@
                                 
                                 <select th:field="*{activo}" class="form-control" >
                                     <option value="0">seleccione</option>
-                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text="${activo.codigo}+', '+ ${activo.nombre}"></option>
+                                    <!--<option th:each="activo : ${activos}" th:value="${activo.id}" th:text="${activo.codigo}+', '+ ${activo.nombre}"></option>-->
+                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
                                 </select>
                                 
                                 

@@ -5,12 +5,13 @@
       xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
 
 
-    <!--<meta http-equiv="refresh" content="10">-->
+    <meta http-equiv="refresh" id="metaRefresh" content="60">
 
     <head th:replace="plantillas/plantilla::head">
         <title>Lista de tareas</title>
         <meta charset="UTF-8"/>
     </head>
+          
     <body>
         <header th:replace="plantillas/plantilla::header">lista de tareas</header>
 
@@ -55,12 +56,18 @@
 
                         <!--<td th:text="${tarea.activo.codigo}" th:title='${tarea.activo.nombre}'>maquina</td>-->
                         <td th:text="${tarea.activo.nombre}" >activo</td>
-                        <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red"th:title="${tarea.activo.momentoDetencion}">estado</td>
+                        <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red">estado</td>
                         <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado!="detenida"}'>estado</td>
                         <!--<td th:text="${tarea.estado}" >estado solicitud </td>-->
                         <td>
                             <span th:text="${tarea.estado}">Estado solicitud</span>
                             <span><a th:if="${tarea.estado=='abierto'}" 
+                                    sec:authorize="hasRole('ROLE_MANT')" 
+                                     href="#" 
+                                   data-toggle="modal" 
+                                   th:data-target="'#myModal2' + ${tarea.idTarea}" 
+                                    class="btn btn-primary ">asignar</a></span>
+                            <span><a th:if="${tarea.estado=='enProceso'}" 
                                     sec:authorize="hasRole('ROLE_MANT')" th:href="@{/liberarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary ">liberar</a></span>
                             <!--<span><a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" th:href="@{/cerrarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary">evaluar y cerrar</a></span>-->
                             <span>
@@ -69,7 +76,8 @@
                                    href="#" 
                                    data-toggle="modal" 
                                    th:data-target="'#myModal' + ${tarea.idTarea}" 
-                                   class="btn btn-primary">
+                                   class="btn btn-primary"
+                                   >
                                     Evaluar y Cerrar
                                 </a>
                                 <label sec:authorize="not hasRole('ROLE_PROD')" th:if="${tarea.estado=='liberada'}" th:text="'aguardando cierre de producción'" />
@@ -90,19 +98,65 @@
                                         </div>
                                              <form th:id="'evaluarForm+${tarea.idTarea}'" th:action="@{/CerrarSolicitud/}+${tarea.idTarea}" > 
                                         <div class="modal-body">
-                                                 <label th:text="'ingrese evaluación del trabajo realizado (opcional): '"/>
+                                                <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
+                                                <input type="text" class="form-control"/>
+                                                <label th:text="'ingrese calificación (1-10) del nivel profesional'"/>
+                                                <input type="text" class="form-control"/>
+                                                <label th:text="'ingrese calificación (1-10) del trato obtenido'"/>
+                                                <input type="text" class="form-control"/>
+                                            
+                                            
+                                                 <label th:text="'ingrese comentario adicional (opcional): '"/>
                                                  <textArea th:id="evaluacion" th:name="evaluacion" class="form-control"></textArea>
                                         </div>
                                         <div class="modal-footer">
                                                  <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
                                         </div>
                                              </form> 
+                                       
                                     </div>
                                 </div>
                             </div>
                             
-
+                            <div class="modal fade" th:id="'myModal2' + ${tarea.idTarea}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Asignar colaborador/es</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                             <form th:id="'asignarForm+${tarea.idTarea}'" th:action="@{/asignarSolicitud/}+${tarea.idTarea}" > 
+                                        <div class="modal-body">
+                                                 <label th:text="'seleccione colaborador/es '"/>
+<!--                                                 <select th:field="*{}" class="form-control" >
+                                                    <option value="0">seleccione</option>
+                                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
+                                                </select>-->
+                                                 <select multiple class="form-control" >
+                                                    <option value="0">seleccione</option>
+                                                    <option value="0">Juan</option>
+                                                    <option value="0">Paco</option>
+                                                    <option value="0">Pedro</option>
+                                                    <option value="0">Robertito</option>
+                                                    <option value="0">Jaimito</option>
+                                                    <option value="0">Jose</option>
+                                                    <option value="0">Pablo</option>
+                                                    <option value="0">Marcelito</option>
+                                                    
+                                                </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                                 <button class="btn btn-primary" th:type="submit">Asignar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+                        
                         <td th:text="${tarea.descripcion}">descripcion</td>
                         <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${tarea.solicita}">usuario</td>
                         <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.idTarea}">editar</a></td>
