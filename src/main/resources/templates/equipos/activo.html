@@ -1,87 +1,125 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="plantillas/plantilla::head">
-        <title>Gestor de mantenimiento</title>
+    <head  th:replace="plantillas/plantilla::head">
+         <title>Gestor de mantenimiento</title>
+       
     </head>
+    <style>
+        .grafico {
+            width: 100%;
+            min-height: 400px;
+        }
+    </style>
     <body>
+        <!--<div th:replace="plantillas/plantilla::head"></div>-->
         <header th:replace="plantillas/plantilla::header">lista de tareas</header>
-        <div class="container">
+        <div class="container ">
             <h2 th:text="${activo.nombre}"></h2>
-            <div class="row container">
+            <div class="row ">
                 <div class="col ">
                     <!--<img th:src="/recursos/${nombreFoto}.jpg" usemap="#workmap" width="600px" height="600px" />-->
                     <img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />
 
 
-                    <map name="workmap">
-                        <area target="" alt="torreAguaFria" title="torreAguaFria" href="torreAguaFria" coords="865,37,984,78" shape="rect"/>
-                        <area target="" alt="zonaDeReparacion" title="zonaDeReparacion" href="zonaDeReparacion" coords="45,267,108,363" shape="rect"/>
-                    </map>
                 </div>
                 <div class="col ">
                     <div class="row">
                         <div class='col'>
-                            Estado de equipo:
+                            <h4>Estado de equipo:</h4>
                         </div>
                         <div class='col'>
-                            <span th:text=" ${activo.estado}"></span>
+                            
+                           <h4> 
+                               <span  th:if="${activo.estado=='detenida'}" th:text=" ${activo.estado}" style="background-color:red"></span>
+                               <span  th:if="${activo.estado=='operativa'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
+                               <span  th:if="${activo.estado=='disponible para preventivo'}" th:text=" ${activo.estado}" style="background-color:yellow"></span>
+                           </h4>
                         </div>
                     </div>
-
+                <br/>
                     <div th:if="${activo.estado=='detenida'}">
                         <div class="row">
                             <div class='col'>
-                                detenido desde: 
+                              <h4>  detenido desde: </h4>
                             </div>
                             <div class='col'>
-                                <span th:text="${#temporals.format(activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span>
+                              <h4>  <span th:text="${#temporals.format(activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span></h4>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class='col'>
+                              <h4>  tiempo detenido:</h4>
+                            </div>
+                            <div class='col'>
+                              <h4>  <span th:id="tiempoTranscurrido"></span> </h4>
                             </div>
                         </div>
                         <div class="row">
                             <div class='col'>
-                                tiempo detenido:
+                              <h4> interventor:</h4>
                             </div>
                             <div class='col'>
-                                <span th:id="tiempoTranscurrido"></span> 
+                                <h4>  Joaquín Gonzalez <span><a th:href="@{/layout}" th:text="perfil" class="btn btn-primary"></a></span> </h4>
                             </div>
                         </div>
                     </div>
+                    <br/>
                     <div class="row">
                         <div class='col'>
-                            MTBF:
+                          <h4>MTBF: </h4> 
                         </div>
                         <div class='col'>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class='col'>
-                            MTTR: 
-                        </div>
-                        <div class='col'>
+                             <h4> 23 min </h4> 
                         </div>
                     </div>
                     <div class="row">
+                        <div class='col'>
+                            <h4>  MTTR:  </h4> 
+                        </div>
+                        <div class='col'>
+                             <h4> 55 min </h4> 
+                        </div>
                     </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                    </div>
-                    <div class="row">
-                    </div>
+                    <br/><br/>
+                   
+
 
                 </div>
 
             </div> 
-
+        <br/><br/>
+             <!--graficos-->
+                    <div class="row ">
+                        <div class="col">
+                            <h4>Cantidad de minutos de detención </h4>
+                            <div th:id="grafico1" class="grafico"></div>
+                        </div>
+                        <div class="col">
+                             <h4>Cantidad de intervenciones según interventor</h4>
+                            <div th:id="grafico2" class="grafico"></div>
+                        </div>
+                    </div>
+             <br/><br/>
+                    <div class="row">
+                        <div class="col">
+                            <h4>Cantidad de detenciones última semana</h4>
+                            <div th:id="grafico3" class="grafico"></div>
+                        </div>
+                        <div class="col">
+                            <h4>estadística de detenciones según especialidad técnica</h4>
+                            <div th:id="grafico4" class="grafico"></div>
+                        </div>
+                    </div>
+            
             <br><br>
                     <a th:href="@{/layout}" th:text="regresar" class="btn btn-primary"></a>
                     </div>   
                     <footer th:replace="plantillas/plantilla::footer"></footer>
                     <script th:inline="javascript">
                         // DMS usar este codigo en la pantalla del detalle del activo para que muestre cuanto tiempo transcurrio desde que esta parada
+
                         function actualizarTiempo() {
                             // Obtener el elemento span
                             var tiempoSpan = document.getElementById("tiempoTranscurrido");
@@ -106,6 +144,14 @@
 
                         // Llamar a la función actualizarTiempo cada segundo para actualizar dinámicamente el tiempo
                         setInterval(actualizarTiempo, 1000);
+
+
                     </script>   
+                    
+                    <!-- Apache ECharts -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+                    
+                    <script src="main.js"></script>
+
                     </body>
                     </html>

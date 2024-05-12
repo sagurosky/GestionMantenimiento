@@ -50,10 +50,10 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         WebMvcConfigurer.super.addResourceHandlers(registry); //To change body of generated methods, choose Tools | Templates.
-//    registry.addResourceHandler("/recursos/**")
-//            .addResourceLocations("file:/C:/AppTareas/recursos/");
     registry.addResourceHandler("/recursos/**")
-            .addResourceLocations("file:/usr/share/esd/recursos/");
+            .addResourceLocations("file:/C:/AppTareas/recursos/");
+//    registry.addResourceHandler("/recursos/**")
+//            .addResourceLocations("file:/usr/share/esd/recursos/");
 
 
     }
