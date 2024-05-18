@@ -78,7 +78,14 @@ public class Controlador {
                 activoService.findByName("aplicadores de adhesivo")!=null?
                 activoService.findByName("aplicadores de adhesivo").getEstado().equals("detenida"):false);
         
-        model.addAttribute("fallaAspiracion", 
+        
+        model.addAttribute("cierreAplicadoresDeAdhesivo", 
+                activoService.findByName("aplicadores de adhesivo")!=null?
+                        
+                activoService.findByName("aplicadores de adhesivo").getEstado().equals("liberada"):false);
+        
+        
+        model.addAttribute("fallaAspiracion",
                 activoService.findByName("aspiracion")!=null?
                 activoService.findByName("aspiracion").getEstado().equals("detenida"):false);
         
@@ -199,6 +206,7 @@ public class Controlador {
     public String liberar(Model model,Tarea tarea) {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("liberada");
+        t.getActivo().setEstado("liberada");
         t.setMomentoLiberacion(LocalDateTime.now());
         servicio.guardar(t);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
@@ -211,7 +219,7 @@ public class Controlador {
     public String asignar(Model model,Tarea tarea) {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("enProceso");
-//        t.setMomentoLiberacion(LocalDateTime.now());
+        t.setMomentoAsignacion(LocalDateTime.now());
         servicio.guardar(t);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
          return "redirect:/tareas";
@@ -222,9 +230,12 @@ public class Controlador {
     @GetMapping("/CerrarSolicitud/{idTarea}")
     public String CerrarSolicitud(@Param("evaluacion")String evaluacion, Model model, Tarea tarea) {
         log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getIdTarea());
+        
+        
         Tarea t= servicio.encontrar(tarea);
-        t.setEstado("cerrada");
         t.getActivo().setEstado("operativa");
+        t.setEstado("cerrada");
+        
          t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);

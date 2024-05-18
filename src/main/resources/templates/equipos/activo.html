@@ -32,7 +32,7 @@
                             
                            <h4> 
                                <span  th:if="${activo.estado=='detenida'}" th:text=" ${activo.estado}" style="background-color:red"></span>
-                               <span  th:if="${activo.estado=='operativa'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
+                               <span  th:if="${activo.estado=='operativa'||activo.estado=='liberada'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
                                <span  th:if="${activo.estado=='disponible para preventivo'}" th:text=" ${activo.estado}" style="background-color:yellow"></span>
                            </h4>
                         </div>

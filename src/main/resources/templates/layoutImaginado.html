@@ -129,43 +129,44 @@
 
             <script th:inline="javascript">
 
-                var fallaAplicadoresDeAdhesivo = [[${fallaAplicadoresDeAdhesivo
-                }
-                ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaAspiracion = [[${fallaAspiracion
-                        }
-                        ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaCambioDeFormato = [[${fallaCambioDeFormato
-                        }
-                        ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaBandasDeTransporte = [[${fallaBandasDeTransporte
-                        }
-                        ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaCompactador = [[${fallaCompactador
-                        }
-                        ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaCorte = [[${fallaCorte
-                        }
-                        ]]; /* Aquí obtén el valor de la variable del modelo */
-                        var fallaMolino = [[${fallaMolino
-                        }
-                        ]];/* Aquí obtén el valor de la variable del modelo */
+                var fallaAplicadoresDeAdhesivo = [[${fallaAplicadoresDeAdhesivo}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaAspiracion = [[${fallaAspiracion}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaCambioDeFormato = [[${fallaCambioDeFormato}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaBandasDeTransporte = [[${fallaBandasDeTransporte}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaCompactador = [[${fallaCompactador}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaCorte = [[${fallaCorte}]]; /* Aquí obtén el valor de la variable del modelo */
+                var fallaMolino = [[${fallaMolino}]];/* Aquí obtén el valor de la variable del modelo */
+
+            
+                var cierreAplicadoresDeAdhesivo = [[${cierreAplicadoresDeAdhesivo}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreAspiracion = [[${cierreAspiracion}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreCambioDeFormato = [[${cierreCambioDeFormato}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreBandasDeTransporte = [[${cierreBandasDeTransporte}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreCompactador = [[${cierreCompactador}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreCorte = [[${cierreCorte}]]; /* Aquí obtén el valor de la variable del modelo */
+                var cierreMolino = [[${cierreMolino}]];/* Aquí obtén el valor de la variable del modelo */
 
 
-                if (fallaAplicadoresDeAdhesivo)
-                    parpadearRojo("Aplicadores de adhesivo");
-                if (fallaAspiracion)
-                    parpadearRojo("Aspiración");
-                if (fallaCambioDeFormato)
-                    parpadearRojo("Cambio de formato");
-                if (fallaBandasDeTransporte)
-                    parpadearRojo("Bandas de transporte");
-                if (fallaCompactador)
-                    parpadearRojo("Compactador");
-                if (fallaCorte)
-                    parpadearRojo("Corte");
-                if (fallaMolino)
-                    parpadearRojo("Molino");
+
+
+                
+                if (fallaAplicadoresDeAdhesivo)parpadearRojo("Aplicadores de adhesivo");
+    
+                if (fallaAspiracion)parpadearRojo("Aspiración");
+              
+                if (fallaCambioDeFormato)parpadearRojo("Cambio de formato");
+                
+                if (fallaBandasDeTransporte)parpadearRojo("Bandas de transporte");
+                
+                if (fallaCompactador) parpadearRojo("Compactador");
+                
+                if (fallaCorte)parpadearRojo("Corte");
+                
+                if (fallaMolino)parpadearRojo("Molino");
+
+
+                if (cierreAplicadoresDeAdhesivo)parpadearAmarillo("Aplicadores de adhesivo");
+
 
 
 
@@ -176,6 +177,23 @@
                     var interval = setInterval(function () {
                         if (count % 2 == 0) {
                             elemento.style.fill = 'red';
+                        } else {
+                            elemento.style.fill = 'transparent'; // O el color de texto original
+                        }
+                        count++;
+
+                    }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
+
+
+                }
+                
+                function parpadearAmarillo(id)
+                {
+                    var elemento = document.getElementById(id);
+                    var count = 0;
+                    var interval = setInterval(function () {
+                        if (count % 2 == 0) {
+                            elemento.style.fill = 'yellow';
                         } else {
                             elemento.style.fill = 'transparent'; // O el color de texto original
                         }

@@ -31,7 +31,7 @@ public class Tarea implements Serializable {
     private String imagen;
     
     private LocalDateTime momentoDetencion;
-//    private LocalDateTime momentoAsistencia;
+    private LocalDateTime momentoAsignacion;
     private LocalDateTime momentoLiberacion;
     private LocalDateTime momentoCierre;
     
