@@ -171,7 +171,7 @@ public class Controlador {
          return "redirect:/tareas";
     }
     
-    @GetMapping("/editar/{idTarea}")
+    @GetMapping("/editar/{id}")
     public String editar(Tarea tarea, Model model) {
         model.addAttribute("activos",activo.findAll());
         model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
@@ -194,7 +194,7 @@ public class Controlador {
          return "redirect:/tareas";
     }
     
-    @GetMapping("/eliminar/{idTarea}")
+    @GetMapping("/eliminar/{id}")
     public String eliminar(Model model,Tarea tarea) {
         
         servicio.eliminar(tarea);
@@ -202,7 +202,7 @@ public class Controlador {
         return "redirect:/tareas";
     }
     
-    @GetMapping("/liberarSolicitud/{idTarea}")
+    @GetMapping("/liberarSolicitud/{id}")
     public String liberar(Model model,Tarea tarea) {
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("liberada");
@@ -215,11 +215,13 @@ public class Controlador {
     
     
     
-    @GetMapping("/asignarSolicitud/{idTarea}")
-    public String asignar(Model model,Tarea tarea) {
+    @GetMapping("/asignarSolicitud/{id}")
+    public String asignar(@Param("motivoDemoraAsignacion")String motivoDemoraAsignacion, Model model,Tarea tarea) {
+        log.info(motivoDemoraAsignacion+" pepe");
         Tarea t= servicio.encontrar(tarea);
         t.setEstado("enProceso");
         t.setMomentoAsignacion(LocalDateTime.now());
+        t.setMotivoDemoraAsignacion(motivoDemoraAsignacion);
         servicio.guardar(t);
           model.addAttribute("tareas", tareaService.traerNoCerradas());
          return "redirect:/tareas";
@@ -227,14 +229,16 @@ public class Controlador {
     
     
     
-    @GetMapping("/CerrarSolicitud/{idTarea}")
-    public String CerrarSolicitud(@Param("evaluacion")String evaluacion, Model model, Tarea tarea) {
-        log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getIdTarea());
+    @GetMapping("/CerrarSolicitud/{id}")
+    public String CerrarSolicitud(@Param("evaluacion")String evaluacion,@Param("motivoDemoraCierre")String motivoDemoraCierre, Model model, Tarea tarea) {
+        log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getId());
         
         
         Tarea t= servicio.encontrar(tarea);
         t.getActivo().setEstado("operativa");
         t.setEstado("cerrada");
+        t.setMotivoDemoraCierre(motivoDemoraCierre);
+        t.setEvaluacion(evaluacion);
         
          t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
@@ -245,7 +249,7 @@ public class Controlador {
     }
     
     
-    @GetMapping("/generar/{idTarea}")
+    @GetMapping("/generar/{id}")
     public String generar(Tarea tarea, Model model) {
         model.addAttribute("tarea", servicio.encontrar(tarea));
         return "ot";

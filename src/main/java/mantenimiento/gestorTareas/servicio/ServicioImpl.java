@@ -41,7 +41,7 @@ public class ServicioImpl implements Servicio {
     @Transactional(readOnly = true)
     @Override
     public Tarea encontrar(Tarea tarea) {
-        return tarea = tareaDao.findById(tarea.getIdTarea()).orElse(null);
+        return tarea = tareaDao.findById(tarea.getId()).orElse(null);
     }
 
     

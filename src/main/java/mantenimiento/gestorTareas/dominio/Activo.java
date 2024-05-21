@@ -25,7 +25,7 @@ public class Activo implements Serializable {
 //    @NotEmpty
     private String codigo;//o numero segun este identificada en planta
     
-    private String criticidad; //que tan critico es en el proceso, por ejemplo si es cuello de botella
+//    private String criticidad; //que tan critico es en el proceso, por ejemplo si es cuello de botella
     
     private String estado;// detenida, operativa, disponible para preventivo o mejora. 
     

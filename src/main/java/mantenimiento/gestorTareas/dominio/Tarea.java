@@ -15,12 +15,21 @@ public class Tarea implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idtarea")
-    private Long idTarea;
+    private Long id;
     
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "activo")
     private Activo activo;
+    
+    
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "informe")
+    private Informe informe;
+    
+    private String categoriaTecnica;
+    private String motivoDemoraAsignacion;
+    private String motivoDemoraCierre;
+    private String evaluacion;
     
     private String descripcion;
     

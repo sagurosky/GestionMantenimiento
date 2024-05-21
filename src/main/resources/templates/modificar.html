@@ -16,7 +16,7 @@
                     <form th:action="@{/guardarEdicion}" method="post" th:object="${tarea}" class="was-validated">
                          <div class="modal-body">
                             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                                <input type="hidden" th:field="${tarea.idTarea}"/>
+                                <input type="hidden" th:field="${tarea.id}"/>
                                 <input type="hidden" th:field="${tarea.solicita}"/>
                                 <label th:text="activo" for="activo"></label>
                                 <select th:field="*{activo}" class="form-control" >

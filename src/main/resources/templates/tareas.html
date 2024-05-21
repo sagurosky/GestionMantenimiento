@@ -67,17 +67,17 @@
                                          sec:authorize="hasRole('ROLE_MANT')||hasRole('ROLE_TECNICO')" 
                                          href="#" 
                                          data-toggle="modal" 
-                                         th:data-target="'#myModal2' + ${tarea.idTarea}" 
+                                         th:data-target="'#myModal2' + ${tarea.id}" 
                                          class="btn btn-primary ">asignar</a></span>
                                 <span><a th:if="${tarea.estado=='enProceso'}" 
-                                         sec:authorize="hasRole('ROLE_MANT')||hasRole('ROLE_TECNICO')" th:href="@{/liberarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary ">liberar</a></span>
-                                <!--<span><a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" th:href="@{/cerrarSolicitud/}+ ${tarea.idTarea}" class="btn btn-primary">evaluar y cerrar</a></span>-->
+                                         sec:authorize="hasRole('ROLE_MANT')||hasRole('ROLE_TECNICO')" th:href="@{/liberarSolicitud/}+ ${tarea.id}" class="btn btn-primary ">liberar</a></span>
+                                <!--<span><a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" th:href="@{/cerrarSolicitud/}+ ${tarea.id}" class="btn btn-primary">evaluar y cerrar</a></span>-->
                                 <span>
                                     <a sec:authorize="hasRole('ROLE_PROD')" 
                                        th:if="${tarea.estado=='liberada'}" 
                                        href="#" 
                                        data-toggle="modal" 
-                                       th:data-target="'#myModal' + ${tarea.idTarea}" 
+                                       th:data-target="'#myModal' + ${tarea.id}" 
                                        class="btn btn-primary"
                                        >
                                         Evaluar y Cerrar
@@ -89,7 +89,7 @@
                                 <!--modal-->
 
 
-                                <div class="modal fade" th:id="'myModal' + ${tarea.idTarea}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal fade" th:id="'myModal' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -98,18 +98,21 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form th:id="'evaluarForm+${tarea.idTarea}'" th:action="@{/CerrarSolicitud/}+${tarea.idTarea}" > 
+                                            <form th:id="'evaluarForm+${tarea.id}'" th:action="@{/CerrarSolicitud/}+${tarea.id}" > 
                                                 <div class="modal-body">
-                                                    <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
+<!--                                                    <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
                                                     <input type="text" class="form-control"/>
                                                     <label th:text="'ingrese calificación (1-10) del nivel profesional'"/>
                                                     <input type="text" class="form-control"/>
                                                     <label th:text="'ingrese calificación (1-10) del trato obtenido'"/>
-                                                    <input type="text" class="form-control"/>
+                                                    <input type="text" class="form-control"/>-->
 
 
-                                                    <label th:text="'ingrese comentario adicional (opcional): '"/>
+                                                    <!--<label th:text="'ingrese comentario adicional (opcional): '"/>-->
+                                                    <label th:text="'evaluación del trabajo realizado: '"/>
                                                     <textArea th:id="evaluacion" th:name="evaluacion" class="form-control"></textArea>
+                                                    <label th:text="'si existió demora en cierre ingrese motivo: '"/>
+                                                    <textArea th:id="motivoDemoraCierre" th:name="motivoDemoraCierre" class="form-control"></textArea>    
                                         </div>
                                         <div class="modal-footer">
                                                  <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
@@ -120,7 +123,7 @@
                                 </div>
                             </div>
                             
-                            <div class="modal fade" th:id="'myModal2' + ${tarea.idTarea}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal fade" th:id="'myModal2' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -129,14 +132,19 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                             <form th:id="'asignarForm+${tarea.idTarea}'" th:action="@{/asignarSolicitud/}+${tarea.idTarea}" > 
+                                             <form th:id="'asignarForm+${tarea.id}'" th:action="@{/asignarSolicitud/}+${tarea.id}" > 
                                         <div class="modal-body">
-                                                 <label th:text="'seleccione colaborador/es '"/>
-<!--                                                 <select th:field="*{}" class="form-control" >
+                                                 
+                                            <!--<label th:text="'seleccione colaborador/es '"/>-->
+<!--                                                
+
+                                                <select th:field="*{}" class="form-control" >
                                                     <option value="0">seleccione</option>
                                                     <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
                                                 </select>-->
-                                                 <select multiple class="form-control" >
+
+
+<!--                                                 <select multiple class="form-control" >
                                                     <option value="0">seleccione</option>
                                                     <option value="0">Juan</option>
                                                     <option value="0">Paco</option>
@@ -147,7 +155,7 @@
                                                     <option value="0">Pablo</option>
                                                     <option value="0">Marcelito</option>
                                                     
-                                                </select>
+                                                </select>-->
 
                                                  <label th:text="'si existió demora ingrese motivo '"/>
                                                   <textArea th:id="motivoDemoraAsignacion" th:name="motivoDemoraAsignacion" class="form-control"></textArea>
@@ -165,8 +173,8 @@
                         
                         <td th:text="${tarea.descripcion}">descripcion</td>
                         <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${tarea.solicita}">usuario</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.idTarea}">editar</a></td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar/}+${tarea.idTarea}" >eliminar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.id}">editar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar/}+${tarea.id}" >eliminar</a></td>
 
 
                         <td  th:if='${tarea.activo.estado=="detenida"}'>
