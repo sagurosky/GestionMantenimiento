@@ -43,8 +43,8 @@
                         <th >activo</th>
                         <th >descripcion del problema</th>
                         <th >tiempo activo detenido [minutos]</th>
-                        <th >demora de asistencia [minutos]</th>
-                        <th >demora de cierre de solicitud [minutos]</th>
+                        <!--<th >demora de asistencia [minutos]</th>-->
+                        <!--<th >demora de cierre de solicitud [minutos]</th>-->
                         <th >detalle</th>
                     </tr>
                 </thead>
@@ -54,8 +54,8 @@
                         <td th:text="${tarea.activo.nombre}" >activo</td>
                         <td th:text="${tarea.descripcion}">descripcion</td>
                         <td th:id="tiempoDetenido+${tarea.id}" style="text-align: center"></td>
-                        <td th:id="tiempoAsistencia+${tarea.id}" style="text-align: center"></td>
-                        <td th:id="tiempoCierre+${tarea.id}" style="text-align: center"></td>
+                        <!--<td th:id="tiempoAsistencia+${tarea.id}" style="text-align: center"></td>-->
+                        <!--<td th:id="tiempoCierre+${tarea.id}" style="text-align: center"></td>-->
                         <td th:id="detalle+${tarea.id}">
                             <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${tarea.id}" class="btn btn-primary ">detalle</a></span>
                             

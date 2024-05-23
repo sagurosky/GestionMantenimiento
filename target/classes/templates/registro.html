@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <!--<meta http-equiv="refresh" content="10">-->
+
+    <head th:replace="plantillas/plantilla::head">
+        <title>Lista de tareas</title>
+        <meta charset="UTF-8"/>
+    </head>
+     <style>
+        .grafico {
+            width: 20%;
+            min-height: 50px;
+        }
+    </style>
+    
+    <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+
+        <!--poner datatables o, si se complica, adaptar el filtro de abajo-->
+        <!--        <section  class="py-2 mb-4  bg-light">
+                    <form th:action="@{/filtrar}" method="post"   class="form-group">
+                        <div class="container">
+                            <label  for="palabraClave">filtrar: </label>
+                            <input type="text"  name="palabraClave" id="palabraClave" th:value="${palabraClave}"placeholder="digite valor a buscar" autocomplete="off"/>
+                            <input th:type="submit"  th:value="buscar" class="btn btn-primary "/>
+                        </div>
+                    </form>
+                </section>-->
+
+
+
+        <div class="container ">
+            <br/><h2>Registro histórico</h2><br/>
+            <table class="table table-bordered table-hover table-sm "  >
+                <thead class="thead-light " >
+                    <tr > 
+                        <th >fecha</th>
+                        <th >activo</th>
+                        <th >descripcion del problema</th>
+                        <th >tiempo activo detenido [minutos]</th>
+                        <!--<th >demora de asistencia [minutos]</th>-->
+                        <!--<th >demora de cierre de solicitud [minutos]</th>-->
+                        <th >detalle</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr th:each="tarea: ${tareas}">
+                        <td th:id="fecha+${tarea.id}">fecha</td>
+                        <td th:text="${tarea.activo.nombre}" >activo</td>
+                        <td th:text="${tarea.descripcion}">descripcion</td>
+                        <td th:id="tiempoDetenido+${tarea.id}" style="text-align: center"></td>
+                        <!--<td th:id="tiempoAsistencia+${tarea.id}" style="text-align: center"></td>-->
+                        <!--<td th:id="tiempoCierre+${tarea.id}" style="text-align: center"></td>-->
+                        <td th:id="detalle+${tarea.id}">
+                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${tarea.id}" class="btn btn-primary ">detalle</a></span>
+                            
+                             <div class="modal fade" th:id="'modalDetalle' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-scrollable  modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Detalle del evento</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                             <form th:id="'agregarInforme'+${tarea.id}" th:action="@{/agregarInforme/}+${tarea.id}" > 
+                                        <div class="modal-body">
+                                                       
+                                            <div class="row">
+                                               <div class="col-6"> 
+                                                    <div class="row">
+                                                        <div class="col form-control"><label th:text="'detención:'"/></div>
+                                                        <div class="col  form-control"><label th:text="${#temporals.format(tarea.momentoDetencion, 'HH:mm:ss')}" /></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col  form-control"><label th:text="'Asignación:'"/></div>
+                                                        <div class="col  form-control"><label th:text="${#temporals.format(tarea.momentoAsignacion, 'HH:mm:ss')}" /></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col  form-control"><label th:text="'Liberación:'"/></div>
+                                                        <div class="col  form-control"><label th:text="${#temporals.format(tarea.momentoLiberacion, 'HH:mm:ss')}" /></div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col  form-control"><label th:text="'Cierre:'"/></div>
+                                                        <div class="col  form-control"><label th:text="${#temporals.format(tarea.momentoCierre, 'HH:mm:ss')}" /></div>
+                                                    </div>
+                                               </div>
+                                              
+                                            </div>    
+                                                <div class="row">
+                                                    <div class="col  form-control"><label th:text="'Motivo de demora en asignación: '"/></div>
+                                                    <div class="col  form-control"><label th:text="${tarea.motivoDemoraAsignacion}"  /></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col  form-control"><label th:text="'Motivo de demora en cierre: '"/></div>
+                                                    <div class="col  form-control"><label th:text="${tarea.motivoDemoraCierre}" /></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col  form-control"><label th:text="'Categoría técnica: '"/></div>
+                                                    <div class="col  form-control"><label th:text="${tarea.categoriaTecnica}" /></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col  form-control"><label th:text="'Descripción del evento: '"/></div>
+                                                    <div class="col  form-control"><label th:text="${tarea.descripcion}" /></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col  form-control"><label th:text="'Devolución del cliente interno '"/></div>
+                                                    <div class="col  form-control"><label th:text="${tarea.evaluacion}" /></div>
+                                                </div>
+<!--                                                <div class="row">
+                                                    <div class="col-4  form-control"><label th:text="'Información técnica para su resolución: '"/></div>
+                                                    <div class="col"><textarea class="col form-control" th:text="'en construccion'" readonly /></div>
+                                                </div>-->
+                                                 
+                                            
+                                            
+                                            
+                                        </div>
+                                                 
+                                        <div class="modal-footer">
+                                            
+                                                <!--Liberar cuando agregue lo de los informes tecnicos y programar controlador-->
+                                                 <!--<button class="btn btn-primary" th:type="submit">Agregar informe</button>-->
+                                                 <button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">
+                                                      <span aria-hidden="true">cerrar</span>
+                                                 </button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        
+                        <script th:inline="javascript">
+
+                            var detencion = [[${tarea.momentoDetencion}]];
+                                    var asignacion = [[${tarea.momentoAsignacion}]];
+                                    var liberacion = [[${tarea.momentoLiberacion}]];
+                                    var cierre = [[${tarea.momentoCierre}]];
+                                    var id = [[${tarea.id}]];
+
+                            // Obtener las fechas de momentoDetencion y momentoLiberacion
+                            var momentoDetencion = new Date(detencion); // Convertir a formato ISO-8601
+                            var momentoAsignacion = new Date(asignacion); // Convertir a formato ISO-8601
+                            var momentoLiberacion = new Date(liberacion); // Convertir a formato ISO-8601
+                            var momentoCierre = new Date(cierre); // Convertir a formato ISO-8601
+
+
+
+                            $("#fecha" + id).text(formatDate(momentoDetencion));
+                            // Calcular la diferencia de tiempo en milisegundos
+
+
+                            var diferenciaMilisegundos = momentoLiberacion - momentoDetencion;
+
+                            // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                            var segundos = Math.floor(diferenciaMilisegundos / 1000);
+                            var minutos = Math.floor(segundos / 60);
+                            var horas = Math.floor(minutos / 60);
+                            var dias = Math.floor(horas / 24);
+
+                            // Calcular los valores restantes para horas, minutos y segundos
+        //                        horas = horas % 24;
+                            minutos = minutos % 60;
+        //                        segundos = segundos % 60;
+
+                            // Construir la cadena de texto con la diferencia de tiempo
+        //                        var diferenciaTiempoDetencion =  horas + " horas, " + minutos + " minutos" ;
+                            var diferenciaTiempoDetencion = minutos;
+
+                            // Actualizar el contenido de la celda con el ID "diferenciaTiempo"
+                            $("#tiempoDetenido" + id).text(diferenciaTiempoDetencion);
+
+
+                            diferenciaMilisegundos = momentoCierre - momentoLiberacion;
+
+                            // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                            segundos = Math.floor(diferenciaMilisegundos / 1000);
+                            minutos = Math.floor(segundos / 60);
+        //                         horas = Math.floor(minutos / 60);
+        //                         dias = Math.floor(horas / 24);
+
+                            // Calcular los valores restantes para horas, minutos y segundos
+        //                        horas = horas % 24;
+                            minutos = minutos % 60;
+        //                        segundos = segundos % 60;
+
+                            // Construir la cadena de texto con la diferencia de tiempo
+        //                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
+                            var diferenciaTiempoCierre = minutos;
+
+                            $("#tiempoCierre" + id).text(diferenciaTiempoCierre);
+
+
+
+
+                            diferenciaMilisegundos = momentoAsignacion - momentoDetencion;
+
+                            // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                            segundos = Math.floor(diferenciaMilisegundos / 1000);
+                            minutos = Math.floor(segundos / 60);
+
+                            minutos = minutos % 60;
+        //                        segundos = segundos % 60;
+
+                            // Construir la cadena de texto con la diferencia de tiempo
+        //                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
+                            var diferenciaTiempoCierre = minutos;
+
+                            $("#tiempoAsistencia" + id).text(diferenciaTiempoCierre);
+
+
+
+                            function formatDate(date) {
+                                // Obtener el día, mes y año
+                                var day = date.getDate();
+                                var month = date.getMonth() + 1; // Los meses van de 0 a 11
+                                var year = date.getFullYear();
+
+                                // Asegurarse de que el día y el mes tengan dos dígitos
+                                if (day < 10) {
+                                    day = '0' + day;
+                                }
+                                if (month < 10) {
+                                    month = '0' + month;
+                                }
+
+                                // Formatear la fecha como dd/mm/yyyy
+                                return day + '/' + month + '/' + year;
+                            }
+
+
+
+
+                        </script>
+
+                      
+
+                    </tr>
+                    
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
+                   
+                     <script>
+                            
+
+                        /* global echarts */
+
+                        const opcionesGrafico = () => {
+                            return {
+                                tooltip: {
+                                    trigger: "item"
+                                },
+                                legend: {
+                                    top: "5%",
+                                    left: "center"
+                                },
+                                series: [
+                                    {
+                                        name: "Cantidad de paradas",
+                                        type: "pie",
+                                        radius: ["40%", "70%"],
+                                        avoidLabelOverlap: false,
+                                        itemStyle: {
+                                            borderRadius: 10,
+                                            borderColor: "#fff",
+                                            borderWidth: 2
+                                        },
+                                        label: {
+                                            show: false,
+                                            position: "center"
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: "40",
+                                                fontWeight: "bold"
+                                            }
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: [
+                                            { value: 1048, name: "Mecánicas" },
+                                            { value: 735, name: "Electrónicas" },
+                                            { value: 580, name: "Neumática" },
+                                            { value: 484, name: "Hidráulica" }
+                        //                    { value: 300, name: "Video Ads" }
+                                        ]
+                                    }
+                                ]
+                            };
+                        };
+
+                        const initCharts = () => {
+                            const chart4 = echarts.init(document.getElementById("grafico25"));
+                            chart4.setOption(opcionesGrafico());
+
+                            chart4.resize();
+                        };
+
+                        window.addEventListener("load", () => {
+                            initCharts();
+                        });
+
+                        </script>
+
+
+
+                </tbody>
+            </table>
+        </div>
+        <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}" class="btn btn-primary btn-block">
+                            Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+    </body>
+</html>

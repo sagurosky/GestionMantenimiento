@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <meta http-equiv="refresh" id="metaRefresh" content="60">
+
+        <head th:replace="plantillas/plantilla::head">
+            <title>Lista de tareas</title>
+            <meta charset="UTF-8"/>
+        </head>
+
+        <body>
+            <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+            <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
+                Serás redirigido en: <span id="tiempoRestante">60</span> segundos
+            </div>
+            <section  class="py-4 mb-4 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3" >
+                            <a th:href="@{crearTarea}" class="btn btn-primary btn-block">
+                                <i class="fas fa-plus"></i> Crear tarea
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <section  class="py-2 mb-4  bg-light">
+                <form th:action="@{/filtrar}" method="post"   class="form-group">
+                    <div class="container">
+                        <label  for="palabraClave">filtrar: </label>
+                        <input type="text"  name="palabraClave" id="palabraClave" th:value="${palabraClave}"placeholder="digite valor a buscar" autocomplete="off"/>
+                        <input th:type="submit"  th:value="buscar" class="btn btn-primary "/>
+                    </div>
+                </form>
+            </section>
+            <div class="container ">
+                <table class="table table-bordered table-hover table-sm "  >
+                    <thead class="thead-light " >
+                        <tr > 
+                            <th >activo</th>
+                            <th >estado activo</th>
+                            <th >estado solicitud</th>
+                            <th >descripcion del problema</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">solicita</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+
+                            <th >hora de detencion</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr th:each="tarea: ${tareas}">
+
+                            <!--<td th:text="${tarea.activo.codigo}" th:title='${tarea.activo.nombre}'>maquina</td>-->
+                            <td th:text="${tarea.activo.nombre}" >activo</td>
+                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red">estado</td>
+                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado!="detenida"}'>estado</td>
+                            <!--<td th:text="${tarea.estado}" >estado solicitud </td>-->
+                            <td>
+                                <span th:text="${tarea.estado}">Estado solicitud</span>
+                                <span><a th:if="${tarea.estado=='abierto'}" 
+                                         sec:authorize="hasRole('ROLE_MANT')||hasRole('ROLE_TECNICO')" 
+                                         href="#" 
+                                         data-toggle="modal" 
+                                         th:data-target="'#myModal2' + ${tarea.id}" 
+                                         class="btn btn-primary ">asignar</a></span>
+                                <span><a th:if="${tarea.estado=='enProceso'}" 
+                                         sec:authorize="hasRole('ROLE_MANT')||hasRole('ROLE_TECNICO')" th:href="@{/liberarSolicitud/}+ ${tarea.id}" class="btn btn-primary ">liberar</a></span>
+                                <!--<span><a th:if="${#authentication.principal.username == tarea.solicita && tarea.estado=='liberada'}" th:href="@{/cerrarSolicitud/}+ ${tarea.id}" class="btn btn-primary">evaluar y cerrar</a></span>-->
+                                <span>
+                                    <a sec:authorize="hasRole('ROLE_PROD')" 
+                                       th:if="${tarea.estado=='liberada'}" 
+                                       href="#" 
+                                       data-toggle="modal" 
+                                       th:data-target="'#myModal' + ${tarea.id}" 
+                                       class="btn btn-primary"
+                                       >
+                                        Evaluar y Cerrar
+                                    </a>
+                                    <label sec:authorize="not hasRole('ROLE_PROD')" th:if="${tarea.estado=='liberada'}" th:text="'aguardando cierre de producción'" />
+                                </span>
+
+
+                                <!--modal-->
+
+
+                                <div class="modal fade" th:id="'myModal' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirme cierre de tarea</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form th:id="'evaluarForm+${tarea.id}'" th:action="@{/CerrarSolicitud/}+${tarea.id}" > 
+                                                <div class="modal-body">
+<!--                                                    <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
+                                                    <input type="text" class="form-control"/>
+                                                    <label th:text="'ingrese calificación (1-10) del nivel profesional'"/>
+                                                    <input type="text" class="form-control"/>
+                                                    <label th:text="'ingrese calificación (1-10) del trato obtenido'"/>
+                                                    <input type="text" class="form-control"/>-->
+
+
+                                                    <!--<label th:text="'ingrese comentario adicional (opcional): '"/>-->
+                                                    <label th:text="'evaluación del trabajo realizado: '"/>
+                                                    <textArea th:id="evaluacion" th:name="evaluacion" class="form-control"></textArea>
+                                                    <label th:text="'si existió demora en cierre ingrese motivo: '"/>
+                                                    <textArea th:id="motivoDemoraCierre" th:name="motivoDemoraCierre" class="form-control"></textArea>    
+                                        </div>
+                                        <div class="modal-footer">
+                                                 <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal fade" th:id="'myModal2' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Asignar colaborador/es</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                             <form th:id="'asignarForm+${tarea.id}'" th:action="@{/asignarSolicitud/}+${tarea.id}" > 
+                                        <div class="modal-body">
+                                                 
+                                            <!--<label th:text="'seleccione colaborador/es '"/>-->
+<!--                                                
+
+                                                <select th:field="*{}" class="form-control" >
+                                                    <option value="0">seleccione</option>
+                                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
+                                                </select>-->
+
+
+<!--                                                 <select multiple class="form-control" >
+                                                    <option value="0">seleccione</option>
+                                                    <option value="0">Juan</option>
+                                                    <option value="0">Paco</option>
+                                                    <option value="0">Pedro</option>
+                                                    <option value="0">Robertito</option>
+                                                    <option value="0">Jaimito</option>
+                                                    <option value="0">Jose</option>
+                                                    <option value="0">Pablo</option>
+                                                    <option value="0">Marcelito</option>
+                                                    
+                                                </select>-->
+
+                                                 <label th:text="'si existió demora ingrese motivo '"/>
+                                                  <textArea th:id="motivoDemoraAsignacion" th:name="motivoDemoraAsignacion" class="form-control"></textArea>
+                                        </div>
+                                                 
+                                        <div class="modal-footer">
+                                                 <button class="btn btn-primary" th:type="submit">Asignar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td th:text="${tarea.descripcion}">descripcion</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${tarea.solicita}">usuario</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.id}">editar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar/}+${tarea.id}" >eliminar</a></td>
+
+
+                        <td  th:if='${tarea.activo.estado=="detenida"}'>
+                            <span th:text="${#temporals.format(tarea.activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span>
+                        </td>
+                        <td  th:if='${tarea.activo.estado!="detenida"}' >
+                        </td>
+
+
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+         <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}" class="btn btn-primary btn-block">
+                             Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+       <script>
+           var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+           // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+           function actualizarTiempoRestante() {
+               // Actualizar el contenido del span con el tiempo restante
+               document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+               // Disminuir el tiempo restante en 1 segundo
+               segundosRestantes--;
+
+               // Verificar si se alcanzó el tiempo límite
+               if (segundosRestantes < 0) {
+                   // Realizar la redirección después de 60 segundos
+                   window.location.href = '/';
+               } else {
+                   // Llamar a esta función nuevamente después de 1 segundo
+                   setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+               }
+           }
+
+           // Llamar a la función para iniciar el contador
+           actualizarTiempoRestante();
+             </script>
+
+        
+        
+        
+
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+    </body>
+</html>

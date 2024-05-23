@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.RolDao;
@@ -71,7 +72,28 @@ public class ControladorEquipos {
     public String aplicadoresDeAdhesivo(Model model) {
        Activo activo=activoService.findByName("aplicadores de adhesivo");
          model.addAttribute("activo",activo);
-          model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
+         
+         List<Tarea> tareas=servicio.listar();
+         Integer cantidadMecanicas=0;
+         Integer cantidadElectronicas=0;
+         Integer cantidadNeumaticas=0;
+         Integer cantidadHidraulicas=0;
+         Integer cantidadProgramacion=0;
+        
+         for (Tarea tarea : tareas) {
+            if(tarea.getCategoriaTecnica().equals("mecánica"))cantidadMecanicas++;
+            if(tarea.getCategoriaTecnica().equals("hidráulica"))cantidadHidraulicas++;
+            if(tarea.getCategoriaTecnica().equals("neumática"))cantidadNeumaticas++;
+            if(tarea.getCategoriaTecnica().equals("electrónica"))cantidadElectronicas++;
+            if(tarea.getCategoriaTecnica().equals("programación"))cantidadProgramacion++;
+         }
+         model.addAttribute("cantidadMecanicas",cantidadMecanicas);
+         model.addAttribute("cantidadHidraulicas",cantidadHidraulicas);
+         model.addAttribute("cantidadNeumaticas",cantidadNeumaticas);
+         model.addAttribute("cantidadElectronicas",cantidadElectronicas);
+         model.addAttribute("cantidadProgramacion",cantidadProgramacion);
+         
+         model.addAttribute("linkFoto","/recursos/"+activo.getNombre().replace(" ", "")+".jpg");
         return "equipos/activo";
     }
      @GetMapping("/aspiracion")
