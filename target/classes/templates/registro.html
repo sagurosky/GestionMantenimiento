@@ -56,8 +56,13 @@
                         <td th:id="tiempoDetenido+${tarea.id}" style="text-align: center"></td>
                         <!--<td th:id="tiempoAsistencia+${tarea.id}" style="text-align: center"></td>-->
                         <!--<td th:id="tiempoCierre+${tarea.id}" style="text-align: center"></td>-->
+                        
+                        <input type="hidden" th:id="tiempoAsistencia+${tarea.id}"/>
+                        <input type="hidden" th:id="tiempoLiberacion+${tarea.id}"/>
+                        <input type="hidden" th:id="tiempoCierre+${tarea.id}"/>
+                        
                         <td th:id="detalle+${tarea.id}">
-                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${tarea.id}" class="btn btn-primary ">detalle</a></span>
+                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${tarea.id}" th:id="${tarea.id}" onclick="desplegarGrafico(this.id)" class="btn btn-primary ">detalle</a></span>
                             
                              <div class="modal fade" th:id="'modalDetalle' + ${tarea.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-scrollable  modal-xl" role="document">
@@ -91,7 +96,7 @@
                                                     </div>
                                                </div>
                                                 <div class="col" >
-                                                     <div th:id="'grafico'+${tarea.id}" class="grafico"  style="height: 150px; width: 500px;" ></div>
+                                                     <div th:id="'grafico'+${tarea.id}"  class="grafico"  style="height: 150px; width: 500px;" ></div>
                                                 </div>
                                               
                                             </div>    
@@ -197,9 +202,9 @@
 
                             // Construir la cadena de texto con la diferencia de tiempo
         //                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
-                            var diferenciaTiempoCierre = minutos;
-
-                            $("#tiempoCierre" + id).text(diferenciaTiempoCierre);
+                            var diferenciaTiempo = minutos;
+                            
+                            $("#tiempoCierre" + id).text(diferenciaTiempo);
 
 
 
@@ -215,10 +220,29 @@
 
                             // Construir la cadena de texto con la diferencia de tiempo
         //                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
-                            var diferenciaTiempoCierre = minutos;
+                            diferenciaTiempo = minutos;
 
-                            $("#tiempoAsistencia" + id).text(diferenciaTiempoCierre);
+                            $("#tiempoAsistencia" + id).text(diferenciaTiempo);
 
+
+                             diferenciaMilisegundos = momentoLiberacion - momentoAsignacion;
+
+                            // Convertir la diferencia de tiempo a días, horas, minutos y segundos
+                            segundos = Math.floor(diferenciaMilisegundos / 1000);
+                            minutos = Math.floor(segundos / 60);
+        //                         horas = Math.floor(minutos / 60);
+        //                         dias = Math.floor(horas / 24);
+
+                            // Calcular los valores restantes para horas, minutos y segundos
+        //                        horas = horas % 24;
+                            minutos = minutos % 60;
+        //                        segundos = segundos % 60;
+
+                            // Construir la cadena de texto con la diferencia de tiempo
+        //                        var diferenciaTiempoCierre =  horas + " horas, " + minutos + " minutos" ;
+                            diferenciaTiempo = minutos;
+                            
+                            $("#tiempoLiberacion" + id).text(diferenciaTiempo);
 
 
                             function formatDate(date) {
@@ -255,7 +279,7 @@
 
                         /* global echarts */
 
-                        const opcionesGrafico = () => {
+                        const opcionesGrafico = (id) => {
                             return {
                                 tooltip: {
                                     trigger: "item"
@@ -290,9 +314,9 @@
                                             show: false
                                         },
                                         data: [
-                                            { value: 1048, name: "asignación" },
-                                            { value: 580, name: "liberacion" },
-                                            { value: 484, name: "cierre" }
+                                            { value:  $("#tiempoAsistencia" + id).text(), name: "asignación" },
+                                            { value:  $("#tiempoLiberacion" + id).text(), name: "liberacion" },
+                                            { value:  $("#tiempoCierre" + id).text(), name: "cierre" }
                         //                    { value: 300, name: "Video Ads" }
                                         ]
                                         
@@ -301,17 +325,14 @@
                             };
                         };
 
-                        const initCharts = () => {
-                            
-                            const chart = echarts.init(document.getElementById("grafico7"));
-                            chart.setOption(opcionesGrafico());
+                        const desplegarGrafico = (id) => {
+                            const chart = echarts.init(document.getElementById("grafico"+id));
+                            chart.setOption(opcionesGrafico(id));
 
                             chart.resize();
                         };
 
-                        window.addEventListener("load", () => {
-                            initCharts();
-                        });
+                        
 
 
 

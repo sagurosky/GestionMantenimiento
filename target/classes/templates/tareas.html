@@ -5,7 +5,7 @@
       xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
 
 
-    <meta http-equiv="refresh" id="metaRefresh" content="60">
+    <!--<meta http-equiv="refresh" id="metaRefresh" content="60">-->
 
         <head th:replace="plantillas/plantilla::head">
             <title>Lista de tareas</title>
@@ -100,12 +100,12 @@
                                             </div>
                                             <form th:id="'evaluarForm+${tarea.id}'" th:action="@{/CerrarSolicitud/}+${tarea.id}" > 
                                                 <div class="modal-body">
-<!--                                                    <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
-                                                    <input type="text" class="form-control"/>
-                                                    <label th:text="'ingrese calificación (1-10) del nivel profesional'"/>
-                                                    <input type="text" class="form-control"/>
-                                                    <label th:text="'ingrese calificación (1-10) del trato obtenido'"/>
-                                                    <input type="text" class="form-control"/>-->
+                                                    <!--                                                    <label th:text="'ingrese calificación (1-10) del nivel de compromiso del colaborador '"/>
+                                                                                                        <input type="text" class="form-control"/>
+                                                                                                        <label th:text="'ingrese calificación (1-10) del nivel profesional'"/>
+                                                                                                        <input type="text" class="form-control"/>
+                                                                                                        <label th:text="'ingrese calificación (1-10) del trato obtenido'"/>
+                                                                                                        <input type="text" class="form-control"/>-->
 
 
                                                     <!--<label th:text="'ingrese comentario adicional (opcional): '"/>-->
@@ -204,30 +204,7 @@
         </section>
 
         
-       <script>
-           var segundosRestantes = 120; // Define el tiempo inicial en segundos
-
-           // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
-           function actualizarTiempoRestante() {
-               // Actualizar el contenido del span con el tiempo restante
-               document.getElementById('tiempoRestante').textContent = segundosRestantes;
-
-               // Disminuir el tiempo restante en 1 segundo
-               segundosRestantes--;
-
-               // Verificar si se alcanzó el tiempo límite
-               if (segundosRestantes < 0) {
-                   // Realizar la redirección después de 60 segundos
-                   window.location.href = '/';
-               } else {
-                   // Llamar a esta función nuevamente después de 1 segundo
-                   setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
-               }
-           }
-
-           // Llamar a la función para iniciar el contador
-           actualizarTiempoRestante();
-             </script>
+      
 
         
         
@@ -235,5 +212,31 @@
 
 
         <footer th:replace="plantillas/plantilla::footer"></footer>
+        
+        
+         <script>
+                var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+                // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+                function actualizarTiempoRestante() {
+                    // Actualizar el contenido del span con el tiempo restante
+                    document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+                    // Disminuir el tiempo restante en 1 segundo
+                    segundosRestantes--;
+
+                    // Verificar si se alcanzó el tiempo límite
+                    if (segundosRestantes < 0) {
+                        // Realizar la redirección después de 60 segundos
+                        window.location.href = '/';
+                    } else {
+                        // Llamar a esta función nuevamente después de 1 segundo
+                        setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+                    }
+                }
+
+                // Llamar a la función para iniciar el contador
+                actualizarTiempoRestante();
+           </script>
     </body>
 </html>
