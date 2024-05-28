@@ -71,7 +71,7 @@
                           <h4>MTBF: </h4> 
                         </div>
                         <div class='col'>
-                             <h4> 23 min </h4> 
+                             <h4 th:text="${mtbf}">  </h4> 
                         </div>
                     </div>
                     <div class="row">
@@ -150,7 +150,7 @@
                     <!-- Apache ECharts -->
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
                     
-                    <script >
+                    <script>
                         
                          var cantidadMecanicas = [[${cantidadMecanicas}]];
                          var cantidadHidraulicas = [[${cantidadHidraulicas}]];

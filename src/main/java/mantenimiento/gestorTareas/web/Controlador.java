@@ -128,7 +128,8 @@ public class Controlador {
     @GetMapping("/crearTarea")
     public String modificar(Model model,Tarea tarea) {
         model.addAttribute("activos",activo.findAll());
-        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
+        
+//        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
         
         return "crearTarea";
     }
@@ -163,8 +164,8 @@ public class Controlador {
         //se guarda el momento de la solicitud para calcular el tiempo de parada
         tarea.getActivo().setMomentoDetencion(LocalDateTime.now());
         tarea.setMomentoDetencion(LocalDateTime.now());
-        
-        
+        tarea.getActivo().setEstado("detenida");
+        activo.save(tarea.getActivo());
         
         servicio.guardar(tarea);
          model.addAttribute("tareas",tareaService.traerNoCerradas());
