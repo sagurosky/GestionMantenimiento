@@ -38,6 +38,8 @@
                         </div>
                     </div>
                 <br/>
+                
+                <h2 align=center>indicadores   <span> <a th:href="@{/configurarIndicadores}" th:text="configurar" class="btn btn-primary"></a></span></h2>
                     <div th:if="${activo.estado=='detenida'}">
                         <div class="row">
                             <div class='col'>
@@ -71,7 +73,7 @@
                           <h4>MTBF: </h4> 
                         </div>
                         <div class='col'>
-                             <h4 th:text="${mtbf}">  </h4> 
+                             <h4 th:text="${mtbf}+' min'">  </h4> 
                         </div>
                     </div>
                     <div class="row">
@@ -79,9 +81,28 @@
                             <h4>  MTTR:  </h4> 
                         </div>
                         <div class='col'>
-                             <h4> 55 min </h4> 
+                             <h4  th:text="${mttr}+' min'"> </h4> 
                         </div>
                     </div>
+                      <div class="row">
+                        <div class='col'>
+                            <h4>  Disponibilidad:  </h4> 
+                        </div>
+                        <div class='col'>
+                             <h4  th:text="${disponibilidad}+' %'"> </h4> 
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class='col'>
+                            <h4>  Confiabilidad:  </h4> 
+                        </div>
+                        <div class='col'>
+                             <h4  th:text="${confiabilidad}+' % en 24hs'"> </h4> 
+                        </div>
+                    </div><!-- comment -->
+                    
+                    <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="historial" class="btn btn-primary"></a>
+                  
                     <br/><br/>
                    
 

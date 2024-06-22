@@ -45,58 +45,287 @@ public class ControladorEquipos {
     @Autowired
     TareaService tareaService;
 
-    
-    @GetMapping("/aplicadoresDeAdhesivo")
-    public String aplicadoresDeAdhesivo(Model model) {
-        Activo activo = activoService.findByName("aplicadores de adhesivo");
+//    dejo ejemplo paravolver a armar plantilla cuando sea necesario
+//    @GetMapping("/aplicadoresDeAdhesivo")
+//    public String aplicadoresDeAdhesivo(Model model) {
+//        Activo activo = activoService.findByName("aplicadores de adhesivo");
+//
+//        cargarModel(model, activo);
+//
+//        return "equipos/activo";
+//    }
 
-        cargarModel(model, activo);
-
-        return "equipos/activo";
-    }
-
-    @GetMapping("/aspiracion")
+    @GetMapping("/molinoAdulto3")
     public String aspiracion(Model model) {
-        Activo activo = activoService.findByName("aspiracion");
-         cargarModel(model, activo);
+        Activo activo = activoService.findByName("Molino adulto 3");
+        cargarModel(model, activo);
         return "equipos/activo";
     }
-
-    @GetMapping("/cambioDeFormato")
-    public String cambioDeFormato(Model model) {
-        Activo activo = activoService.findByName("cambio de formato");
-         cargarModel(model, activo);
+    
+    @GetMapping("/formacionAdulto3")
+    public String formacionAdulto3(Model model) {
+        Activo activo = activoService.findByName("Formacion adulto 3");
+        cargarModel(model, activo);
         return "equipos/activo";
     }
-
-    @GetMapping("/bandasDeTransporte")
-    public String bandasDeTransporte(Model model) {
-        Activo activo = activoService.findByName("bandas de transporte");
+    
+    @GetMapping("/aspiracionAdulto3")
+    public String aspiracionAdulto3(Model model) {
+        Activo activo = activoService.findByName("Aspiracion adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transporteDeMantaYGrabadorAdulto3")
+    public String transporteDeMantaYGrabadorAdulto3(Model model) {
+        Activo activo = activoService.findByName("Transporte de manta y grabador adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/corteDePadAdulto3")
+    public String corteDePadAdulto3(Model model) {
+        Activo activo = activoService.findByName("Corte de pad adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/saldanteYAplicacionDeAdhesivoAdulto3")
+    public String saldanteYAplicacionDeAdhesivoAdulto3(Model model) {
+        Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/moduloDeEtiquetasYTransporteDeProductoAdulto3")
+    public String moduloDeEtiquetasYTransporteDeProductoAdulto3(Model model) {
+        Activo activo = activoService.findByName("Modulo de etiquetas y transporte de producto adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/plegadoYTransporteAdulto3")
+    public String plegadoYTransporteAdulto3(Model model) {
+        Activo activo = activoService.findByName("Plegado y transporte adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/corteFinalAdulto3")
+    public String corteFinalAdulto3(Model model) {
+        Activo activo = activoService.findByName("Corte final adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/dobladoAdulto3")
+    public String dobladoAdulto3(Model model) {
+        Activo activo = activoService.findByName("Doblado adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/compactadorAdulto3")
+    public String compactadorAdulto3(Model model) {
+        Activo activo = activoService.findByName("Compactador adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/selladoraAdulto3")
+    public String selladoraAdulto3(Model model) {
+        Activo activo = activoService.findByName("Selladora adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transmisionAdulto3")
+    public String transmisionAdulto3(Model model) {
+        Activo activo = activoService.findByName("Transmision adulto 3");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transmisionAdulto2")
+    public String transmisionAdulto2(Model model) {
+        Activo activo = activoService.findByName("Transmision adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/selladoraAdulto2")
+    public String selladoraAdulto2(Model model) {
+        Activo activo = activoService.findByName("Selladora adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/stackerAdulto2")
+    public String stackerAdulto2(Model model) {
+        Activo activo = activoService.findByName("Stacker adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/dobladoAdulto2")
+    public String dobladoAdulto2(Model model) {
+        Activo activo = activoService.findByName("Doblado adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/corteFinalAdulto2")
+    public String corteFinalAdulto2(Model model) {
+        Activo activo = activoService.findByName("Corte final adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/saldanteAdulto2")
+    public String saldanteAdulto2(Model model) {
+        Activo activo = activoService.findByName("Saldante adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/plegadoYTransporteAdulto2")
+    public String plegadoYTransporteAdulto2(Model model) {
+        Activo activo = activoService.findByName("Plegado y transporte adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/corteTangencialAdulto2")
+    public String corteTangencialAdulto2(Model model) {
+        Activo activo = activoService.findByName("Corte tangencial adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/primerYSegundoModuloDeEtiquetasAdulto2")
+    public String primerYSegundoModuloDeEtiquetasAdulto2(Model model) {
+        Activo activo = activoService.findByName("Primer y segundo modulo de etiquetas adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/saldanteYAplicacionDeAdhesivoAdulto2")
+    public String saldanteYAplicacionDeAdhesivoAdulto2(Model model) {
+        Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/corteDePadAdulto2")
+    public String corteDePadAdulto2(Model model) {
+        Activo activo = activoService.findByName("Corte de pad adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transporteDeMantaAdulto2")
+    public String transporteDeMantaAdulto2(Model model) {
+        Activo activo = activoService.findByName("Transporte de manta adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/aspiracionAdulto2")
+    public String aspiracionAdulto2(Model model) {
+        Activo activo = activoService.findByName("Aspiracion adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/formacionAdulto2")
+    public String formacionAdulto2(Model model) {
+        Activo activo = activoService.findByName("Formacion adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/molinoAdulto2")
+    public String molinoAdulto2(Model model) {
+        Activo activo = activoService.findByName("Molino adulto 2");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transmisionAposito")
+    public String transmisionAposito(Model model) {
+        Activo activo = activoService.findByName("Transmision aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/selladora2Aposito")
+    public String selladora2Aposito(Model model) {
+        Activo activo = activoService.findByName("Selladora 2 aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/selladoraAposito")
+    public String selladoraAposito(Model model) {
+        Activo activo = activoService.findByName("Selladora aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/compactadorAposito")
+    public String compactadorAposito(Model model) {
+        Activo activo = activoService.findByName("Compactador aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/moduloPlegadoYCompactadoAposito")
+    public String moduloPlegadoYCompactadoAposito(Model model) {
+        Activo activo = activoService.findByName("Modulo plegado y compactado aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/saldanteAposito")
+    public String saldanteAposito(Model model) {
+        Activo activo = activoService.findByName("Saldante aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/saldanteYAplicacionDeAdhesivoAposito")
+    public String saldanteYAplicacionDeAdhesivoAposito(Model model) {
+        Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/cortePadAposito")
+    public String cortePadAposito(Model model) {
+        Activo activo = activoService.findByName("Corte pad aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/transporteDeMantaYGrabadorAposito")
+    public String transporteDeMantaYGrabadorAposito(Model model) {
+        Activo activo = activoService.findByName("Transporte de manta y grabador aposito");
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    
+    @GetMapping("/molinoAposito")
+    public String molinoAposito(Model model) {
+        Activo activo = activoService.findByName("Molino aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
 
-    @GetMapping("/compactador")
-    public String compactador(Model model) {
-        Activo activo = activoService.findByName("compactador");
-        cargarModel(model, activo);
-        return "equipos/activo";
-    }
-
-    @GetMapping("/corte")
-    public String corte(Model model) {
-        Activo activo = activoService.findByName("corte");
-         cargarModel(model, activo);
-        return "equipos/activo";
-    }
-
-    @GetMapping("/molino")
-    public String molino(Model model) {
-        Activo activo = activoService.findByName("molino");
-         cargarModel(model, activo);
-        return "equipos/activo";
-    }
-
+    
+    
+    
+    
+    
     
     
     
@@ -127,8 +356,7 @@ public class ControladorEquipos {
             if (tarea.getCategoriaTecnica().equals("programación")) {
                 cantidadProgramacion++;
             }
-            
-            
+
         }
         model.addAttribute("cantidadMecanicas", cantidadMecanicas);
         model.addAttribute("cantidadHidraulicas", cantidadHidraulicas);
@@ -137,23 +365,69 @@ public class ControladorEquipos {
         model.addAttribute("cantidadProgramacion", cantidadProgramacion);
 
         model.addAttribute("linkFoto", "/recursos/" + activo.getNombre().replace(" ", "") + ".jpg");
-        
-        
+
         //indicadores
         //mtbf = promedio de minutos en funcionamiento entre fallas, 
-        
-        Double auxCalculo=0.0;
-        List<Tarea> tareasIndicadores = tareaService.traerCerradas();
-        
-        for (int i=0;i<(tareasIndicadores.size()-1);i++) {
-           
-            Duration duration = Duration.between(tareasIndicadores.get(i).getMomentoLiberacion(),tareasIndicadores.get(i+1).getMomentoDetencion());
-            
-            auxCalculo+=duration.toMinutes();
+        //mttr= promedio de minutos de parada
+        Double auxCalculoMtbf = 0.0;
+        Double auxCalculoMttr = 0.0;
+        Double auxCalculoDisponibilidad = 0.0;
+        Double auxCalculoEficiancia = 0.0;
+
+        //aca es donde tengo que determinar el tipo de calculo, si es promedio movil por dias o detenciones, si es de acuerdo al ultimo periodo....
+        //una vez definido traigo las tareas correspondientes, hay que programarlo en los Dao.
+        List<Tarea> tareasIndicadores = tareaService.traerCerradasPorActivo(activo);
+        for (int i = 0; i < (tareasIndicadores.size() - 1); i++) {
+
+            Duration duration = Duration.between(tareasIndicadores.get(i).getMomentoLiberacion(), tareasIndicadores.get(i + 1).getMomentoDetencion());
+
+            log.info(" liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
+                    + " detencion: " + tareasIndicadores.get(i + 1).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i + 1).getMomentoDetencion().getMinute()
+                    + " en minutos: " + duration.toMinutes());
+
+            auxCalculoMtbf += duration.toMinutes();
+
+            duration = Duration.between(tareasIndicadores.get(i).getMomentoDetencion(), tareasIndicadores.get(i).getMomentoLiberacion());
+
+            auxCalculoMttr += duration.toMinutes();
+
+            log.info(" detencion: " + tareasIndicadores.get(i).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i).getMomentoDetencion().getMinute()
+                    + " liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
+                    + " en minutos: " + duration.toMinutes() + " id: " + tareasIndicadores.get(i).getId());
+            log.info(" ");
+
         }
-        
-        Double mtbf=auxCalculo/tareasIndicadores.size();
-        model.addAttribute("mtbf", mtbf);
+
+        log.info("cantidad: " + tareasIndicadores.size());
+
+        Double mtbf = auxCalculoMtbf / (tareasIndicadores.size() - 1);
+        String mtbfFormateado = String.format("%.2f", mtbf);
+        model.addAttribute("mtbf", mtbfFormateado);
+
+        Double mttr = auxCalculoMttr / tareasIndicadores.size();
+        String mttrFormateado = String.format("%.2f", mttr);
+        model.addAttribute("mttr", mttrFormateado);
+
+        //disponibilidad: (mtbf/(mtbf+mttr))x100 [%]
+        Double disponibilidad = 0.0;
+        if (mtbf + mttr > 0.0) {
+            disponibilidad = (mtbf / (mtbf + mttr)) * 100.0;
+        }
+        String disponibilidadFormateado = String.format("%.2f", disponibilidad);
+        model.addAttribute("disponibilidad", disponibilidadFormateado);
+
+        // confiabilidad:  e elevado a (-t/mtbf) resultado multiplicado por 100 para tenerlo en porcentaje
+        //voy a usar t=43200 que son los minutos en 30 dias
+        //la linea de abajo lo resolvería, considerar si mtbf es 0 para evitar error
+        //       Math.exp(-t / MTBF)
+        Double confiabilidad = 0.0;
+        if (mtbf > 0.0) {
+            confiabilidad = Math.exp(-1440.0 / mtbf) * 100.0;
+            log.info("confiabilidad: "+confiabilidad);
+        }
+        String confiabilidadFormateado = String.format("%.2f", confiabilidad);
+        model.addAttribute("confiabilidad", confiabilidadFormateado);
+
     }
 
 }

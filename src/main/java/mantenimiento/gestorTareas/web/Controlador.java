@@ -35,11 +35,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import mantenimiento.gestorTareas.util.Convertidor;
 
 @Controller
 @Slf4j
 public class Controlador {
-    
+
     @Autowired
     Servicio servicio;
     @Autowired
@@ -52,91 +53,95 @@ public class Controlador {
     ActivoDao activo;
     @Autowired
     ActivoService activoService;
-     @Autowired
+    @Autowired
     TareaService tareaService;
-    
+
     @GetMapping("/")
     public String inicio(Model model) {
-        
-        
+
         return layout(model);
     }
-    
+
     @GetMapping("/tareas")
     public String tareas(Model model) {
         var tareas = tareaService.traerNoCerradas();
         model.addAttribute("tareas", tareas);
 
-        
         return "tareas";
     }
-    
+
     @GetMapping("/layout")
     public String layout(Model model) {
+
         
-        model.addAttribute("fallaAplicadoresDeAdhesivo", 
-                activoService.findByName("aplicadores de adhesivo")!=null?
-                activoService.findByName("aplicadores de adhesivo").getEstado().equals("detenida"):false);
-        
-        
-        model.addAttribute("cierreAplicadoresDeAdhesivo", 
-                activoService.findByName("aplicadores de adhesivo")!=null?
-                        
-                activoService.findByName("aplicadores de adhesivo").getEstado().equals("liberada"):false);
-        
-        
-        model.addAttribute("fallaAspiracion",
-                activoService.findByName("aspiracion")!=null?
-                activoService.findByName("aspiracion").getEstado().equals("detenida"):false);
-        
-        model.addAttribute("fallaCambioDeFormato",
-                activoService.findByName("cambio de formato")!=null?
-                activoService.findByName("cambio de formato").getEstado().equals("detenida"):false);
-        
-        model.addAttribute("fallaBandasDeTransporte", 
-                activoService.findByName("bandas de transporte")!=null?
-                activoService.findByName("bandas de transporte").getEstado().equals("detenida"):false);
-        
-        model.addAttribute("fallaCompactador", 
-                activoService.findByName("compactador")!=null?
-                activoService.findByName("compactador").getEstado().equals("detenida"):false);
-        
-        model.addAttribute("fallaCorte",
-                activoService.findByName("corte")!=null?
-                activoService.findByName("corte").getEstado().equals("detenida"):false);
-        
-        model.addAttribute("fallaMolino", 
-                activoService.findByName("molino")!=null?
-                activoService.findByName("molino").getEstado().equals("detenida"):false);
-        
-        
-        return "layoutImaginado";
+        //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
+        List<Activo> activos = activo.findAll();
+        String aux="";
+        for (Activo activo : activos) {
+
+            aux=activo.getNombre().toUpperCase().charAt(0)+activo.getNombre().substring(1);
+            model.addAttribute("falla"+aux, activo.getEstado().equals("detenida"));
+            model.addAttribute("cierre"+aux, model.addAttribute("falla"+aux, activo.getEstado().equals("liberada")));
+
+        }
+//        model.addAttribute("fallaAplicadoresDeAdhesivo", 
+//                activoService.findByName("aplicadores de adhesivo")!=null?
+//                activoService.findByName("aplicadores de adhesivo").getEstado().equals("detenida"):false);
+//        
+//        
+//        model.addAttribute("cierreAplicadoresDeAdhesivo", 
+//                activoService.findByName("aplicadores de adhesivo")!=null?
+//                        
+//                activoService.findByName("aplicadores de adhesivo").getEstado().equals("liberada"):false);
+//        
+//        
+//        model.addAttribute("fallaAspiracion",
+//                activoService.findByName("aspiracion")!=null?
+//                activoService.findByName("aspiracion").getEstado().equals("detenida"):false);
+//        
+//        model.addAttribute("fallaCambioDeFormato",
+//                activoService.findByName("cambio de formato")!=null?
+//                activoService.findByName("cambio de formato").getEstado().equals("detenida"):false);
+//        
+//        model.addAttribute("fallaBandasDeTransporte", 
+//                activoService.findByName("bandas de transporte")!=null?
+//                activoService.findByName("bandas de transporte").getEstado().equals("detenida"):false);
+//        
+//        model.addAttribute("fallaCompactador", 
+//                activoService.findByName("compactador")!=null?
+//                activoService.findByName("compactador").getEstado().equals("detenida"):false);
+//        
+//        model.addAttribute("fallaCorte",
+//                activoService.findByName("corte")!=null?
+//                activoService.findByName("corte").getEstado().equals("detenida"):false);
+//        
+//        model.addAttribute("fallaMolino", 
+//                activoService.findByName("molino")!=null?
+//                activoService.findByName("molino").getEstado().equals("detenida"):false);
+
+        return "layout";
     }
-    
-    
-   
+
     @PostMapping("/filtrar")
-    public String filtro(Model model, @Param("palabraClave")String palabraClave){
+    public String filtro(Model model, @Param("palabraClave") String palabraClave) {
         var tareas = servicio.filtrar(palabraClave);
         model.addAttribute("tareas", tareas);
         model.addAttribute("palabraClave", palabraClave);
-        
-        
+
         return "redirect:/tareas";
     }
-    
+
     @GetMapping("/crearTarea")
-    public String modificar(Model model,Tarea tarea) {
-        model.addAttribute("activos",activo.findAll());
-        
+    public String modificar(Model model, Tarea tarea) {
+        model.addAttribute("activos", activo.findAll());
+
 //        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
-        
         return "crearTarea";
     }
-    
+
     @PostMapping("/guardar")
-    public String guardar(Model model,@Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
-        
+    public String guardar(Model model, @Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
+
         if (errores.hasErrors()) {
             log.info("hay errores" + errores.getAllErrors());
             return "crearTarea";
@@ -150,7 +155,7 @@ public class Controlador {
             try {
                 byte[] bytes = imagen.getBytes();
                 Path rutaCompleta = Paths.get(ruta + "//" + imagen.getOriginalFilename());
-                log.info("ruta: "+rutaCompleta);
+                log.info("ruta: " + rutaCompleta);
                 Files.write(rutaCompleta, bytes);
                 tarea.setImagen(imagen.getOriginalFilename());
             } catch (IOException e) {
@@ -166,109 +171,109 @@ public class Controlador {
         tarea.setMomentoDetencion(LocalDateTime.now());
         tarea.getActivo().setEstado("detenida");
         activo.save(tarea.getActivo());
-        
+
         servicio.guardar(tarea);
-         model.addAttribute("tareas",tareaService.traerNoCerradas());
-         return "redirect:/tareas";
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
+        return "redirect:/tareas";
     }
-    
+
     @GetMapping("/editar/{id}")
     public String editar(Tarea tarea, Model model) {
-        model.addAttribute("activos",activo.findAll());
-        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
+        model.addAttribute("activos", activo.findAll());
+        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
         model.addAttribute("tarea", servicio.encontrar(tarea));
         return "modificar";
     }
-    
+
     @PostMapping("/guardarEdicion")
-    public String guardarEdicion(Model model,@Valid Tarea tarea, Errors errores) {
-        log.info("tarea: "+tarea);
+    public String guardarEdicion(Model model, @Valid Tarea tarea, Errors errores) {
+        log.info("tarea: " + tarea);
         if (errores.hasErrors()) {
-            log.info("error de validacion!!"+errores.getAllErrors());
+            log.info("error de validacion!!" + errores.getAllErrors());
             return "modificar";
         }
-        
+
         servicio.guardar(tarea);
-        
-         model.addAttribute("tareas", tareaService.traerNoCerradas());
-        
-         return "redirect:/tareas";
-    }
-    
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(Model model,Tarea tarea) {
-        
-        servicio.eliminar(tarea);
-          model.addAttribute("tareas", tareaService.traerNoCerradas());
+
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
+
         return "redirect:/tareas";
     }
-    
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(Model model, Tarea tarea) {
+
+        servicio.eliminar(tarea);
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
+        return "redirect:/tareas";
+    }
+
     @GetMapping("/liberarSolicitud/{id}")
-    public String liberar(Model model,Tarea tarea) {
-        Tarea t= servicio.encontrar(tarea);
+    public String liberar(Model model, Tarea tarea) {
+        Tarea t = servicio.encontrar(tarea);
         t.setEstado("liberada");
         t.getActivo().setEstado("liberada");
         t.setMomentoLiberacion(LocalDateTime.now());
         servicio.guardar(t);
-          model.addAttribute("tareas", tareaService.traerNoCerradas());
-         return "redirect:/tareas";
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
+        return "redirect:/tareas";
     }
-    
-    
-    
+
     @GetMapping("/asignarSolicitud/{id}")
-    public String asignar(@Param("motivoDemoraAsignacion")String motivoDemoraAsignacion, Model model,Tarea tarea) {
-        log.info(motivoDemoraAsignacion+" pepe");
-        Tarea t= servicio.encontrar(tarea);
+    public String asignar(@Param("motivoDemoraAsignacion") String motivoDemoraAsignacion, Model model, Tarea tarea) {
+        log.info(motivoDemoraAsignacion + " pepe");
+        Tarea t = servicio.encontrar(tarea);
         t.setEstado("enProceso");
         t.setMomentoAsignacion(LocalDateTime.now());
         t.setMotivoDemoraAsignacion(motivoDemoraAsignacion);
         servicio.guardar(t);
-          model.addAttribute("tareas", tareaService.traerNoCerradas());
-         return "redirect:/tareas";
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
+        return "redirect:/tareas";
     }
-    
-    
-    
+
     @GetMapping("/CerrarSolicitud/{id}")
-    public String CerrarSolicitud(@Param("evaluacion")String evaluacion,@Param("motivoDemoraCierre")String motivoDemoraCierre, Model model, Tarea tarea) {
-        log.info("evaluacion: "+evaluacion+" id tarea: "+tarea.getId());
-        
-        
-        Tarea t= servicio.encontrar(tarea);
+    public String CerrarSolicitud(@Param("evaluacion") String evaluacion, @Param("motivoDemoraCierre") String motivoDemoraCierre, Model model, Tarea tarea) {
+        log.info("evaluacion: " + evaluacion + " id tarea: " + tarea.getId());
+
+        Tarea t = servicio.encontrar(tarea);
         t.getActivo().setEstado("operativa");
         t.setEstado("cerrada");
         t.setMotivoDemoraCierre(motivoDemoraCierre);
         t.setEvaluacion(evaluacion);
-        
-         t.setMomentoCierre(LocalDateTime.now());
+
+        t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
-        
-          model.addAttribute("tareas",tareaService.traerNoCerradas());
+
+        model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "redirect:/tareas";
     }
-    
-    
+
     @GetMapping("/generar/{id}")
     public String generar(Tarea tarea, Model model) {
         model.addAttribute("tarea", servicio.encontrar(tarea));
         return "ot";
     }
-    
+
     @GetMapping("/registro")
-    public String registroHistorico( Model model) {
-        
-        List<Tarea> tareas=tareaService.traerCerradas();
-        
-        
-        
-        
-        
+    public String registroHistorico(Model model) {
+
+        List<Tarea> tareas = tareaService.traerCerradas();
+
         model.addAttribute("tareas", tareaService.traerCerradas());
         return "registro";
     }
-    
+
+    @GetMapping("/registroActivo/{id}")
+    public String registroHistoricoActivo(Model model, Activo activo) {
+
+        List<Tarea> tareas = tareaService.traerCerradas();
+        model.addAttribute("url", Convertidor.aCamelCase(activoService.findById(activo.getId()).orElse(null).getNombre()));
+        model.addAttribute("tareas", tareaService.traerCerradasPorActivo(activo));
+
+        return "registro";
+    }
+
 //    
 //    // Método para calcular la diferencia de tiempo entre dos LocalDateTime
 //    public String calcularDiferenciaTiempo(LocalDateTime momentoDetencion, LocalDateTime momentoLiberacion) {

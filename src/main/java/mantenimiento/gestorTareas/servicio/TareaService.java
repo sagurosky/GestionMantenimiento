@@ -17,4 +17,14 @@ public interface TareaService extends JpaRepository<Tarea,Long> {
     @Query("SELECT t FROM Tarea t  WHERE "
         + "t.estado ='cerrada' ")
     public List<Tarea> traerCerradas( );
+    
+    @Query("SELECT t FROM Tarea t  WHERE "
+        + "t.estado ='cerrada' and "
+            + "t.activo=?1")
+    public List<Tarea> traerCerradasPorActivo(Activo activo );
+  
+    
+    
+    
+    
 }

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: mantenimiento.gestorTareas.GestorTareasApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 7.927 s - in mantenimiento.gestorTareas.GestorTareasApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.015 s - in mantenimiento.gestorTareas.GestorTareasApplicationTests
