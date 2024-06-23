@@ -34,7 +34,6 @@ public class Convertidor {
                 }
             }
         }
-
         return camelCaseString.toString();
     }
     

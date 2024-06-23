@@ -1,5 +1,7 @@
 package mantenimiento.gestorTareas.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
@@ -11,6 +13,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "activo")
+
+
 public class Activo implements Serializable {
 
     private static final long serialVersionUID = 1L;

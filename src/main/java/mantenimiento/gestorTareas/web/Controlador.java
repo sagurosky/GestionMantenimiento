@@ -73,15 +73,17 @@ public class Controlador {
     @GetMapping("/layout")
     public String layout(Model model) {
 
-        
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
-        String aux="";
+        System.out.println("tamaño: "+activos.size());
+        String aux = "";
+        
         for (Activo activo : activos) {
-
-            aux=activo.getNombre().toUpperCase().charAt(0)+activo.getNombre().substring(1);
-            model.addAttribute("falla"+aux, activo.getEstado().equals("detenida"));
-            model.addAttribute("cierre"+aux, model.addAttribute("falla"+aux, activo.getEstado().equals("liberada")));
+                aux = Convertidor.aCamelCase(activo.getNombre());
+                aux = aux.toUpperCase().charAt(0) + aux.substring(1);
+                model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
+                model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+                System.out.println("falla" + aux);
 
         }
 //        model.addAttribute("fallaAplicadoresDeAdhesivo", 
@@ -119,7 +121,7 @@ public class Controlador {
 //                activoService.findByName("molino")!=null?
 //                activoService.findByName("molino").getEstado().equals("detenida"):false);
 
-        return "layout";
+        return "layoutPlanta3";
     }
 
     @PostMapping("/filtrar")
