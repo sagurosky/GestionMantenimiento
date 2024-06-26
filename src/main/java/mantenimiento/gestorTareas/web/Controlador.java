@@ -75,7 +75,6 @@ public class Controlador {
 
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
-        System.out.println("tamaño: "+activos.size());
         String aux = "";
         
         for (Activo activo : activos) {
@@ -83,46 +82,34 @@ public class Controlador {
                 aux = aux.toUpperCase().charAt(0) + aux.substring(1);
                 model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
                 model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-                System.out.println("falla" + aux);
 
         }
-//        model.addAttribute("fallaAplicadoresDeAdhesivo", 
-//                activoService.findByName("aplicadores de adhesivo")!=null?
-//                activoService.findByName("aplicadores de adhesivo").getEstado().equals("detenida"):false);
-//        
-//        
-//        model.addAttribute("cierreAplicadoresDeAdhesivo", 
-//                activoService.findByName("aplicadores de adhesivo")!=null?
-//                        
-//                activoService.findByName("aplicadores de adhesivo").getEstado().equals("liberada"):false);
-//        
-//        
-//        model.addAttribute("fallaAspiracion",
-//                activoService.findByName("aspiracion")!=null?
-//                activoService.findByName("aspiracion").getEstado().equals("detenida"):false);
-//        
-//        model.addAttribute("fallaCambioDeFormato",
-//                activoService.findByName("cambio de formato")!=null?
-//                activoService.findByName("cambio de formato").getEstado().equals("detenida"):false);
-//        
-//        model.addAttribute("fallaBandasDeTransporte", 
-//                activoService.findByName("bandas de transporte")!=null?
-//                activoService.findByName("bandas de transporte").getEstado().equals("detenida"):false);
-//        
-//        model.addAttribute("fallaCompactador", 
-//                activoService.findByName("compactador")!=null?
-//                activoService.findByName("compactador").getEstado().equals("detenida"):false);
-//        
-//        model.addAttribute("fallaCorte",
-//                activoService.findByName("corte")!=null?
-//                activoService.findByName("corte").getEstado().equals("detenida"):false);
-//        
-//        model.addAttribute("fallaMolino", 
-//                activoService.findByName("molino")!=null?
-//                activoService.findByName("molino").getEstado().equals("detenida"):false);
+
 
         return "layoutPlanta3";
     }
+    
+    
+    
+    @GetMapping("/layoutPlanta2")
+    public String layoutPlanta2(Model model) {
+
+        //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
+        List<Activo> activos = activo.findAll();
+        String aux = "";
+        
+        for (Activo activo : activos) {
+                aux = Convertidor.aCamelCase(activo.getNombre());
+                aux = aux.toUpperCase().charAt(0) + aux.substring(1);
+                model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
+                model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+
+        }
+
+
+        return "layoutPlanta2";
+    }
+    
 
     @PostMapping("/filtrar")
     public String filtro(Model model, @Param("palabraClave") String palabraClave) {
