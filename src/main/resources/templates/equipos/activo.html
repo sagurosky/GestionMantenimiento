@@ -135,7 +135,8 @@
                     </div>
             
             <br><br>
-                    <a th:href="@{/layout}" th:text="regresar" class="btn btn-primary"></a>
+                    <a th:href="@{/layout}"  th:text="regresar" class="btn btn-primary"></a>
+                    <!--th:href="@{/}+${url}"-->
                     </div>   
                     <footer th:replace="plantillas/plantilla::footer"></footer>
                     <script th:inline="javascript">

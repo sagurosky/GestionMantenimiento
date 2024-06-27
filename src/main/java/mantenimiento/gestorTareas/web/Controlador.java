@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import mantenimiento.gestorTareas.util.Convertidor;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @Slf4j
@@ -244,12 +245,14 @@ public class Controlador {
         return "ot";
     }
 
-    @GetMapping("/registro")
-    public String registroHistorico(Model model) {
+    @GetMapping("/registro/{url}")
+    public String registroHistorico(@PathVariable("url") String url, Model model) {
 
-        List<Tarea> tareas = tareaService.traerCerradas();
 
         model.addAttribute("tareas", tareaService.traerCerradas());
+        model.addAttribute("url", url);
+        
+        
         return "registro";
     }
 

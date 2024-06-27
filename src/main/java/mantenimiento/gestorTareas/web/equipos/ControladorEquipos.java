@@ -16,6 +16,7 @@ import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
+import mantenimiento.gestorTareas.util.Convertidor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
@@ -54,274 +55,408 @@ public class ControladorEquipos {
 //
 //        return "equipos/activo";
 //    }
-
+    
+    
+//planta 3
     @GetMapping("/molinoAdulto3")
     public String aspiracion(Model model) {
         Activo activo = activoService.findByName("Molino adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/formacionAdulto3")
     public String formacionAdulto3(Model model) {
         Activo activo = activoService.findByName("Formacion adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/aspiracionAdulto3")
     public String aspiracionAdulto3(Model model) {
         Activo activo = activoService.findByName("Aspiracion adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transporteDeMantaYGrabadorAdulto3")
     public String transporteDeMantaYGrabadorAdulto3(Model model) {
         Activo activo = activoService.findByName("Transporte de manta y grabador adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/corteDePadAdulto3")
     public String corteDePadAdulto3(Model model) {
         Activo activo = activoService.findByName("Corte de pad adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/saldanteYAplicacionDeAdhesivoAdulto3")
     public String saldanteYAplicacionDeAdhesivoAdulto3(Model model) {
         Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/moduloDeEtiquetasYTransporteDeProductoAdulto3")
     public String moduloDeEtiquetasYTransporteDeProductoAdulto3(Model model) {
         Activo activo = activoService.findByName("Modulo de etiquetas y transporte de producto adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/plegadoYTransporteAdulto3")
     public String plegadoYTransporteAdulto3(Model model) {
         Activo activo = activoService.findByName("Plegado y transporte adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/corteFinalAdulto3")
     public String corteFinalAdulto3(Model model) {
         Activo activo = activoService.findByName("Corte final adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/dobladoAdulto3")
     public String dobladoAdulto3(Model model) {
         Activo activo = activoService.findByName("Doblado adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/compactadorAdulto3")
     public String compactadorAdulto3(Model model) {
         Activo activo = activoService.findByName("Compactador adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/selladoraAdulto3")
     public String selladoraAdulto3(Model model) {
         Activo activo = activoService.findByName("Selladora adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transmisionAdulto3")
     public String transmisionAdulto3(Model model) {
         Activo activo = activoService.findByName("Transmision adulto 3");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transmisionAdulto2")
     public String transmisionAdulto2(Model model) {
         Activo activo = activoService.findByName("Transmision adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/selladoraAdulto2")
     public String selladoraAdulto2(Model model) {
         Activo activo = activoService.findByName("Selladora adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/stackerAdulto2")
     public String stackerAdulto2(Model model) {
         Activo activo = activoService.findByName("Stacker adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/dobladoAdulto2")
     public String dobladoAdulto2(Model model) {
         Activo activo = activoService.findByName("Doblado adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/corteFinalAdulto2")
     public String corteFinalAdulto2(Model model) {
         Activo activo = activoService.findByName("Corte final adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/saldanteAdulto2")
     public String saldanteAdulto2(Model model) {
         Activo activo = activoService.findByName("Saldante adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/plegadoYTransporteAdulto2")
     public String plegadoYTransporteAdulto2(Model model) {
         Activo activo = activoService.findByName("Plegado y transporte adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/corteTangencialAdulto2")
     public String corteTangencialAdulto2(Model model) {
         Activo activo = activoService.findByName("Corte tangencial adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/primerYSegundoModuloDeEtiquetasAdulto2")
     public String primerYSegundoModuloDeEtiquetasAdulto2(Model model) {
         Activo activo = activoService.findByName("Primer y segundo modulo de etiquetas adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/saldanteYAplicacionDeAdhesivoAdulto2")
     public String saldanteYAplicacionDeAdhesivoAdulto2(Model model) {
         Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/corteDePadAdulto2")
     public String corteDePadAdulto2(Model model) {
         Activo activo = activoService.findByName("Corte de pad adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transporteDeMantaAdulto2")
     public String transporteDeMantaAdulto2(Model model) {
         Activo activo = activoService.findByName("Transporte de manta adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/aspiracionAdulto2")
     public String aspiracionAdulto2(Model model) {
         Activo activo = activoService.findByName("Aspiracion adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/formacionAdulto2")
     public String formacionAdulto2(Model model) {
         Activo activo = activoService.findByName("Formacion adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/molinoAdulto2")
     public String molinoAdulto2(Model model) {
         Activo activo = activoService.findByName("Molino adulto 2");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transmisionAposito")
     public String transmisionAposito(Model model) {
         Activo activo = activoService.findByName("Transmision aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/selladora2Aposito")
     public String selladora2Aposito(Model model) {
         Activo activo = activoService.findByName("Selladora 2 aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/selladoraAposito")
     public String selladoraAposito(Model model) {
         Activo activo = activoService.findByName("Selladora aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/compactadorAposito")
     public String compactadorAposito(Model model) {
         Activo activo = activoService.findByName("Compactador aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/moduloPlegadoYCompactadoAposito")
     public String moduloPlegadoYCompactadoAposito(Model model) {
         Activo activo = activoService.findByName("Modulo plegado y compactado aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/saldanteAposito")
     public String saldanteAposito(Model model) {
         Activo activo = activoService.findByName("Saldante aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/saldanteYAplicacionDeAdhesivoAposito")
     public String saldanteYAplicacionDeAdhesivoAposito(Model model) {
         Activo activo = activoService.findByName("Saldante y aplicacion de adhesivo aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/cortePadAposito")
     public String cortePadAposito(Model model) {
         Activo activo = activoService.findByName("Corte pad aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/transporteDeMantaYGrabadorAposito")
     public String transporteDeMantaYGrabadorAposito(Model model) {
         Activo activo = activoService.findByName("Transporte de manta y grabador aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-    
     @GetMapping("/molinoAposito")
     public String molinoAposito(Model model) {
         Activo activo = activoService.findByName("Molino aposito");
         cargarModel(model, activo);
         return "equipos/activo";
     }
-
     
+//planta 2
+    
+    @GetMapping("/TransmisionAdulto4")
+    public String TransmisionAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("TransmisionAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+    @GetMapping("/SelladoraAdulto4")
+    public String SelladoraAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("SelladoraAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/StackerAdulto4")
+    public String StackerAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("StackerAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/DobladoAdulto4")
+    public String DobladoAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("DobladoAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/CorteFinalAdulto4")
+    public String CorteFinalAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("CorteFinalAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/PlegadoYTransporteAdulto4")
+    public String PlegadoYTransporteAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("PlegadoYTransporteAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/CortePorRodaduraYBarreraAdulto4")
+    public String CortePorRodaduraYBarreraAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("CortePorRodaduraYBarreraAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/TraccionDeTresRodillosAdulto4")
+    public String TraccionDeTresRodillosAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("TraccionDeTresRodillosAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/PrimerYSegundoModuloDeEtiquetasAdulto4")
+    public String PrimerYSegundoModuloDeEtiquetasAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("PrimerYSegundoModuloDeEtiquetasAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/TransporteDeLineasAdulto4")
+    public String TransporteDeLineasAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("TransporteDeLineasAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/AplicacionDeAdhesivoAdulto4")
+    public String AplicacionDeAdhesivoAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("AplicacionDeAdhesivoAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/TransporteDeMantaAdulto4")
+    public String TransporteDeMantaAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("TransporteDeMantaAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/AspiracionAdulto4")
+    public String AspiracionAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("AspiracionAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/MolinoChicoAdulto4")
+    public String MolinoChicoAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("MolinoChicoAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/MolinoGrandeAdulto4")
+    public String MolinoGrandeAdulto4(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("MolinoGrandeAdulto4"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/TransmisionAdulto5")
+    public String TransmisionAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("TransmisionAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/SelladoraAdulto5")
+    public String SelladoraAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("SelladoraAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/StackerAdulto5")
+    public String StackerAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("StackerAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/DobladoAdulto5")
+    public String DobladoAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("DobladoAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/CorteFinalAdulto5")
+    public String CorteFinalAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("CorteFinalAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/PlegadoYTransporteAdulto5")
+    public String PlegadoYTransporteAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("PlegadoYTransporteAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/EtiquetaYTransporteDeProductoAdulto5")
+    public String EtiquetaYTransporteDeProductoAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("EtiquetaYTransporteDeProductoAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/SaldanteYAplicacionDeAdhesivoAdulto5")
+    public String SaldanteYAplicacionDeAdhesivoAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("SaldanteYAplicacionDeAdhesivoAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/CorteDePadAdulto5")
+    public String CorteDePadAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("CorteDePadAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/FormacionAdulto5")
+    public String FormacionAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("FormacionAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/MolinoAdulto5")
+    public String MolinoAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("MolinoAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/AspiracionAdulto5")
+    public String AspiracionAdulto5(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("AspiracionAdulto5"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
+     @GetMapping("/SalaDeCompresoresPlanta2")
+    public String SalaDeCompresoresPlanta2(Model model) {
+        Activo activo = activoService.findByName(Convertidor.deCamelCase("SalaDeCompresoresPlanta2"));
+        cargarModel(model, activo);
+        return "equipos/activo";
+    }
     
     
     

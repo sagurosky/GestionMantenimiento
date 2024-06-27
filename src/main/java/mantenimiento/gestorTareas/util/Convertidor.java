@@ -51,7 +51,7 @@ public class Convertidor {
             char currentChar = camelCase.charAt(i);
 
             // Si el carácter actual es mayúscula, añadir un espacio y convertirlo a minúscula
-            if (Character.isUpperCase(currentChar)) {
+            if (Character.isUpperCase(currentChar)||Character.isDigit(currentChar)) {
                 result.append(" ");
                 result.append(Character.toLowerCase(currentChar));
             } else {

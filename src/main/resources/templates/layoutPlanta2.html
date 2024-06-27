@@ -79,7 +79,7 @@
                             </a>
                         </div>
                         <br/>
-                        <a th:href="@{registro}" class="btn btn-primary btn-block">
+                        <a th:href="@{/registro/}+${'layoutPlanta2'}" class="btn btn-primary btn-block">
                             registro historico
                         </a>
                            <br/>
@@ -91,7 +91,6 @@
                     <div class="col-md-10" style="text-align: center; padding-left: 50px;padding-top: 50px"  >
                         <div class=" mapadiv">
                            <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1660 546" width="80%" height="80%">
-	<title>PL2ConTextosFusionados</title>
 	<defs>
 		<clipPath clipPathUnits="userSpaceOnUse" id="cp1">
 			<path d="m-24-322h1684v1190h-1684z"/>
@@ -108,7 +107,7 @@
 	<g id="Page 1" clip-path="url(#cp1)">
 		<use id="fondo" href="#img1" x="0" y="0"/>
 		<g id="textos">
-			<use id="PlegadoYTransporteAdulto4" href="#img2" x="11" y="39"/>
+			<use id="textos" href="#img2" x="11" y="39"/>
 		</g>
                 <g id="zonas">
 			<use id="Path 75" href="#img3" x="385" y="19"/>
@@ -116,37 +115,93 @@
 		</g>
 		<g id="Modulos">
 			<g id="adulto4">
+                            <a   th:href="@{/TransmisionAdulto4}">
 				<path id="TransmisionAdulto4" class="s0" d="m1531.7 440.1l-0.2 39.5-979-1.4 0.2-39.7z"/>
-				<path id="SelladoraAdulto4" class="s0" d="m426 321l-1 81-128 1-1-81.8z"/>
-				<path id="StackerAdulto4" class="s0" d="m438 309l66 1 29 31v57l-29 31h-66z"/>
-				<path id="DobladoAdulto4" class="s0" d="m660.8 311.2l0.2 126.8-107.8-0.1-0.2-126.9z"/>
-				<path id="CorteFinalAdulto4" class="s0" d="m722.2 311.7l-0.2 127.3-61-1v-126z"/>
-				<path id="PlegadoYTransporteAdulto4" class="s0" d="m813 312v127h-91v-127z"/>
-				<path id="CortePorRodaduraYBarreraAdulto4" class="s0" d="m903 312v127l-90-0.3v-126.7z"/>
-				<path id="TraccionDeTresRodillosAdulto4" class="s0" d="m994 312h-91v127h91z"/>
-				<path id="PrimerYSegundoModuloDeEtiquetasAdulto4" class="s0" d="m1082.6 311.4l-88.6 0.6v127h89z"/>
-				<path id="TransporteDeLineasAdulto4" class="s0" d="m1083.1 439.6l90.9 0.4-0.3-127.8-90.6 0.2z"/>
-				<path id="AplicacionDeAdhesivoAdulto4" class="s0" d="m1265 313h-91v127l90-1z"/>
-				<path id="TransporteDeMantaAdulto4" class="s0" d="m1351 311.7v128.3h-87l0.4-128.3z"/>
-				<path id="AspiracionAdulto4" class="s0" d="m1532 403v37h-180v-36z"/>
-				<path id="MolinoChicoAdulto4" class="s0" d="m1442.3 311.9l-0.3 91.1-91.4-0.1 0.2-91.2z"/>
-				<path id="MolinoGrandeAdulto4" class="s0" d="m1532 313v90h-90l0.1-90.3z"/>
+                            </a>
+                            <a   th:href="@{/SelladoraAdulto4}">
+                                <path id="SelladoraAdulto4" class="s0" d="m426 321l-1 81-128 1-1-81.8z"/>
+                            </a>
+                            <a   th:href="@{/StackerAdulto4}">
+                                <path id="StackerAdulto4" class="s0" d="m438 309l66 1 29 31v57l-29 31h-66z"/>
+                            </a>
+                            <a   th:href="@{/DobladoAdulto4}">
+                                <path id="DobladoAdulto4" class="s0" d="m660.8 311.2l0.2 126.8-107.8-0.1-0.2-126.9z"/>
+                            </a>
+                            <a   th:href="@{/CorteFinalAdulto4}">
+                                <path id="CorteFinalAdulto4" class="s0" d="m722.2 311.7l-0.2 127.3-61-1v-126z"/>
+                            </a>
+                            <a   th:href="@{/PlegadoYTransporteAdulto4}">
+                                <path id="PlegadoYTransporteAdulto4" class="s0"  d="m813 312v127h-91v-127z"/>
+                            </a>
+                            <a   th:href="@{/CortePorRodaduraYBarreraAdulto4}">
+                                <path id="CortePorRodaduraYBarreraAdulto4" class="s0" d="m903 312v127l-90-0.3v-126.7z"/>
+                            </a>
+                            <a   th:href="@{/TraccionDeTresRodillosAdulto4}">
+                                <path id="TraccionDeTresRodillosAdulto4" class="s0" d="m994 312h-91v127h91z"/>
+                            </a>
+                            <a   th:href="@{/PrimerYSegundoModuloDeEtiquetasAdulto4}">
+                                <path id="PrimerYSegundoModuloDeEtiquetasAdulto4" class="s0" d="m1082.6 311.4l-88.6 0.6v127h89z"/>
+                            </a>
+                            <a   th:href="@{/TransporteDeLineasAdulto4}">
+                                <path id="TransporteDeLineasAdulto4" class="s0" d="m1083.1 439.6l90.9 0.4-0.3-127.8-90.6 0.2z"/>
+                            </a>
+                            <a   th:href="@{/AplicacionDeAdhesivoAdulto4}">
+                                <path id="AplicacionDeAdhesivoAdulto4" class="s0" d="m1265 313h-91v127l90-1z"/>
+                            </a>
+                            <a   th:href="@{/TransporteDeMantaAdulto4}">
+                                <path id="TransporteDeMantaAdulto4" class="s0" d="m1351 311.7v128.3h-87l0.4-128.3z"/>
+                            </a>
+                            <a   th:href="@{/AspiracionAdulto4}">
+                                <path id="AspiracionAdulto4" class="s0" d="m1532 403v37h-180v-36z"/>
+                            </a>
+                            <a   th:href="@{/MolinoChicoAdulto4}">
+                                <path id="MolinoChicoAdulto4" class="s0" d="m1442.3 311.9l-0.3 91.1-91.4-0.1 0.2-91.2z"/>
+                            </a>
+                            <a   th:href="@{/MolinoGrandeAdulto4}">
+                                <path id="MolinoGrandeAdulto4" class="s0" d="m1532 313v90h-90l0.1-90.3z"/>
+                            </a>
 			</g>
 			<g id="adulto5">
-				<path id="TransmisionAdulto5" class="s0" d="m682.3 71.7l-0.2-51.6h686l-0.2 52.4z"/>
-				<path id="SelladoraAdulto5" class="s0" d="m540 166h-128l-0.4-82.3 128 0.2z"/>
-				<path id="StackerAdulto5" class="s0" d="m553.1 191.8l-0.6-120 65 0.2 30.5 31v58l-29 31z"/>
-				<path id="DobladoAdulto5" class="s0" d="m774.6 192h-92.6l0.2-120 92 0.3z"/>
-				<path id="CorteFinalAdulto5" class="s0" d="m829.1 72.2l-0.2 120h-54.3l0.2-120.2z"/>
-				<path id="PlegadoYTransporteAdulto5" class="s0" d="m919.4 192.7l-90.4 0.3v-120h90z"/>
-				<path id="EtiquetaYTransporteDeProductoAdulto5" class="s0" d="m1010 73v118.6l-91 0.4 1-119z"/>
-				<path id="SaldanteYAplicacionDeAdhesivoAdulto5" class="s0" d="m1100 73v120h-90v-120z"/>
-				<path id="CorteDePadAdulto5" class="s0" d="m1155 73v120h-55v-120z"/>
-				<path id="FormacionAdulto5" class="s0" d="m1262 106v87h-107v-88z"/>
-				<path id="MolinoAdulto5" class="s0" d="m1368 106v87h-107v-87z"/>
-				<path id="AspiracionAdulto5" class="s0" d="m1154.3 72.8l213.7 0.2v33l-212.8-1.1z"/>
+                            <a   th:href="@{/TransmisionAdulto5}">
+                                <path id="TransmisionAdulto5" class="s0" d="m682.3 71.7l-0.2-51.6h686l-0.2 52.4z"/>
+                            </a>
+                            <a   th:href="@{/SelladoraAdulto5}">
+                                <path id="SelladoraAdulto5" class="s0" d="m540 166h-128l-0.4-82.3 128 0.2z"/>
+                            </a>
+                            <a   th:href="@{/StackerAdulto5}">
+                                <path id="StackerAdulto5" class="s0" d="m553.1 191.8l-0.6-120 65 0.2 30.5 31v58l-29 31z"/>
+                            </a>
+                            <a   th:href="@{/DobladoAdulto5}">
+                                <path id="DobladoAdulto5" class="s0" d="m774.6 192h-92.6l0.2-120 92 0.3z"/>
+                            </a>
+                            <a   th:href="@{/CorteFinalAdulto5}">
+                                <path id="CorteFinalAdulto5" class="s0" d="m829.1 72.2l-0.2 120h-54.3l0.2-120.2z"/>
+                            </a>
+                            <a   th:href="@{/PlegadoYTransporteAdulto5}">
+                                <path id="PlegadoYTransporteAdulto5" class="s0" d="m919.4 192.7l-90.4 0.3v-120h90z"/>
+                            </a>
+                            <a   th:href="@{/EtiquetaYTransporteDeProductoAdulto5}">
+                                <path id="EtiquetaYTransporteDeProductoAdulto5" class="s0" d="m1010 73v118.6l-91 0.4 1-119z"/>
+                            </a>
+                            <a   th:href="@{/SaldanteYAplicacionDeAdhesivoAdulto5}">
+                                <path id="SaldanteYAplicacionDeAdhesivoAdulto5" class="s0" d="m1100 73v120h-90v-120z"/>
+                            </a>
+                            <a   th:href="@{/CorteDePadAdulto5}">
+                                <path id="CorteDePadAdulto5" class="s0" d="m1155 73v120h-55v-120z"/>
+                            </a>
+                            <a   th:href="@{/FormacionAdulto5}">
+                                <path id="FormacionAdulto5" class="s0" d="m1262 106v87h-107v-88z"/>
+                            </a>
+                            <a   th:href="@{/MolinoAdulto5}">
+                                <path id="MolinoAdulto5" class="s0" d="m1368 106v87h-107v-87z"/>
+                            </a>
+                            <a   th:href="@{/AspiracionAdulto5}">
+                                <path id="AspiracionAdulto5" class="s0" d="m1154.3 72.8l213.7 0.2v33l-212.8-1.1z"/>
+                            </a>
 			</g>
-			<path id="SalaDeCompresoresPlanta2" class="s0" d="m11 21l189-1.9v117.2l-189 1.7z"/>
+                        <a   th:href="@{/SalaDeCompresoresPlanta2}">
+                            <path id="SalaDeCompresoresPlanta2" class="s0" d="m11 21l189-1.9v117.2l-189 1.7z"/>
+                        </a>
 		</g>
 		
 	</g>
@@ -176,7 +231,6 @@
                 var fallaAspiracionAdulto4                          =[[${fallaAspiracionAdulto4}]];
                 var fallaMolinoChicoAdulto4                         =[[${fallaMolinoChicoAdulto4}]];
                 var fallaMolinoGrandeAdulto4                        =[[${fallaMolinoGrandeAdulto4}]];
-                
                 var fallaTransmisionAdulto5                         =[[${fallaTransmisionAdulto5}]];
                 var fallaSelladoraAdulto5                           =[[${fallaSelladoraAdulto5}]];
                 var fallaStackerAdulto5                             =[[${fallaStackerAdulto5}]];
@@ -189,6 +243,7 @@
                 var fallaFormacionAdulto5                           =[[${fallaFormacionAdulto5}]];
                 var fallaMolinoAdulto5                              =[[${fallaMolinoAdulto5}]];
                 var fallaAspiracionAdulto5                          =[[${fallaAspiracionAdulto5}]];
+                var fallaSalaDeCompresoresPlanta2                   =[[${fallaSalaDeCompresoresPlanta2}]];
                 
              //capturo todas las variables de cierre que vienen del modelo   
                 
@@ -223,7 +278,7 @@
                 var cierreFormacionAdulto5                           =[[${cierreFormacionAdulto5}]];
                 var cierreMolinoAdulto5                              =[[${cierreMolinoAdulto5}]];
                 var cierreAspiracionAdulto5                          =[[${cierreAspiracionAdulto5}]];
-  
+                var cierreSalaDeCompresoresPlanta2                   =[[${cierreSalaDeCompresoresPlanta2}]];
   
   
   
@@ -235,7 +290,7 @@
                 if (fallaPlegadoYTransporteAdulto4)parpadearRojo("PlegadoYTransporteAdulto4");                  
                 if (fallaCortePorRodaduraYBarreraAdulto4)parpadearRojo("CortePorRodaduraYBarreraAdulto4");            
                 if (fallaTraccionDeTresRodillosAdulto4)parpadearRojo("TraccionDeTresRodillosAdulto4");              
-                if (fallaPrimerYSegundoModuloDeEtiquetasAdulto4)parpadearRojo("PrimerYSegundoModuloDeEtiquetasAdulto4");     
+                if (fallaPrimerYSegundoModuloDeEtiquetasAdulto4)parpadearRojo("PrimerYSegundoModuloDeEtiquetasAdulto4");
                 if (fallaTransporteDeLineasAdulto4)parpadearRojo("TransporteDeLineasAdulto4");                  
                 if (fallaAplicacionDeAdhesivoAdulto4)parpadearRojo("AplicacionDeAdhesivoAdulto4");                
                 if (fallaTransporteDeMantaAdulto4)parpadearRojo("TransporteDeMantaAdulto4");                   
@@ -255,6 +310,7 @@
                 if (fallaFormacionAdulto5)parpadearRojo("FormacionAdulto5");                         
                 if (fallaMolinoAdulto5)parpadearRojo("MolinoAdulto5");                            
                 if (fallaAspiracionAdulto5)parpadearRojo("AspiracionAdulto5");                        
+                if (fallaSalaDeCompresoresPlanta2)parpadearRojo("SalaDeCompresoresPlanta2");                        
                 
   
   
@@ -287,12 +343,14 @@
                 if (cierreFormacionAdulto5)parpadearAmarillo("FormacionAdulto5");                         
                 if (cierreMolinoAdulto5)parpadearAmarillo("MolinoAdulto5");                            
                 if (cierreAspiracionAdulto5)parpadearAmarillo("AspiracionAdulto5");   
+                if (cierreSalaDeCompresoresPlanta2)parpadearAmarillo("SalaDeCompresoresPlanta2");   
                 
                
     
                 function parpadearRojo(id)
                 {
                 var elemento = document.getElementById(id);
+                console.log(elemento);
                 var count = 0;
                 var interval = setInterval(function () {
                 if (count % 2 == 0) {
