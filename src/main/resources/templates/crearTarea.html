@@ -28,7 +28,7 @@
                                 <select th:field="*{activo}" class="form-control" >
                                     <option value="0">seleccione</option>
                                     <!--<option th:each="activo : ${activos}" th:value="${activo.id}" th:text="${activo.codigo}+', '+ ${activo.nombre}"></option>-->
-                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
+                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}" ></option>
                                 </select>
 
 
@@ -70,7 +70,14 @@
 
                             <div >
                                 <button class="btn btn-primary" type="submit" th:text="guardar"></button>
-                                <a class="btn btn-primary" th:href="@{/tareas}" th:text="regresar"></a>
+                                
+                                
+                                <!--<a  class="btn btn-primary" th:href="@{/tareas}" th:text="*{activo.id}"></a>-->
+<!--                                <a th:if="*{activo==null}" class="btn btn-primary" th:href="@{/tareas}" th:text="regresar"></a>
+                                <a th:if="*{activo!=null}" class="btn btn-primary" th:href="@{/*{activo.nombre}}" th:text="regresar"></a>-->
+                            
+                                <a th:if="*{activo != null}" class="btn btn-primary" th:href="@{/*{activo.nombre}}" th:text="'Regresar a ' + *{activo.nombre}"></a>
+                                <a th:if="*{activo == null}" class="btn btn-primary" th:href="@{/tareas}" th:text="'Regresar'"></a>
                             </div>                        
                         </div>
                     </form>

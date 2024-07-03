@@ -121,10 +121,15 @@ public class Controlador {
         return "redirect:/tareas";
     }
 
-    @GetMapping("/crearTarea")
-    public String modificar(Model model, Tarea tarea) {
+    @GetMapping("/crearTarea/{id}")
+    public String modificar(Model model, Tarea tarea,  Activo activoRequest) {
+       
+        
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null); 
+        tarea.setActivo(activoSeleccionado);
+        model.addAttribute("tarea", tarea);
         model.addAttribute("activos", activo.findAll());
-
+        
 //        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
         return "crearTarea";
     }
