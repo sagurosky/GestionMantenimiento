@@ -19,9 +19,10 @@
             <div class="row ">
                 <div class="col ">
                     <!--<img th:src="/recursos/${nombreFoto}.jpg" usemap="#workmap" width="600px" height="600px" />-->
-                    <img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />
+                    <!--<img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />-->
+                    <img th:src="${'/recursos/logo-hisan.jpg'}" usemap="#workmap" width="600px" height="400px"style="padding-top: 200px" />
 
-
+                       
                 </div>
                 <div class="col ">
                     <div class="row">
@@ -58,14 +59,15 @@
                               <h4>  <span th:id="tiempoTranscurrido"></span> </h4>
                             </div>
                         </div>
-                        <div class="row">
+                        <!--para cuando agregue lo de los perfiles tecnicos-->
+<!--                        <div class="row">
                             <div class='col'>
                               <h4> interventor:</h4>
                             </div>
                             <div class='col'>
                                 <h4>  Joaquín Gonzalez <span><a th:href="@{/layout}" th:text="perfil" class="btn btn-primary"></a></span> </h4>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
                     <br/>
                     <div class="row">
@@ -102,8 +104,8 @@
                     </div><!-- comment -->
                     
                     <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="historial" class="btn btn-primary"></a>
-                    
-                   <a th:href="@{/crearTarea/}+ ${activo.id}" class="btn btn-primary btn-block"><i class="fas fa-plus"></i> Crear tarea</a>
+                    <br/><br/>
+                   <a th:href="@{/crearTarea/}+ ${activo.id}" class="btn btn-primary"><i class="fas fa-plus"></i> Crear tarea</a>
                     <br/><br/>
                    
 

@@ -83,7 +83,7 @@
                             registro historico
                         </a>
                          <br/>
-                        <a th:href="@{layoutPlanta2}" class="btn btn-primary btn-block">
+                        <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block">
                             planta 2
                         </a>
                     </div>
@@ -375,6 +375,10 @@
                 if (fallaMolinoAposito)parpadearRojo("molinoAposito");
                 
                 
+                //si hay algun activo detenido en planta 2 parpadea el boton
+                console.log([[${fallaPlanta2}]]);
+                if([[${fallaPlanta2}]])parpadearRojo("botonPlanta2");
+                if([[${cierrePlanta2}]])parpadearAmarillo("botonPlanta2");
                 
 
                 if (cierreMolinoAdulto3)parpadearAmarillo("molinoAdulto3");
@@ -425,8 +429,10 @@
                 var interval = setInterval(function () {
                 if (count % 2 == 0) {
                 elemento.style.fill = 'red';
+                if(id=="botonPlanta2")elemento.style.backgroundColor = 'red';
                 } else {
                 elemento.style.fill = 'transparent'; // O el color de texto original
+                 if(id=="botonPlanta2")elemento.style.backgroundColor = '';
                 }
                 count++;
                 }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
@@ -441,8 +447,10 @@
                 var interval = setInterval(function () {
                 if (count % 2 == 0) {
                 elemento.style.fill = 'yellow';
+                if(id=="botonPlanta2")elemento.style.backgroundColor = 'yellow';
                 } else {
                 elemento.style.fill = 'transparent'; // O el color de texto original
+                 if(id=="botonPlanta2")elemento.style.backgroundColor = '';
                 }
                 count++;
                 }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos

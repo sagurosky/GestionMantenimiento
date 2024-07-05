@@ -63,8 +63,8 @@
                             
                             
                             
-                            <label >adjuntar imagen: </label><br/>
-                            <input type="file" text="adjuntar imagen" name="file"  />
+                            <!--<label >adjuntar imagen: </label><br/>-->
+                            <input type="file" text="adjuntar imagen" name="file"  hidden/>
                             <br/><br/>
 
 
@@ -76,7 +76,9 @@
 <!--                                <a th:if="*{activo==null}" class="btn btn-primary" th:href="@{/tareas}" th:text="regresar"></a>
                                 <a th:if="*{activo!=null}" class="btn btn-primary" th:href="@{/*{activo.nombre}}" th:text="regresar"></a>-->
                             
-                                <a th:if="*{activo != null}" class="btn btn-primary" th:href="@{/*{activo.nombre}}" th:text="'Regresar a ' + *{activo.nombre}"></a>
+                                
+                                <a th:if="*{activo != null}" class="btn btn-primary" th:href="@{/activo/}+ ${activo.id}" th:text="'Regresar a ' + *{activo.nombre}"></a>
+                                
                                 <a th:if="*{activo == null}" class="btn btn-primary" th:href="@{/tareas}" th:text="'Regresar'"></a>
                             </div>                        
                         </div>

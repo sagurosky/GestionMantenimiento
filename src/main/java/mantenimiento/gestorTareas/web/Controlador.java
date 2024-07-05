@@ -77,16 +77,23 @@ public class Controlador {
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
         String aux = "";
+        Boolean fallaPlanta2=false; 
+        Boolean cierrePlanta2=false; 
+        
         
         for (Activo activo : activos) {
                 aux = Convertidor.aCamelCase(activo.getNombre());
                 aux = aux.toUpperCase().charAt(0) + aux.substring(1);
                 model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
                 model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-
+                //detecto si algun activo de polanta2 esta detenido o aguardando cierre
+                if((activo.getNombre().contains("adulto 4")||activo.getNombre().contains("adulto 5")||activo.getNombre().contains("planta 2"))&&activo.getEstado().equals("detenida"))fallaPlanta2=true;
+                if((activo.getNombre().contains("adulto 4")||activo.getNombre().contains("adulto 5")||activo.getNombre().contains("planta 2"))&&activo.getEstado().equals("liberada"))cierrePlanta2=true;
         }
-
-
+         model.addAttribute("fallaPlanta2",fallaPlanta2);
+         model.addAttribute("cierrePlanta2",cierrePlanta2);
+         
+         
         return "layoutPlanta3";
     }
     
@@ -98,15 +105,19 @@ public class Controlador {
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
         String aux = "";
-        
+        Boolean fallaPlanta3=false; 
+        Boolean cierrePlanta3=false; 
         for (Activo activo : activos) {
                 aux = Convertidor.aCamelCase(activo.getNombre());
                 aux = aux.toUpperCase().charAt(0) + aux.substring(1);
                 model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
                 model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+                  if((activo.getNombre().contains("adulto 3")||activo.getNombre().contains("adulto 2")||activo.getNombre().contains("aposito"))&&activo.getEstado().equals("detenida"))fallaPlanta3=true;
+                if((activo.getNombre().contains("adulto 3")||activo.getNombre().contains("adulto 2")||activo.getNombre().contains("aposito"))&&activo.getEstado().equals("liberada"))cierrePlanta3=true;
 
         }
-
+        model.addAttribute("fallaPlanta3",fallaPlanta3);
+        model.addAttribute("cierrePlanta3",cierrePlanta3);
 
         return "layoutPlanta2";
     }
@@ -133,7 +144,9 @@ public class Controlador {
 //        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
         return "crearTarea";
     }
-
+    
+    
+    
     @PostMapping("/guardar")
     public String guardar(Model model, @Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
 
@@ -244,11 +257,7 @@ public class Controlador {
         return "redirect:/tareas";
     }
 
-    @GetMapping("/generar/{id}")
-    public String generar(Tarea tarea, Model model) {
-        model.addAttribute("tarea", servicio.encontrar(tarea));
-        return "ot";
-    }
+    
 
     @GetMapping("/registro/{url}")
     public String registroHistorico(@PathVariable("url") String url, Model model) {
