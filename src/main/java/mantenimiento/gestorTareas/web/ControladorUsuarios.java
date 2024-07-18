@@ -9,6 +9,7 @@ import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Rol;
 import mantenimiento.gestorTareas.dominio.Tarea;
+import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.dominio.Usuario;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
@@ -94,7 +95,7 @@ public class ControladorUsuarios {
     }
 
     @PostMapping("/gestionar")
-    public String gestionar(@Valid Usuario usuario, Errors errores, Rol rol) {
+    public String gestionar(@Valid Usuario usuario, Errors errores, Rol rol, Model model) {
 
         Boolean yaExiste = usuarioDao.findByUsername(usuario.getUsername()) != null;
 
@@ -149,6 +150,13 @@ public class ControladorUsuarios {
             rolMonitor.setNombre("ROLE_MONITOR");
             rolDao.save(rolMonitor);
 
+        }
+        //si es un técnico que vaya a la pagina para cargar sus datos
+        if (rol.getNombre().equals("ROLE_TECNICO")) {
+            Tecnico tecnico=new Tecnico();
+            tecnico.setUsuario(usuario);
+            model.addAttribute("tecnico", tecnico);
+            return "TecnicoDatosEmpresa";
         }
         return "redirect:/gestionUsuarios";
     }

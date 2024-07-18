@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.sql.Array;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -20,9 +21,12 @@ import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
+import mantenimiento.gestorTareas.dominio.Tecnico;
+import mantenimiento.gestorTareas.dominio.Usuario;
 import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.Servicio;
+import mantenimiento.gestorTareas.servicio.TecnicoService;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -56,10 +60,24 @@ public class Controlador {
     ActivoService activoService;
     @Autowired
     TareaService tareaService;
+    @Autowired
+    TecnicoService tecnicoService;
 
     @GetMapping("/")
     public String inicio(Model model) {
-
+        //si el usuario logueado es un técnico y el apellido es null significa que fue recien creado
+        //por lo tanto lo redirijo a tecnicoDatosPersonales para que cargue su informacion;
+        Usuario usuario=usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        
+        if(usuario.getRoles().get(0).getNombre().equals("ROLE_TECNICO"))
+        {
+           Tecnico tecnico=tecnicoService.traerPorUsuario(usuario);
+           if(tecnico.getApellido()==null)
+           {
+               model.addAttribute("tecnico",tecnico);
+               return "tecnicoDatosPersonales";
+           }
+        }
         return layout(model);
     }
 
