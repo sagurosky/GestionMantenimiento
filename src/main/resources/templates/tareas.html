@@ -132,37 +132,30 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                             <form th:id="'asignarForm+${tarea.id}'" th:action="@{/asignarSolicitud/}+${tarea.id}" > 
+                                             <form th:id="'asignarForm+${tarea.id}'" th:action="@{/asignarSolicitud/}+${tarea.id}"th:object="${tarea}" > 
                                         <div class="modal-body">
                                                  
-                                            <!--<label th:text="'seleccione colaborador/es '"/>-->
-<!--                                                
+                                          <label th:text="'seleccione colaborador/es '"/>
+                                                
+                                            <div>
+                                                <label for="tecnicos">Técnicos</label>
 
-                                                <select th:field="*{}" class="form-control" >
-                                                    <option value="0">seleccione</option>
-                                                    <option th:each="activo : ${activos}" th:value="${activo.id}" th:text=" ${activo.nombre}"></option>
-                                                </select>-->
+                                                <select id="tecnicos" name="tecnicosIds" multiple class="form-control">
+                                                    <option th:each="tecnico : ${todosLosTecnicos}" 
+                                                            th:value="${tecnico.id}" 
+                                                            th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"
+                                                           >
+                                                    </option>
+                                                </select>
 
+                                            </div>
 
-<!--                                                 <select multiple class="form-control" >
-                                                    <option value="0">seleccione</option>
-                                                    <option value="0">Juan</option>
-                                                    <option value="0">Paco</option>
-                                                    <option value="0">Pedro</option>
-                                                    <option value="0">Robertito</option>
-                                                    <option value="0">Jaimito</option>
-                                                    <option value="0">Jose</option>
-                                                    <option value="0">Pablo</option>
-                                                    <option value="0">Marcelito</option>
-                                                    
-                                                </select>-->
-
-                                                 <label th:text="'si existió demora ingrese motivo '"/>
-                                                  <textArea th:id="motivoDemoraAsignacion" th:name="motivoDemoraAsignacion" class="form-control"></textArea>
+                                            <label th:text="'ingrese motivo de demora si corresponde'"/>
+                                            <textArea th:id="motivoDemoraAsignacion" th:name="motivoDemoraAsignacion" class="form-control"></textArea>
                                         </div>
                                                  
                                         <div class="modal-footer">
-                                                 <button class="btn btn-primary" th:type="submit">Asignar</button>
+                                            <button class="btn btn-primary" th:type="submit">Asignar</button>
                                         </div>
                                              </form> 
                                        
@@ -189,6 +182,36 @@
                     </tr>
                 </tbody>
             </table>
+                
+                
+                
+              <!--prueba-->   
+                  <!--<label for="tecnicos"th:text="${todosLosTecnicos[0].nombre}">Técnicos</label>-->
+                  <!--<label for="tecnicos"th:text="${tareaa.descripcion}">Técnicos</label>-->
+                  <label for="tecnicos"th:text="${#lists.contains(tareaa.getAsignaciones(), tecnico)}">Técnicos</label>
+                   <!--<label for="tecnicos"th:text="${tareaa.asignaciones[0].tecnico.nombre}">Técnicos</label>-->
+                 <span th:each="asignacion : ${tareaa.asignaciones}" th:text="${asignacion.tecnico.nombre}"></span>
+                 <!--<span th:each="asignacion : ${todosLosTecnicos}" th:text="${asignacion.nombre}"></span>-->
+              
+                 
+                 
+               <form th:action="@{/asignarTecnicos}" th:object="${tareaa}" method="post">
+                    <div>
+                        <label for="tecnicos">Técnicos</label>
+                        <select id="tecnicos" name="tecnicosIds" multiple>
+                            <option th:each="tecnico : ${todosLosTecnicos}" 
+                                    th:value="${tecnico.id}" 
+                                    th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"
+                                   >
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit">Asignar Técnicos</button>
+                </form>
+                
+                
+                
+                
         </div>
          <section  class="py-4 mb-4 bg-light">
             <div class="container">

@@ -85,7 +85,14 @@ public class Controlador {
     public String tareas(Model model) {
         var tareas = tareaService.traerNoCerradas();
         model.addAttribute("tareas", tareas);
+        model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
 
+        //prueba
+        Tarea t=tareaService.findById(117L).orElse(null);
+        log.info("asignaciones: "+t.getAsignaciones().get(0).getTecnico().getNombre());
+        log.info("asignaciones: "+t.getAsignaciones().get(1).getTecnico().getNombre());
+         model.addAttribute("tareaa", t);
+        
         return "tareas";
     }
 
@@ -110,7 +117,7 @@ public class Controlador {
         }
          model.addAttribute("fallaPlanta2",fallaPlanta2);
          model.addAttribute("cierrePlanta2",cierrePlanta2);
-         
+         model.addAttribute("tecnicos",tecnicoService.findAll());
          
         return "layoutPlanta3";
     }
@@ -136,6 +143,7 @@ public class Controlador {
         }
         model.addAttribute("fallaPlanta3",fallaPlanta3);
         model.addAttribute("cierrePlanta3",cierrePlanta3);
+        model.addAttribute("tecnicos",tecnicoService.findAll());
 
         return "layoutPlanta2";
     }
@@ -246,8 +254,9 @@ public class Controlador {
     }
 
     @GetMapping("/asignarSolicitud/{id}")
-    public String asignar(@Param("motivoDemoraAsignacion") String motivoDemoraAsignacion, Model model, Tarea tarea) {
+    public String asignar(@RequestParam("motivoDemoraAsignacion") String motivoDemoraAsignacion,@RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Model model, Tarea tarea) {
         log.info(motivoDemoraAsignacion + " pepe");
+        log.info(tecnicosIds + " tecnicos ids");
         Tarea t = servicio.encontrar(tarea);
         t.setEstado("enProceso");
         t.setMomentoAsignacion(LocalDateTime.now());

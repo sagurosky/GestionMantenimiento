@@ -83,10 +83,34 @@
                             registro historico
                         </a>
                          <br/>
-                        <a th:href="@{/perfil/}" class="btn btn-primary btn-block">
+                        <a th:href="@{/perfil/}" class="btn btn-primary btn-block"  sec:authorize="hasRole('ROLE_TECNICO')">
                            perfil
                         </a>
-                        
+                         
+                              <div  sec:authorize="hasRole('ROLE_ADMIN')||hasRole('ROLE_MANT')" class="card-header">
+                                <label>datos de técnicos</label>
+                                    <form th:action="@{/perfilTecnico}" method="get">
+                                         <!-- Campo oculto para la URL de origen -->
+                                        <input type="hidden" name="url" id="url" value="/layoutPlanta2">
+                                        <div class="container"> 
+                                            <div class="row">
+                                                 <select name="id"class="form-control">
+                                                     <!-- Iterar sobre la lista de técnicos para crear las opciones del seleccionable -->
+                                                     <option th:each="tecnico : ${tecnicos}"
+                                                             th:value="${tecnico.id}"
+                                                             th:text="${tecnico.nombre + ' ' + tecnico.apellido}">
+                                                     </option>
+                                                 </select>
+                                             </div>
+                                                 <br>
+                                             <div class="row ">
+
+                                                <!-- Botón para enviar el formulario -->
+                                                <button type="submit"class="btn btn-primary btn-block">Ver</button>
+                                            </div>
+                                        </div>
+                                   </form>
+                            </div>
                          <br/>
                         <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block">
                             planta 2
@@ -381,7 +405,6 @@
                 
                 
                 //si hay algun activo detenido en planta 2 parpadea el boton
-                console.log([[${fallaPlanta2}]]);
                 if([[${fallaPlanta2}]])parpadearRojo("botonPlanta2");
                 if([[${cierrePlanta2}]])parpadearAmarillo("botonPlanta2");
                 

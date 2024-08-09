@@ -1,9 +1,13 @@
 package mantenimiento.gestorTareas.dominio;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.Data;
 
@@ -22,6 +26,11 @@ public class Tecnico implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario")
     private Usuario usuario;
+    
+     
+    @OneToMany( cascade=CascadeType.ALL,mappedBy = "tecnico")
+    private List<Asignacion> asignaciones;
+    
     //datos personales
     @Column(length = 1000)
     private String acercaDeMi;
@@ -43,6 +52,7 @@ public class Tecnico implements Serializable {
    
     //datos profesionales y empresariales
     private String estado;
+    private String legajo;
     private String especialidad;
     private LocalDate fechaIngresoPlanta;
     private String habilidades;

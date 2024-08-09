@@ -47,7 +47,7 @@
         <body>
 
             <form th:action="@{/guardarTecnicoPersonal}" method="post" th:object="${tecnico}" enctype="multipart/form-data" class="was-validated">
-               
+
                 <input type="hidden" th:field="*{id}"/>
                 <input type="hidden" th:field="*{estado}"/>
                 <input type="hidden" th:field="*{especialidad}"/>
@@ -56,16 +56,39 @@
                 <input type="hidden" th:field="*{proyectosDestacados}"/>
                 <input type="hidden" th:field="*{promedioEvaluaciones}"/>
                 <input type="hidden" th:field="*{notasAdicionales}"/>
+
+                <input type="hidden" th:field="*{satisfaccionClienteInterno}"/>
+                <input type="hidden" th:field="*{predisposicionParaLaTarea}"/>
+                <input type="hidden" th:field="*{responsabilidad}"/>
+                <input type="hidden" th:field="*{cumplimientoNormasSeguridad}"/>
+                <input type="hidden" th:field="*{nivelDeConocimiento}"/>
+                <input type="hidden" th:field="*{tratoRecibidoPorCliente}"/>
+                <input type="hidden" th:field="*{prolijidad}"/>
+                <input type="hidden" th:field="*{puntualidad}"/>
+                <input type="hidden" th:field="*{eficiencia}"/>
+                <input type="hidden" th:field="*{calidadDelTrabajo}"/>
+                <input type="hidden" th:field="*{comunicacion}"/>
+                <input type="hidden" th:field="*{trabajoEnEquipo}"/>
+                <input type="hidden" th:field="*{resolucionDeProblemas}"/>
+                <input type="hidden" th:field="*{creatividadEInnovacion}"/>
+                <input type="hidden" th:field="*{iniciativa}"/>
+                <input type="hidden" th:field="*{autogestion}"/>
+                <input type="hidden" th:field="*{formacionContinua}"/>
                 <!--no puedo poner usuario porque me da error de recirculacion infinita, lo levanto en el conmtrolador sino no se guarda el usuario-->
                 <!--<input type="hidden" th:field="*{usuario}"/>-->
-                
-                
-                
-                
-                
+
+
+
+
+
                 <div class="container mt-5">
                     <h4 class="mb-4">Datos personales</h4>
-
+                    <div class="form-row ">
+                        <div class="form-group col-md-6">
+                            <label for="nombre">legajo</label>
+                            <input type="text" class="form-control" id="nombre"th:field="*{legajo}" readonly="true">
+                        </div>
+                    </div>
                     <div class="form-row">
                         <label for="acercaDeMi">Acerca de mi</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Breve carta de presentación, por ejemplo:'soy técnico mecánico con [número] años de experiencia en el mantenimiento y reparación de maquinaria industrial. Me especializo en el diagnóstico y solución de problemas mecánicos, así como en la implementación de programas de mantenimiento preventivo.' "></i></span>
                     </div> 
@@ -75,63 +98,63 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="nombre" >
+                            <input type="text" class="form-control" id="nombre"th:field="*{nombre}" required="true">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="apellido">Apellido</label>
-                            <input type="text" class="form-control" id="apellido" >
+                            <input type="text" class="form-control" id="apellido"th:field="*{apellido}"  required="true">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                            <input type="date" class="form-control" id="fechaNacimiento">
+                            <input type="date" class="form-control" id="fechaNacimiento"th:field="*{fechaNacimiento}" required="true">
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="especialidad">Edad</label>
-                            <input type="text" class="form-control" id="edad">
+                            <label for="edad">Edad</label>
+                            <input type="text" class="form-control" id="edad"th:field="*{edad}" disabled="true">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="telefono">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono">
+                            <input type="text" class="form-control" id="telefono"th:field="*{telefono}">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="email">email</label>
-                            <input type="email" class="form-control" id="email">
+                            <input type="email" class="form-control" id="email"th:field="*{email}">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="direccion">Dirección</label>
-                            <input type="text" class="form-control" id="direccion">
+                            <input type="text" class="form-control" id="direccion"th:field="*{direccion}">
                         </div>
 
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="formacion">Formacion académica</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Títulos obtenidos (secundario, terciario, universitario), cursos, especializaciones, etc' "></i></span>
-                            <textarea class="form-control" id="formacion" ></textarea>
+                            <textarea class="form-control" id="formacion" th:field="*{formacionAcademica}"></textarea>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="experiencia">Experiencia laboral</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Breve listado de empresa, cargo/responsabilidad y años de servicio en cada organización de la que fue parte"></i></span>
-                            <textarea class="form-control" id="experiencia" ></textarea>
+                            <textarea class="form-control" id="experiencia" th:field="*{experienciaLaboral}"></textarea>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="conocimientos">Conocimientos varios</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Conocimientos no academicos, empíricos, habilidades varias"></i></span>
-                            <textarea class="form-control" id="conocimientos"  ></textarea>
+                            <textarea class="form-control" id="conocimientos" th:field="*{conocimientosVarios}" ></textarea>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="pasatiempos">Pasatiempos</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content=""></i></span>
-                            <textarea class="form-control" id="pasatiempos"  ></textarea>
+                            <textarea class="form-control" id="pasatiempos" th:field="*{pasatiempos}" ></textarea>
                         </div>
                     </div>
 

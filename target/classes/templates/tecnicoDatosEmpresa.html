@@ -45,14 +45,18 @@
                 </div>-->
 
         <body>
-            
+
             <form th:action="@{/guardarTecnicoEmpresa}" method="post" th:object="${tecnico}" enctype="multipart/form-data" class="was-validated">
                 <input type="hidden" th:field="*{usuario}"/>
                 <div class="container mt-5">
-                    <h2 class="mb-4">Perfil Técnico</h2>
+                    <!--<h2 class="mb-4">Perfil Técnico</h2>-->
 
                     <h4 class="mt-4">datos empresa</h4>
                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="legajo">legajo</label>
+                            <input type="text" th:field="*{legajo}"class="form-control" id="legajo">
+                        </div>
                         <div class="form-group col-md-6">
                             <label for="estado">Estado</label>
                             <!--<input type="text" class="form-control" id="estado">-->
@@ -65,9 +69,9 @@
                                 <option value="suspendido">suspendido</option>
                                 <option value="baja">baja</option>
                             </select>
-
-
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="especialidad">Especialidad</label>
                             <select  th:field="*{especialidad}"class="form-control"  required="true">
@@ -79,18 +83,17 @@
                                 <option value="programación">programación</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="fechaIngresoPlanta">Fecha de ingreso a planta</label>
                             <input type="date" th:field="*{fechaIngresoPlanta}"class="form-control" id="fechaIngresoPlanta" required="true">
                         </div>
+
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="habilidades">Habilidades</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Información breve relacionada al concepto del colaborador desde el punto de vista de sus superiores"></i></span>
                             <input type="text" th:field="*{habilidades}"class="form-control" id="habilidades">
                         </div>
-                    </div>
-                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="promedioEvaluaciones">Promedio gral evaluaciones</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="promedio obtenido del total de todas las calificaciones obtenidas por su desempeño, este campo es de sólo lectura"></i></span>
                             <input type="text" th:field="*{promedioEvaluaciones}"class="form-control" id="promedioEvaluaciones" disabled='true'>

@@ -2,6 +2,7 @@ mantenimiento\gestorTareas\datos\InformeDao.class
 mantenimiento\gestorTareas\dominio\Usuario.class
 mantenimiento\gestorTareas\datos\TareaDao.class
 mantenimiento\gestorTareas\datos\UsuarioDao.class
+mantenimiento\gestorTareas\web\WebConfig$LocalDateFormatter.class
 mantenimiento\gestorTareas\datos\ActivoDao.class
 mantenimiento\gestorTareas\servicio\UsuarioService.class
 mantenimiento\gestorTareas\dominio\Informe.class
@@ -9,8 +10,10 @@ mantenimiento\gestorTareas\servicio\ActivoService.class
 mantenimiento\gestorTareas\GestorTareasApplication.class
 mantenimiento\gestorTareas\dominio\Activo.class
 mantenimiento\gestorTareas\servicio\ServicioImpl.class
+mantenimiento\gestorTareas\web\ControladorTecnicos.class
 mantenimiento\gestorTareas\util\Convertidor.class
 mantenimiento\gestorTareas\servicio\Servicio.class
+mantenimiento\gestorTareas\servicio\TecnicoService.class
 mantenimiento\gestorTareas\web\WebConfig.class
 mantenimiento\gestorTareas\dominio\Rol.class
 mantenimiento\gestorTareas\servicio\TareaService.class
@@ -20,4 +23,5 @@ mantenimiento\gestorTareas\web\SecurityConfig.class
 mantenimiento\gestorTareas\web\equipos\ControladorEquipos.class
 mantenimiento\gestorTareas\web\Controlador.class
 mantenimiento\gestorTareas\dominio\Tarea.class
+mantenimiento\gestorTareas\dominio\Tecnico.class
 mantenimiento\gestorTareas\datos\RolDao.class

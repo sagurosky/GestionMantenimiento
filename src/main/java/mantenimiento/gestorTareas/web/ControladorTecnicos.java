@@ -62,31 +62,46 @@ public class ControladorTecnicos {
     @Autowired
     TecnicoService tecnicoService;
 
-    
-
     @GetMapping("/perfil")
     public String perfil(Model model) {
 //        var tareas = tareaService.traerNoCerradas();
 //        model.addAttribute("tareas", tareas);
-
-        return "perfilTecnico";
+        Usuario usuario = usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        Tecnico tecnico = tecnicoService.traerPorUsuario(usuario);
+        model.addAttribute("tecnico", tecnico);
+        return "tecnicoDatosPersonales";
     }
 
+    //cuando el administrador llama desde layout lleva a la vista con los datos completos
+    @GetMapping("/perfilTecnico")
+    public String verPerfilTecnico(@RequestParam("id") Long id,  @RequestParam("url") String url, Model model) {
+        Tecnico tecnico = tecnicoService.findById(id).orElse(null);
+        model.addAttribute("tecnico", tecnico);
+        model.addAttribute("url", url);
+        return "perfilTecnico"; 
+    }
+    //cuando el administrador o el supervisor de mantenimiento hace algun cambio en el perfil de tecnico
+    @PostMapping("/modificarTecnico")
+    public String modificarTecnico( Model model, Tecnico tecnico) {
+        tecnicoService.save(tecnico);
+        return "redirect:/layout"; 
+    }
     
     @PostMapping("/guardarTecnicoEmpresa")
     public String guardarTecnicoEmpresa(Model model, Tecnico tecnico) {
-        
+
         tecnicoService.save(tecnico);
         return "redirect:/gestionUsuarios";
     }
+
     @PostMapping("/guardarTecnicoPersonal")
     public String guardarTecnicoPersonal(Model model, Tecnico tecnico) {
         //tenfo que levantar de nuevo el usuario porque no lo podia poner como hidden en el html, daba error de recirculacion
-        Usuario usuario=usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        
+        Usuario usuario = usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
         tecnico.setUsuario(usuario);
         tecnicoService.save(tecnico);
         return "redirect:/layout";
     }
-    
+
 }
