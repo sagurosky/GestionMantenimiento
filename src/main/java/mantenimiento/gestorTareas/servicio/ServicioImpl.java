@@ -6,7 +6,6 @@ import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +16,8 @@ public class ServicioImpl implements Servicio {
     TareaDao tareaDao;
     @Autowired
     UsuarioDao usuarioDao;
+    @Autowired
+    AsignacionService asignacionService;
 
     @Transactional(readOnly = true)
     @Override
@@ -41,7 +42,10 @@ public class ServicioImpl implements Servicio {
     @Transactional(readOnly = true)
     @Override
     public Tarea encontrar(Tarea tarea) {
-        return tarea = tareaDao.findById(tarea.getId()).orElse(null);
+        
+        Tarea t=tareaDao.findById(tarea.getId()).orElse(null);
+        t.setAsignaciones(asignacionService.traerPorTarea(tarea));
+        return t;
     }
 
     

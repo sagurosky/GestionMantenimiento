@@ -1,7 +1,10 @@
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\TareaService.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\AsignacionDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\TareaDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\RolDao.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\EvaluacionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\SecurityConfig.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Evaluacion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Tarea.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorTecnicos.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\Convertidor.java
@@ -9,9 +12,11 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorUsuarios.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\WebConfig.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Activo.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\AsignacionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\EncriptarPassword.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Tecnico.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\ActivoDao.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Asignacion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\UsuarioDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Rol.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\GestorTareasApplication.java

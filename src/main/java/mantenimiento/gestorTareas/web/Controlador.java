@@ -9,21 +9,26 @@ import java.sql.Array;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.ActivoDao;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
+import mantenimiento.gestorTareas.dominio.Asignacion;
+import mantenimiento.gestorTareas.dominio.Evaluacion;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.dominio.Usuario;
 import mantenimiento.gestorTareas.servicio.ActivoService;
+import mantenimiento.gestorTareas.servicio.AsignacionService;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TecnicoService;
@@ -62,21 +67,21 @@ public class Controlador {
     TareaService tareaService;
     @Autowired
     TecnicoService tecnicoService;
+    @Autowired
+    AsignacionService asignacionService;
 
     @GetMapping("/")
     public String inicio(Model model) {
         //si el usuario logueado es un técnico y el apellido es null significa que fue recien creado
         //por lo tanto lo redirijo a tecnicoDatosPersonales para que cargue su informacion;
-        Usuario usuario=usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        
-        if(usuario.getRoles().get(0).getNombre().equals("ROLE_TECNICO"))
-        {
-           Tecnico tecnico=tecnicoService.traerPorUsuario(usuario);
-           if(tecnico.getApellido()==null)
-           {
-               model.addAttribute("tecnico",tecnico);
-               return "tecnicoDatosPersonales";
-           }
+        Usuario usuario = usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        if (usuario.getRoles().get(0).getNombre().equals("ROLE_TECNICO")) {
+            Tecnico tecnico = tecnicoService.traerPorUsuario(usuario);
+            if (tecnico.getApellido() == null) {
+                model.addAttribute("tecnico", tecnico);
+                return "tecnicoDatosPersonales";
+            }
         }
         return layout(model);
     }
@@ -87,12 +92,6 @@ public class Controlador {
         model.addAttribute("tareas", tareas);
         model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
 
-        //prueba
-        Tarea t=tareaService.findById(117L).orElse(null);
-        log.info("asignaciones: "+t.getAsignaciones().get(0).getTecnico().getNombre());
-        log.info("asignaciones: "+t.getAsignaciones().get(1).getTecnico().getNombre());
-         model.addAttribute("tareaa", t);
-        
         return "tareas";
     }
 
@@ -102,52 +101,56 @@ public class Controlador {
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
         String aux = "";
-        Boolean fallaPlanta2=false; 
-        Boolean cierrePlanta2=false; 
-        
-        
+        Boolean fallaPlanta2 = false;
+        Boolean cierrePlanta2 = false;
+
         for (Activo activo : activos) {
-                aux = Convertidor.aCamelCase(activo.getNombre());
-                aux = aux.toUpperCase().charAt(0) + aux.substring(1);
-                model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
-                model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-                //detecto si algun activo de polanta2 esta detenido o aguardando cierre
-                if((activo.getNombre().contains("adulto 4")||activo.getNombre().contains("adulto 5")||activo.getNombre().contains("planta 2"))&&activo.getEstado().equals("detenida"))fallaPlanta2=true;
-                if((activo.getNombre().contains("adulto 4")||activo.getNombre().contains("adulto 5")||activo.getNombre().contains("planta 2"))&&activo.getEstado().equals("liberada"))cierrePlanta2=true;
+            aux = Convertidor.aCamelCase(activo.getNombre());
+            aux = aux.toUpperCase().charAt(0) + aux.substring(1);
+            model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
+            model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+            //detecto si algun activo de polanta2 esta detenido o aguardando cierre
+            if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("detenida")) {
+                fallaPlanta2 = true;
+            }
+            if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("liberada")) {
+                cierrePlanta2 = true;
+            }
         }
-         model.addAttribute("fallaPlanta2",fallaPlanta2);
-         model.addAttribute("cierrePlanta2",cierrePlanta2);
-         model.addAttribute("tecnicos",tecnicoService.findAll());
-         
+        model.addAttribute("fallaPlanta2", fallaPlanta2);
+        model.addAttribute("cierrePlanta2", cierrePlanta2);
+        model.addAttribute("tecnicos", tecnicoService.findAll());
+
         return "layoutPlanta3";
     }
-    
-    
-    
+
     @GetMapping("/layoutPlanta2")
     public String layoutPlanta2(Model model) {
 
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
         String aux = "";
-        Boolean fallaPlanta3=false; 
-        Boolean cierrePlanta3=false; 
+        Boolean fallaPlanta3 = false;
+        Boolean cierrePlanta3 = false;
         for (Activo activo : activos) {
-                aux = Convertidor.aCamelCase(activo.getNombre());
-                aux = aux.toUpperCase().charAt(0) + aux.substring(1);
-                model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
-                model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-                  if((activo.getNombre().contains("adulto 3")||activo.getNombre().contains("adulto 2")||activo.getNombre().contains("aposito"))&&activo.getEstado().equals("detenida"))fallaPlanta3=true;
-                if((activo.getNombre().contains("adulto 3")||activo.getNombre().contains("adulto 2")||activo.getNombre().contains("aposito"))&&activo.getEstado().equals("liberada"))cierrePlanta3=true;
+            aux = Convertidor.aCamelCase(activo.getNombre());
+            aux = aux.toUpperCase().charAt(0) + aux.substring(1);
+            model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
+            model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+            if ((activo.getNombre().contains("adulto 3") || activo.getNombre().contains("adulto 2") || activo.getNombre().contains("aposito")) && activo.getEstado().equals("detenida")) {
+                fallaPlanta3 = true;
+            }
+            if ((activo.getNombre().contains("adulto 3") || activo.getNombre().contains("adulto 2") || activo.getNombre().contains("aposito")) && activo.getEstado().equals("liberada")) {
+                cierrePlanta3 = true;
+            }
 
         }
-        model.addAttribute("fallaPlanta3",fallaPlanta3);
-        model.addAttribute("cierrePlanta3",cierrePlanta3);
-        model.addAttribute("tecnicos",tecnicoService.findAll());
+        model.addAttribute("fallaPlanta3", fallaPlanta3);
+        model.addAttribute("cierrePlanta3", cierrePlanta3);
+        model.addAttribute("tecnicos", tecnicoService.findAll());
 
         return "layoutPlanta2";
     }
-    
 
     @PostMapping("/filtrar")
     public String filtro(Model model, @Param("palabraClave") String palabraClave) {
@@ -159,20 +162,17 @@ public class Controlador {
     }
 
     @GetMapping("/crearTarea/{id}")
-    public String modificar(Model model, Tarea tarea,  Activo activoRequest) {
-       
-        
-        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null); 
+    public String modificar(Model model, Tarea tarea, Activo activoRequest) {
+
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
         tarea.setActivo(activoSeleccionado);
         model.addAttribute("tarea", tarea);
         model.addAttribute("activos", activo.findAll());
-        
+
 //        model.addAttribute("estados",Arrays.asList("detenida","operativa","disponible para preventivo"));
         return "crearTarea";
     }
-    
-    
-    
+
     @PostMapping("/guardar")
     public String guardar(Model model, @Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
 
@@ -216,15 +216,39 @@ public class Controlador {
         model.addAttribute("activos", activo.findAll());
         model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
         model.addAttribute("tarea", servicio.encontrar(tarea));
+        model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
+//        model.addAttribute("asignacion", asignacionService.traerPorTarea(tarea));
+
+        // Crear lista de IDs de técnicos asignados
+        Tarea t=servicio.encontrar(tarea);
+        List<Long> idsTecnicosAsignados = t.getAsignaciones().stream()
+                .map(asignacion -> asignacion.getTecnico().getId())
+                .collect(Collectors.toList());
+
+        model.addAttribute("idsTecnicosAsignados", idsTecnicosAsignados);
+
         return "modificar";
     }
 
     @PostMapping("/guardarEdicion")
-    public String guardarEdicion(Model model, @Valid Tarea tarea, Errors errores) {
-        log.info("tarea: " + tarea);
+    public String guardarEdicion(Model model, @Valid Tarea tarea, @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Errors errores) {
         if (errores.hasErrors()) {
             log.info("error de validacion!!" + errores.getAllErrors());
             return "modificar";
+        }
+
+        for (Long tecnicosId : tecnicosIds) {
+            log.info("tecnico: " + tecnicoService.findById(tecnicosId).get().getApellido());
+        }
+
+        List<Asignacion> asignaciones = new ArrayList<>();
+
+        for (Long idTecnico : tecnicosIds) {
+            Tecnico tecnico = tecnicoService.getById(idTecnico);
+            Asignacion asignacion = new Asignacion();
+            asignacion.setTecnico(tecnico);
+            asignacion.setTarea(tarea);
+            asignaciones.add(asignacion);
         }
 
         servicio.guardar(tarea);
@@ -254,10 +278,20 @@ public class Controlador {
     }
 
     @GetMapping("/asignarSolicitud/{id}")
-    public String asignar(@RequestParam("motivoDemoraAsignacion") String motivoDemoraAsignacion,@RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Model model, Tarea tarea) {
-        log.info(motivoDemoraAsignacion + " pepe");
-        log.info(tecnicosIds + " tecnicos ids");
+    public String asignar(@RequestParam("motivoDemoraAsignacion") String motivoDemoraAsignacion, @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Model model, Tarea tarea) {
+
         Tarea t = servicio.encontrar(tarea);
+        List<Asignacion> asignaciones = new ArrayList<>();
+
+        for (Long idTecnico : tecnicosIds) {
+            Tecnico tecnico = tecnicoService.getById(idTecnico);
+            Asignacion asignacion = new Asignacion();
+            asignacion.setTecnico(tecnico);
+            asignacion.setTarea(tarea);
+            asignaciones.add(asignacion);
+        }
+
+        t.setAsignaciones(asignaciones);
         t.setEstado("enProceso");
         t.setMomentoAsignacion(LocalDateTime.now());
         t.setMotivoDemoraAsignacion(motivoDemoraAsignacion);
@@ -267,15 +301,55 @@ public class Controlador {
     }
 
     @GetMapping("/CerrarSolicitud/{id}")
-    public String CerrarSolicitud(@Param("evaluacion") String evaluacion, @Param("motivoDemoraCierre") String motivoDemoraCierre, Model model, Tarea tarea) {
-        log.info("evaluacion: " + evaluacion + " id tarea: " + tarea.getId());
+    public String CerrarSolicitud(
+            @RequestParam(required = false,name="satisfaccion") String satisfaccion,
+            @RequestParam(required = false,name="predisposicion") String predisposicion,
+            @RequestParam(required = false,name="responsabilidad") String responsabilidad,
+            @RequestParam(required = false,name="seguridad") String seguridad,
+            @RequestParam(required = false,name="conocimiento") String conocimiento,
+            @RequestParam(required = false,name="trato") String trato,
+            @RequestParam(required = false,name="prolijidad") String prolijidad,
+            @RequestParam(required = false,name="puntualidad") String puntualidad,
+            @RequestParam(required = false,name="eficiencia") String eficiencia,
+            @RequestParam(required = false,name="calidad") String calidad,
+            @RequestParam(required = false,name="comunicacion") String comunicacion,
+            @RequestParam(required = false,name="trabajoEnEquipo") String trabajoEnEquipo,
+            @RequestParam(required = false,name="resolucion") String resolucion,
+            @RequestParam(required = false,name="creatividad") String creatividad,
+            @RequestParam(required = false,name="iniciativa") String iniciativa,
+            @RequestParam(required = false,name="autogestion") String autogestion,
+            @RequestParam(required = false,name="formacionContinua") String formacionContinua,
+            Model model, Tarea tarea) {
+       
 
         Tarea t = servicio.encontrar(tarea);
         t.getActivo().setEstado("operativa");
         t.setEstado("cerrada");
-        t.setMotivoDemoraCierre(motivoDemoraCierre);
+        
+        Evaluacion evaluacion=new Evaluacion();
+        evaluacion.setSatisfaccion(satisfaccion);
+        evaluacion.setPredisposicion(predisposicion);
+        evaluacion.setResponsabilidad(responsabilidad);
+        evaluacion.setSeguridad(seguridad);
+        evaluacion.setConocimiento(conocimiento);
+        evaluacion.setTrato(trato);
+        evaluacion.setProlijidad(prolijidad);
+        evaluacion.setPuntualidad(puntualidad);
+        evaluacion.setEficiencia(eficiencia);
+        evaluacion.setCalidad(calidad);
+        evaluacion.setComunicacion(comunicacion);
+        evaluacion.setTrabajoEnEquipo(trabajoEnEquipo);
+        evaluacion.setResolucion(resolucion);
+        evaluacion.setCreatividad(creatividad);
+        evaluacion.setIniciativa(iniciativa);
+        evaluacion.setAutogestion(autogestion);
+        evaluacion.setFormacionContinua(formacionContinua);
+      
         t.setEvaluacion(evaluacion);
-
+        
+        
+        
+        
         t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
@@ -284,16 +358,12 @@ public class Controlador {
         return "redirect:/tareas";
     }
 
-    
-
     @GetMapping("/registro/{url}")
     public String registroHistorico(@PathVariable("url") String url, Model model) {
 
-
         model.addAttribute("tareas", tareaService.traerCerradas());
         model.addAttribute("url", url);
-        
-        
+
         return "registro";
     }
 

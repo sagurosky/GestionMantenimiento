@@ -37,57 +37,35 @@
             /*            .col{
                             border:solid 1px;
                         }*/
-
+            
         </style>
 
         <body>
             <header th:replace="plantillas/plantilla::header">lista de tareas</header>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="container-fluid ">
                 <div class="row">
                     <div class="col-md-2">
                         <br/>
-                        <a th:href="@{tareas}" class="btn btn-primary btn-block">
+                        <a th:href="@{tareas}" class="btn btn-primary btn-block mt-3">
                             tareas
                         </a>
                         <br/>
                         <div  sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a th:href="@{gestionUsuarios}" class="btn btn-primary btn-block">
+                            <a th:href="@{gestionUsuarios}" class="btn btn-primary btn-block mt-4">
                                 Gestión de usuarios
                             </a>
                         </div>
                         <br/>
-                        <a th:href="@{/registro/}+${'layout'}" class="btn btn-primary btn-block">
+                        <a th:href="@{/registro/}+${'layout'}" class="btn btn-primary btn-block ">
                             registro historico
                         </a>
                          <br/>
-                        <a th:href="@{/perfil/}" class="btn btn-primary btn-block"  sec:authorize="hasRole('ROLE_TECNICO')">
+                        <a th:href="@{/perfil/}" class="btn btn-primary btn-block mt-2"  sec:authorize="hasRole('ROLE_TECNICO')">
                            perfil
                         </a>
                          
-                              <div  sec:authorize="hasRole('ROLE_ADMIN')||hasRole('ROLE_MANT')" class="card-header">
+                              <div  sec:authorize="hasRole('ROLE_ADMIN')||hasRole('ROLE_MANT')" class="card-header  mt-4">
                                 <label>datos de técnicos</label>
                                     <form th:action="@{/perfilTecnico}" method="get">
                                          <!-- Campo oculto para la URL de origen -->
@@ -112,7 +90,7 @@
                                    </form>
                             </div>
                          <br/>
-                        <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block">
+                        <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block mt-2">
                             planta 2
                         </a>
                     </div>

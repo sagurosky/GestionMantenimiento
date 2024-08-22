@@ -1,6 +1,7 @@
 package mantenimiento.gestorTareas.web;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,12 +14,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.ActivoDao;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
+import mantenimiento.gestorTareas.dominio.Evaluacion;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.dominio.Usuario;
@@ -74,19 +78,181 @@ public class ControladorTecnicos {
 
     //cuando el administrador llama desde layout lleva a la vista con los datos completos
     @GetMapping("/perfilTecnico")
-    public String verPerfilTecnico(@RequestParam("id") Long id,  @RequestParam("url") String url, Model model) {
+    public String verPerfilTecnico(@RequestParam("id") Long id, @RequestParam("url") String url, Model model) {
         Tecnico tecnico = tecnicoService.findById(id).orElse(null);
         model.addAttribute("tecnico", tecnico);
         model.addAttribute("url", url);
-        return "perfilTecnico"; 
+
+        //me queda pendiente usar reflexion para hacer automatico al agregar una propiedad a la entidad
+
+        Double satisfaccion = 0.0;
+        Double predisposicion = 0.0;
+        Double responsabilidad = 0.0;
+        Double seguridad = 0.0;
+        Double conocimiento = 0.0;
+        Double trato = 0.0;
+        Double prolijidad = 0.0;
+        Double puntualidad = 0.0;
+        Double eficiencia = 0.0;
+        Double calidad = 0.0;
+        Double comunicacion = 0.0;
+        Double trabajoEnEquipo = 0.0;
+        Double resolucion = 0.0;
+        Double creatividad = 0.0;
+        Double iniciativa = 0.0;
+        Double autogestion = 0.0;
+        Double formacionContinua = 0.0;
+
+        // variables para incrementar cuando la calificacion es null o vacia y despues calculo bien el promedio
+        int satisfaccionCantidadnNull=0;
+        int predisposicionCantidadnNull=0;
+        int responsabilidadCantidadnNull=0;
+        int seguridadCantidadnNull=0;
+        int conocimientoCantidadnNull=0;
+        int tratoCantidadnNull=0;
+        int prolijidadCantidadnNull=0;
+        int puntualidadCantidadnNull=0;
+        int eficienciaCantidadnNull=0;
+        int calidadCantidadnNull=0;
+        int comunicacionCantidadnNull=0;
+        int trabajoEnEquipoCantidadnNull=0;
+        int resolucionCantidadnNull=0;
+        int creatividadCantidadnNull=0;
+        int iniciativaCantidadnNull=0;
+        int autogestionCantidadnNull=0;
+        int formacionContinuaCantidadnNull=0;
+        
+        //  traigo todas ls tareas en las que participó el tecnico en cuestion
+        List<Tarea> tareas = tareaService.traerPorTecnico(tecnico);
+        for (Tarea tarea : tareas) {
+            if(!tarea.getEvaluacion().getSatisfaccion().equals("")&&!tarea.getEvaluacion().getSatisfaccion().equals(" ")&&tarea.getEvaluacion().getSatisfaccion()!=null)
+            satisfaccion += Double.parseDouble(tarea.getEvaluacion().getSatisfaccion());
+            else satisfaccionCantidadnNull++;
+            if(!tarea.getEvaluacion().getPredisposicion().equals("")&&!tarea.getEvaluacion().getPredisposicion().equals(" ")&&tarea.getEvaluacion().getPredisposicion()!=null)
+            predisposicion += Double.parseDouble(tarea.getEvaluacion().getPredisposicion());
+            else predisposicionCantidadnNull++;
+            if(!tarea.getEvaluacion().getResponsabilidad().equals("")&&!tarea.getEvaluacion().getResponsabilidad().equals(" ")&&tarea.getEvaluacion().getResponsabilidad()!=null)
+            responsabilidad += Double.parseDouble(tarea.getEvaluacion().getResponsabilidad());
+            else responsabilidadCantidadnNull++;
+            if(!tarea.getEvaluacion().getSeguridad().equals("")&&!tarea.getEvaluacion().getSeguridad().equals(" ")&&tarea.getEvaluacion().getSeguridad()!=null)
+            seguridad += Double.parseDouble(tarea.getEvaluacion().getSeguridad());
+            else seguridadCantidadnNull++;
+            if(!tarea.getEvaluacion().getConocimiento().equals("")&&!tarea.getEvaluacion().getConocimiento().equals(" ")&&tarea.getEvaluacion().getConocimiento()!=null)
+            conocimiento += Double.parseDouble(tarea.getEvaluacion().getConocimiento());
+            else conocimientoCantidadnNull++;
+            if(!tarea.getEvaluacion().getTrato().equals("")&&!tarea.getEvaluacion().getTrato().equals(" ")&&tarea.getEvaluacion().getTrato()!=null)
+            trato += Double.parseDouble(tarea.getEvaluacion().getTrato());
+            else tratoCantidadnNull++;
+            if(!tarea.getEvaluacion().getProlijidad().equals("")&&!tarea.getEvaluacion().getProlijidad().equals(" ")&&tarea.getEvaluacion().getProlijidad()!=null)
+            prolijidad += Double.parseDouble(tarea.getEvaluacion().getProlijidad());
+            else prolijidadCantidadnNull++;
+            if(!tarea.getEvaluacion().getPuntualidad().equals("")&&!tarea.getEvaluacion().getPuntualidad().equals(" ")&&tarea.getEvaluacion().getPuntualidad()!=null)
+            puntualidad += Double.parseDouble(tarea.getEvaluacion().getPuntualidad());
+            else puntualidadCantidadnNull++;
+            if(!tarea.getEvaluacion().getEficiencia().equals("")&&!tarea.getEvaluacion().getEficiencia().equals(" ")&&tarea.getEvaluacion().getEficiencia()!=null)
+            eficiencia += Double.parseDouble(tarea.getEvaluacion().getEficiencia());
+            else eficienciaCantidadnNull++;
+            if(!tarea.getEvaluacion().getCalidad().equals("")&&!tarea.getEvaluacion().getCalidad().equals(" ")&&tarea.getEvaluacion().getCalidad()!=null)
+            calidad += Double.parseDouble(tarea.getEvaluacion().getCalidad());
+            else calidadCantidadnNull++;
+            if(!tarea.getEvaluacion().getComunicacion().equals("")&&!tarea.getEvaluacion().getComunicacion().equals(" ")&&tarea.getEvaluacion().getComunicacion()!=null)
+            comunicacion += Double.parseDouble(tarea.getEvaluacion().getComunicacion());
+            else comunicacionCantidadnNull++;
+            if(!tarea.getEvaluacion().getTrabajoEnEquipo().equals("")&&!tarea.getEvaluacion().getTrabajoEnEquipo().equals(" ")&&tarea.getEvaluacion().getTrabajoEnEquipo()!=null)
+            trabajoEnEquipo += Double.parseDouble(tarea.getEvaluacion().getTrabajoEnEquipo());
+            else trabajoEnEquipoCantidadnNull++;
+            if(!tarea.getEvaluacion().getResolucion().equals("")&&!tarea.getEvaluacion().getResolucion().equals(" ")&&tarea.getEvaluacion().getResolucion()!=null)
+            resolucion += Double.parseDouble(tarea.getEvaluacion().getResolucion());
+            else resolucionCantidadnNull++;
+            if(!tarea.getEvaluacion().getCreatividad().equals("")&&!tarea.getEvaluacion().getCreatividad().equals(" ")&&tarea.getEvaluacion().getCreatividad()!=null)
+            creatividad += Double.parseDouble(tarea.getEvaluacion().getCreatividad());
+            else creatividadCantidadnNull++;
+            if(!tarea.getEvaluacion().getIniciativa().equals("")&&!tarea.getEvaluacion().getIniciativa().equals(" ")&&tarea.getEvaluacion().getIniciativa()!=null)
+            iniciativa += Double.parseDouble(tarea.getEvaluacion().getIniciativa());
+            else iniciativaCantidadnNull++;
+            if(!tarea.getEvaluacion().getAutogestion().equals("")&&!tarea.getEvaluacion().getAutogestion().equals(" ")&&tarea.getEvaluacion().getAutogestion()!=null)
+            autogestion += Double.parseDouble(tarea.getEvaluacion().getAutogestion());
+            else autogestionCantidadnNull++;
+            if(!tarea.getEvaluacion().getFormacionContinua().equals("")&&!tarea.getEvaluacion().getFormacionContinua().equals(" ")&&tarea.getEvaluacion().getFormacionContinua()!=null)
+            formacionContinua += Double.parseDouble(tarea.getEvaluacion().getFormacionContinua());
+            else formacionContinuaCantidadnNull++;
+        }
+        
+        //promedio con la cantidad de tareas menos la cantidad en las que no se calificó
+        
+         satisfaccion = satisfaccion / (tareas.size()-satisfaccionCantidadnNull);
+         predisposicion =predisposicion / (tareas.size()-predisposicionCantidadnNull);
+         responsabilidad =responsabilidad / (tareas.size()-responsabilidadCantidadnNull);
+         seguridad =seguridad / (tareas.size()-seguridadCantidadnNull);
+         conocimiento = conocimiento / (tareas.size()-conocimientoCantidadnNull);
+         trato = trato / (tareas.size()-tratoCantidadnNull);
+         prolijidad = prolijidad / (tareas.size()-prolijidadCantidadnNull);
+         puntualidad = puntualidad / (tareas.size()-puntualidadCantidadnNull);
+         eficiencia = eficiencia / (tareas.size()-eficienciaCantidadnNull);
+         calidad = calidad / (tareas.size()-calidadCantidadnNull);
+         comunicacion = comunicacion / (tareas.size()-comunicacionCantidadnNull);
+         trabajoEnEquipo = trabajoEnEquipo / (tareas.size()-trabajoEnEquipoCantidadnNull);
+         resolucion = resolucion / (tareas.size()-resolucionCantidadnNull);
+         creatividad = creatividad / (tareas.size()-creatividadCantidadnNull);
+         iniciativa = iniciativa / (tareas.size()-iniciativaCantidadnNull);
+         autogestion = autogestion / (tareas.size()-autogestionCantidadnNull);
+         formacionContinua = formacionContinua / (tareas.size()-formacionContinuaCantidadnNull);
+        
+        model.addAttribute("satisfaccion", Math.round(satisfaccion * 100.0) / 100.0);
+        model.addAttribute("predisposicion", Math.round(predisposicion * 100.0) / 100.0);
+        model.addAttribute("responsabilidad", Math.round(responsabilidad * 100.0) / 100.0);
+        model.addAttribute("seguridad",Math.round(seguridad * 100.0) / 100.0);
+        model.addAttribute("conocimiento", Math.round(conocimiento * 100.0) / 100.0);
+        model.addAttribute("trato", Math.round(trato * 100.0) / 100.0);
+        model.addAttribute("prolijidad",Math.round(prolijidad * 100.0) / 100.0);
+        model.addAttribute("puntualidad",Math.round(puntualidad * 100.0) / 100.0);
+        model.addAttribute("eficiencia", Math.round(eficiencia * 100.0) / 100.0);
+        model.addAttribute("calidad", Math.round(calidad * 100.0) / 100.0);
+        model.addAttribute("comunicacion",Math.round(comunicacion * 100.0) / 100.0);
+        model.addAttribute("trabajoEnEquipo", Math.round(trabajoEnEquipo * 100.0) / 100.0);
+        model.addAttribute("resolucion",Math.round(resolucion * 100.0) / 100.0);
+        model.addAttribute("creatividad",Math.round(creatividad * 100.0) / 100.0);
+        model.addAttribute("iniciativa", Math.round(iniciativa * 100.0) / 100.0);
+        model.addAttribute("autogestion", Math.round(autogestion * 100.0) / 100.0);
+        model.addAttribute("formacionContinua",Math.round(formacionContinua * 100.0) / 100.0);
+        
+        int cuentaNull=0;
+        
+        Double promedioGral=(
+                
+                (!satisfaccion.isNaN()?satisfaccion:cuentaNull++)+
+                (!predisposicion.isNaN()?predisposicion:cuentaNull++)+
+                (!responsabilidad.isNaN()?responsabilidad:cuentaNull++)+
+                (!seguridad.isNaN()?seguridad:cuentaNull++)+ 
+                (!conocimiento.isNaN()?conocimiento:cuentaNull++)+
+                (!trato.isNaN()?trato:cuentaNull++)+
+                (!prolijidad.isNaN()?prolijidad:cuentaNull++)+
+                (!puntualidad.isNaN()?puntualidad:cuentaNull++)+
+                (!eficiencia.isNaN()?eficiencia:cuentaNull++)+
+                (!calidad.isNaN()?calidad:cuentaNull++)+
+                (!comunicacion.isNaN()?comunicacion:cuentaNull++)+
+                (!trabajoEnEquipo.isNaN()?trabajoEnEquipo:cuentaNull++)+
+                (!resolucion.isNaN()?resolucion:cuentaNull++)+
+                (!creatividad.isNaN()?creatividad:cuentaNull++)+
+                (!iniciativa.isNaN()?iniciativa:cuentaNull++)+
+                (!autogestion.isNaN()?autogestion:cuentaNull++)+
+                (!formacionContinua.isNaN()?formacionContinua:cuentaNull++)
+                )/(17-cuentaNull);
+        
+        
+        log.info("promedio: "+promedioGral+" cuentanull: "+cuentaNull);
+        tecnico.setPromedioEvaluaciones(Double.toString(Math.round(promedioGral * 100.0) / 100.0));
+        
+        return "perfilTecnico";
     }
+
     //cuando el administrador o el supervisor de mantenimiento hace algun cambio en el perfil de tecnico
     @PostMapping("/modificarTecnico")
-    public String modificarTecnico( Model model, Tecnico tecnico) {
+    public String modificarTecnico(Model model, Tecnico tecnico) {
         tecnicoService.save(tecnico);
-        return "redirect:/layout"; 
+        return "redirect:/layout";
     }
-    
+
     @PostMapping("/guardarTecnicoEmpresa")
     public String guardarTecnicoEmpresa(Model model, Tecnico tecnico) {
 

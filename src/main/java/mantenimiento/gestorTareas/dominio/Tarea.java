@@ -1,13 +1,9 @@
 package mantenimiento.gestorTareas.dominio;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -29,7 +25,9 @@ public class Tarea implements Serializable {
     @JoinColumn(name = "informe")
     private Informe informe;
    
-  
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "evaluacion")
+    private Evaluacion evaluacion;
     
    
     @OneToMany( cascade=CascadeType.ALL, mappedBy = "tarea")
@@ -39,7 +37,6 @@ public class Tarea implements Serializable {
     private String categoriaTecnica;
     private String motivoDemoraAsignacion;
     private String motivoDemoraCierre;
-    private String evaluacion;
     
     private String descripcion;
     

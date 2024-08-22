@@ -203,7 +203,7 @@
                                                     <label >Satisfacción cliente interno</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="satisfaccionClienteInterno"></progress>
+                                                    <progress  th:value="${satisfaccion}"  max="10" id="satisfaccionClienteInterno"></progress>
                                                     <span id="satisfaccionClienteInternoValor"></span>
                                                 </div>
                                             </div>
@@ -212,7 +212,7 @@
                                                     <label >Predisposición para la tarea</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="predisposicionParaLaTarea"></progress>
+                                                    <progress th:value="${predisposicion}" max="10" id="predisposicionParaLaTarea"></progress>
                                                     <span id="predisposicionParaLaTareaValor"></span>
                                                 </div>
                                             </div>
@@ -221,7 +221,7 @@
                                                     <label >Responsabilidad</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="responsabilidad"></progress>
+                                                    <progress th:value="${responsabilidad}" max="10" id="responsabilidad"></progress>
                                                     <span id="responsabilidadValor"></span>
                                                 </div>
                                             </div>
@@ -230,7 +230,7 @@
                                                     <label >Cumplimiento normas de seguridad</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="cumplimientoNormasSeguridad"></progress>
+                                                    <progress  th:value="${seguridad}" max="10" id="cumplimientoNormasSeguridad"></progress>
                                                     <span id="cumplimientoNormasSeguridadValor"></span>
                                                 </div>
                                             </div>
@@ -239,7 +239,7 @@
                                                     <label >Conocimiento gral de su trabajo</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="nivelDeConocimiento"></progress>
+                                                    <progress th:value="${conocimiento}" max="10" id="nivelDeConocimiento"></progress>
                                                     <span id="nivelDeConocimientoValor"></span>
                                                 </div>
                                             </div>
@@ -248,7 +248,7 @@
                                                     <label >Trato recibido por cliente interno</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="tratoRecibidoPorCliente"></progress>
+                                                    <progress th:value="${trato}" max="10" id="tratoRecibidoPorCliente"></progress>
                                                     <span id="tratoRecibidoPorClienteValor"></span>
                                                 </div>
                                             </div>
@@ -257,7 +257,7 @@
                                                     <label >Prolijidad</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="prolijidad"></progress>
+                                                    <progress th:value="${prolijidad}" max="10" id="prolijidad"></progress>
                                                     <span id="prolijidadValor"></span>
                                                 </div>
                                             </div>
@@ -266,7 +266,7 @@
                                                     <label >Puntualidad</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="puntualidad"></progress>
+                                                    <progress th:value="${puntualidad}" max="10" id="puntualidad"></progress>
                                                     <span id="puntualidadValor"></span>
                                                 </div>
                                             </div>
@@ -275,7 +275,7 @@
                                                     <label >Eficiencia</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="eficiencia"></progress>
+                                                    <progress th:value="${eficiencia}" max="10" id="eficiencia"></progress>
                                                     <span id="eficienciaValor"></span>
                                                 </div>
                                             </div>
@@ -284,7 +284,7 @@
                                                     <label >Calidad de su trabajo</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="calidadDelTrabajo"></progress>
+                                                    <progress th:value="${calidad}" max="10" id="calidadDelTrabajo"></progress>
                                                     <span id="calidadDelTrabajoValor"></span>
                                                 </div>
                                             </div>
@@ -293,7 +293,7 @@
                                                     <label >Comunicación</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="comunicacion"></progress>
+                                                    <progress th:value="${comunicacion}" max="10" id="comunicacion"></progress>
                                                     <span id="comunicacionValor"></span>
                                                 </div>
                                             </div>
@@ -302,7 +302,7 @@
                                                     <label >Trabajo en equipo</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="trabajoEnEquipo"></progress>
+                                                    <progress th:value="${trabajoEnEquipo}" max="10" id="trabajoEnEquipo"></progress>
                                                     <span id="trabajoEnEquipoValor"></span>
                                                 </div>
                                             </div>
@@ -311,7 +311,7 @@
                                                     <label >Resolución de problemas</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="resolucionDeProblemas"></progress>
+                                                    <progress th:value="${resolucion}" max="10" id="resolucionDeProblemas"></progress>
                                                     <span id="resolucionDeProblemasValor"></span>
                                                 </div>
                                             </div>
@@ -320,7 +320,7 @@
                                                     <label >Creatividad e innovación</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="creatividadEInnovacion"></progress>
+                                                    <progress th:value="${creatividad}" max="10" id="creatividadEInnovacion"></progress>
                                                     <span id="creatividadEInnovacionValor"></span>
                                                 </div>
                                             </div>
@@ -329,7 +329,7 @@
                                                     <label >Iniciativa</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="iniciativa"></progress>
+                                                    <progress th:value="${iniciativa}" max="10" id="iniciativa"></progress>
                                                     <span id="iniciativaValor"></span>
                                                 </div>
                                             </div>
@@ -338,7 +338,7 @@
                                                     <label >Autogestión</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="autogestion"></progress>
+                                                    <progress th:value="${autogestion}" max="10" id="autogestion"></progress>
                                                     <span id="autogestionValor"></span>
                                                 </div>
                                             </div>
@@ -347,7 +347,7 @@
                                                     <label >Formación continua</label>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <progress value="1" max="10" id="formacionContinua"></progress>
+                                                    <progress th:value="${formacionContinua}" max="10" id="formacionContinua"></progress>
                                                     <span id="formacionContinuaValor"></span>
                                                 </div>
                                             </div>
