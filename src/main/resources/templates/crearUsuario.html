@@ -7,6 +7,7 @@
         <div class="container">
             <h1>Crear usuarios</h1>
             <form method="POST" th:action="@{/gestionar}" th:object="${usuario}" class="form-group">
+                
                 <label for="username">Nuevo usuario</label>
                 <input type="text" name="username" id="username" th:field="*{username}"/>
                 <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">error en nombre</span>

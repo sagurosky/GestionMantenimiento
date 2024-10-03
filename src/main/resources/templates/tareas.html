@@ -224,7 +224,7 @@
                                             <div>
                                                 <label for="tecnicos">Técnicos</label>
 
-                                                <select id="tecnicos" name="tecnicosIds" multiple class="form-control">
+                                                <select id="tecnicos" name="tecnicosIds" multiple class="form-control" required>
                                                     <option th:each="tecnico : ${todosLosTecnicos}" 
                                                             th:value="${tecnico.id}" 
                                                             th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"

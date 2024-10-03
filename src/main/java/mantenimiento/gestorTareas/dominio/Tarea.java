@@ -39,6 +39,7 @@ public class Tarea implements Serializable {
     private String motivoDemoraCierre;
     
     private String descripcion;
+    private String departamentoResponsable;
     
     private String solicita;
 

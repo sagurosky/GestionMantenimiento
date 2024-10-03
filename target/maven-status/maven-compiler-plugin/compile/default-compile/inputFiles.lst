@@ -6,6 +6,7 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\SecurityConfig.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Evaluacion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Tarea.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorProduccion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorTecnicos.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\Convertidor.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ActivoService.java
@@ -13,6 +14,7 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\WebConfig.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Activo.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\AsignacionService.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ProduccionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\EncriptarPassword.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Tecnico.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\ActivoDao.java
@@ -27,5 +29,6 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ServicioImpl.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Informe.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\equipos\ControladorEquipos.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Produccion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\UsuarioService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Usuario.java

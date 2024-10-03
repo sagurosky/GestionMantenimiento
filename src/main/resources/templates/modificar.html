@@ -11,9 +11,10 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-info text-white">
-                    <h5 class="modal-title" >Editar tarea   PENDIENTE</h5>
+                    <h5 class="modal-title" >Editar tarea  </h5>
                 </div> 
                 <form th:action="@{/guardarEdicion}" method="post" th:object="${tarea}" class="was-validated">
+                    
                     <div class="modal-body">
                         <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <input type="hidden" th:field="${tarea.id}"/>
@@ -28,11 +29,51 @@
                             <input type="text" th:field="*{descripcion}"class="form-control" required="true"/>
                             <!--<span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"/>-->
                             <br/>
-                            <label th:text="estado" for="estado"></label>
+                            <label th:text="'estado activo'" for="estado"></label>
                             <select  th:field="*{activo.estado}" class="form-control" id="dropDownList">
                                 <option value="0">seleccione</option>
                                 <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
                             </select>
+                             <br/>
+                              <label th:text="'estado tarea'" for="estado"></label>
+                            <select  th:field="*{estado}" class="form-control" id="dropDownList">
+                                <option value="0">seleccione</option>
+                                <option th:each="estado : ${estadosTareas}" th:value="${estado}" th:text="${estado}"></option>
+                            </select>
+                               <br/>
+                            <div class="form-group">
+                                <label  for="responsable">departamento Responsable</label>
+                                <select th:field="*{departamentoResponsable}" th:id="responsable" onchange="mostrarCategoria()"class="form-control" >
+                                    <option value="0">seleccione</option>
+                                    <option value="mantenimiento">mantenimiento</option>
+                                    <option value="logistica">logística</option>
+                                    <option value="calidad">calidad</option>
+                                </select>
+
+                            </div>
+                            
+                            <div class="form-group" id="categoriaDiv">
+                                <label  for="categoria">categoría técnica</label>
+                                <select th:field="*{categoriaTecnica}" th:id="categoria" class="form-control" >
+                                    <option value="0">seleccione</option>
+                                    <option value="mecánica">mecánica</option>
+                                    <option value="hidráulica">hidráulica</option>
+                                    <option value="neumática">neumática</option>
+                                    <option value="electrónica">electrónica</option>
+                                    <option value="programación">programación</option>
+                                </select>
+
+                            </div>
+                             <br/>
+                                <label th:text="'Motivo de demora en asignación'"/>
+                                            <textArea th:field="*{motivoDemoraAsignacion}"  class="form-control"></textArea>
+                               
+                            
+                            <br/>
+                            <label th:text="'motivo de demora en cierre'"/>
+                                            <textArea th:field="*{motivoDemoraCierre}"  class="form-control"></textArea>
+                               
+                            
                             <br/>
                             <div>
                                 <label for="tecnicos"  >Técnicos</label>
@@ -47,13 +88,20 @@
 
                             </div>
 
-
+                            <input type="hidden"  th:field="*{momentoDetencion}" />
+                            <input type="hidden"  th:field="*{momentoAsignacion}" />
+                            <input type="hidden"  th:field="*{momentoLiberacion}" />
+                            <input type="hidden"  th:field="*{momentoCierre}" />
+                            <input type="hidden"  th:field="*{evaluacion}" />
+                            
+                            
+                            
                             <input type="submit" th:value="guardar" class="btn btn-primary "/>
                             <a th:href="@{/tareas}" th:text="regresar" class="btn btn-primary "></a>
                         </div>    
                 </form>
             </div>     
         </div>
-        <footer th:replace="plantillas/plantilla::footer"></footer>    
+        <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->    
     </body>
 </html>

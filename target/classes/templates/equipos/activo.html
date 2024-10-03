@@ -2,8 +2,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head  th:replace="plantillas/plantilla::head">
-         <title>Gestor de mantenimiento</title>
-       
+        <title>Gestor de mantenimiento</title>
+
     </head>
     <style>
         .grafico {
@@ -22,121 +22,151 @@
                     <!--<img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />-->
                     <img th:src="${'/recursos/logo-hisan.jpg'}" usemap="#workmap" width="600px" height="400px"style="padding-top: 200px" />
 
-                       
+
                 </div>
                 <div class="col ">
                     <div class="row">
-                        <div class='col'>
+                        <div class='col '>
                             <h4>Estado de equipo:</h4>
                         </div>
                         <div class='col'>
-                            
-                           <h4> 
-                               <span  th:if="${activo.estado=='detenida'}" th:text=" ${activo.estado}" style="background-color:red"></span>
-                               <span  th:if="${activo.estado=='operativa'||activo.estado=='liberada'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
-                               <span  th:if="${activo.estado=='disponible para preventivo'}" th:text=" ${activo.estado}" style="background-color:yellow"></span>
-                           </h4>
+
+                            <h4> 
+                                <span  th:if="${activo.estado=='detenida'}" th:text=" ${activo.estado}" style="background-color:red"></span>
+                                <span  th:if="${activo.estado=='operativa'||activo.estado=='liberada'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
+                                <span  th:if="${activo.estado=='disponible para preventivo'}" th:text=" ${activo.estado}" style="background-color:yellow"></span>
+
+                            </h4>
+
                         </div>
                     </div>
-                <br/>
-                
-                <h2 align=center>indicadores   <span> <a th:href="@{/configurarIndicadores}" th:text="configurar" class="btn btn-primary"></a></span></h2>
-                    <div th:if="${activo.estado=='detenida'}">
-                        <div class="row">
-                            <div class='col'>
-                              <h4>  detenido desde: </h4>
+                    <div class='row'>
+                        <div class='col'></div>
+                        <div class='col'>
+                            <span  sec:authorize="hasRole('ROLE_ADMIN')" >
+
+                                <form th:action="@{/cambiarEstado/}+ ${activo.id}" method="post"th:id="formCambiarEstado" th:object="${activo}" enctype="multipart/form-data" >
+                                    <div class="form-floating">  
+                                        <select  th:field="*{estado}" class="form-select"  aria-label="Forzar estado" onchange=" document.getElementById('formCambiarEstado').submit()">
+                                            <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+                                        </select>
+                                        <label for="floatingSelect">Forzar estado</label>
+                                    </div>
+                                </form>    
+                            </span>
+                        </div>
+                    </div>
+
+                    <br>
+
+                        <!--para cuando agregue lo de los perfiles tecnicos-->
+                        <div th:if="${activo.estado=='detenida'}" class="container card">
+                            <div class="row">
+                                <div class='col'>
+                                    <h4>  detenido desde: </h4>
+                                </div>
+                                <div class='col'>
+                                    <h4>  <span th:text="${#temporals.format(activo.momentoDetencion, ' dd/MM/yyyy    HH:mm:ss')}"></span></h4>
+                                </div>
                             </div>
-                            <div class='col'>
-                              <h4>  <span th:text="${#temporals.format(activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span></h4>
+
+                            <div class="row">
+                                <div class='col'>
+                                    <h4>  tiempo detenido:</h4>
+                                </div>
+                                <div class='col'>
+                                    <h4>  <span th:id="tiempoTranscurrido"></span> </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class='col'>
+                                    <h4> interventor/es:</h4>
+                                </div>
+                                <div class='col'>
+                                    <div th:each="tecnico: ${tecnicos}">
+
+                                        <h5 th:text="${tecnico.nombre}+' '+${tecnico.apellido}">  Joaquín Gonzalez <span><a th:href="@{/layout}" th:text="perfil" class="btn btn-primary"></a></span> </h5>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+
+                        <br/>
+
+                        <h2 align=center>indicadores   
+                            <!--<span> <a th:href="@{/configurarIndicadores}" th:text="configurar" class="btn btn-primary"></a></span>-->
+                        </h2>
+
                         <br/>
                         <div class="row">
                             <div class='col'>
-                              <h4>  tiempo detenido:</h4>
+                                <h4>MTBF: </h4> 
                             </div>
                             <div class='col'>
-                              <h4>  <span th:id="tiempoTranscurrido"></span> </h4>
+                                <h4 th:text="${mtbf}+' min'">  </h4> 
                             </div>
                         </div>
-                        <!--para cuando agregue lo de los perfiles tecnicos-->
-<!--                        <div class="row">
+                        <div class="row">
                             <div class='col'>
-                              <h4> interventor:</h4>
+                                <h4>  MTTR:  </h4> 
                             </div>
                             <div class='col'>
-                                <h4>  Joaquín Gonzalez <span><a th:href="@{/layout}" th:text="perfil" class="btn btn-primary"></a></span> </h4>
+                                <h4  th:text="${mttr}+' min'"> </h4> 
                             </div>
-                        </div>-->
-                    </div>
-                    <br/>
-                    <div class="row">
-                        <div class='col'>
-                          <h4>MTBF: </h4> 
                         </div>
-                        <div class='col'>
-                             <h4 th:text="${mtbf}+' min'">  </h4> 
+                        <div class="row">
+                            <div class='col'>
+                                <h4>  Disponibilidad:  </h4> 
+                            </div>
+                            <div class='col'>
+                                <h4  th:text="${disponibilidad}+' %'"> </h4> 
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class='col'>
-                            <h4>  MTTR:  </h4> 
-                        </div>
-                        <div class='col'>
-                             <h4  th:text="${mttr}+' min'"> </h4> 
-                        </div>
-                    </div>
-                      <div class="row">
-                        <div class='col'>
-                            <h4>  Disponibilidad:  </h4> 
-                        </div>
-                        <div class='col'>
-                             <h4  th:text="${disponibilidad}+' %'"> </h4> 
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class='col'>
-                            <h4>  Confiabilidad:  </h4> 
-                        </div>
-                        <div class='col'>
-                             <h4  th:text="${confiabilidad}+' % en 24hs'"> </h4> 
-                        </div>
-                    </div><!-- comment -->
-                    
-                    <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="historial" class="btn btn-primary"></a>
-                    <br/><br/>
-                   <a th:href="@{/crearTarea/}+ ${activo.id}" class="btn btn-primary"><i class="fas fa-plus"></i> Crear tarea</a>
-                    <br/><br/>
-                   
+                        <div class="row">
+                            <div class='col'>
+                                <h4>  Confiabilidad:  </h4> 
+                            </div>
+                            <div class='col'>
+                                <h4  th:text="${confiabilidad}+' % en 24hs'"> </h4> 
+                            </div>
+                        </div><!-- comment -->
+
+                        <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="historial" class="btn btn-primary"></a>
+                        <br/><br/>
+                        <a th:href="@{/crearTarea/}+ ${activo.id}" class="btn btn-primary"><i class="fas fa-plus"></i> Crear tarea</a>
+                        <br/><br/>
+
 
 
                 </div>
 
             </div> 
-        <br/><br/>
-             <!--graficos-->
-                    <div class="row ">
-                        <div class="col">
-                            <h4>Cantidad de minutos de detención </h4>
-                            <div th:id="grafico1" class="grafico"></div>
-                        </div>
-                        <div class="col">
-                             <h4>Cantidad de intervenciones según interventor</h4>
-                            <div th:id="grafico2" class="grafico"></div>
-                        </div>
-                    </div>
-             <br/><br/>
-                    <div class="row">
-                        <div class="col">
-                            <h4>Cantidad de detenciones última semana</h4>
-                            <div th:id="grafico3" class="grafico"></div>
-                        </div>
-                        <div class="col">
-                            <h4>estadística de detenciones según especialidad técnica</h4>
-                            <div th:id="grafico4" class="grafico"></div>
-                        </div>
-                    </div>
-            
+            <br/><br/>
+            <!--graficos-->
+            <div class="row ">
+                <div class="col">
+                    <h4>Cantidad de minutos de detención </h4>
+                    <div th:id="grafico1" class="grafico"></div>
+                </div>
+                <div class="col">
+                    <h4>Cantidad de intervenciones según interventor</h4>
+                    <div th:id="grafico2" class="grafico"></div>
+                </div>
+            </div>
+            <br/><br/>
+            <div class="row">
+                <div class="col">
+                    <h4>Cantidad de detenciones última semana</h4>
+                    <div th:id="grafico3" class="grafico"></div>
+                </div>
+                <div class="col">
+                    <h4>estadística de detenciones según especialidad técnica</h4>
+                    <div th:id="grafico4" class="grafico"></div>
+                </div>
+            </div>
+
             <br><br>
                     <a th:href="@{/layout}"  th:text="regresar" class="btn btn-primary"></a>
                     <!--th:href="@{/}+${url}"-->
@@ -171,217 +201,222 @@
 
 
                     </script>   
-                    
+
                     <!-- Apache ECharts -->
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.0/echarts.min.js"></script>
-                    
+
                     <script>
-                        
-                         var cantidadMecanicas = [[${cantidadMecanicas}]];
-                         var cantidadHidraulicas = [[${cantidadHidraulicas}]];
-                         var cantidadNeumaticas = [[${cantidadNeumaticas}]];
-                         var cantidadElectronicas = [[${cantidadElectronicas}]];
-                         var cantidadProgramacion = [[${cantidadProgramacion}]];
-                         
-                         
-                    /* global echarts */
 
-                    const getOptionChart1 = () => {
-                        return {
+                        var cantidadMecanicas = [[${cantidadMecanicas}
+                        ]];
+                        var cantidadHidraulicas = [[${cantidadHidraulicas}
+                        ]];
+                        var cantidadNeumaticas = [[${cantidadNeumaticas}
+                        ]];
+                        var cantidadElectronicas = [[${cantidadElectronicas}
+                        ]];
+                        var cantidadProgramacion = [[${cantidadProgramacion}
+                        ]];
 
-                            tooltip: {
-                                show: true,
-                                trigger: "axis",
-                                triggerOn: "mousemove|click"
-                            },
-                            dataZoom: {
-                                show: true,
-                                start: 50
-                            },
-                            xAxis: [
-                                {
-                                    type: "category",
-                                    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: "value"
-                                }
-                            ],
-                            series: [
-                                {
-                                    data: [150, 230, 224, 218, 135, 147, 260],
-                                    type: "line"
-                                }
-                            ]
+
+                        /* global echarts */
+
+                        const getOptionChart1 = () => {
+                            return {
+
+                                tooltip: {
+                                    show: true,
+                                    trigger: "axis",
+                                    triggerOn: "mousemove|click"
+                                },
+                                dataZoom: {
+                                    show: true,
+                                    start: 50
+                                },
+                                xAxis: [
+                                    {
+                                        type: "category",
+                                        data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                                    }
+                                ],
+                                yAxis: [
+                                    {
+                                        type: "value"
+                                    }
+                                ],
+                                series: [
+                                    {
+                                        data: [150, 230, 224, 218, 135, 147, 260],
+                                        type: "line"
+                                    }
+                                ]
+                            };
                         };
-                    };
 
-                    const getOptionChart2 = () => {
-                        return {
-                            color: ["#3246a8", "#00cc66", "#ff5050", "#c6de76", "#D96A8D"],
-                            tooltip: {
-                                show: true,
-                                trigger: "axis"
-                            },
-                            legend: {
-                                data: ["Juan", "Pablo", "Roberto", "Marcelo", "Enrique"]
-                            },
-                            grid: {
-                                left: "3%",
-                                right: "4%",
-                                bottom: "3%",
-                                containLabel: true
-                            },
-                            toolbox: {
-                                feature: {
-                                    saveAsImage: {}
-                                }
-                            },
-                            xAxis: [
-                                {
-                                    type: "category",
-                                    boundaryGap: false,
-                                    data: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
-                                    axisLine: { show: false },
-                                    axisTick: { show: false },
-                                    axisPointer: { type: "shadow" }
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: "value"
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: "Juan",
-                                    type: "line",
-                                    stack: "Total",
-                                    data: [120, 132, 101, 134, 90, 230, 210]
+                        const getOptionChart2 = () => {
+                            return {
+                                color: ["#3246a8", "#00cc66", "#ff5050", "#c6de76", "#D96A8D"],
+                                tooltip: {
+                                    show: true,
+                                    trigger: "axis"
                                 },
-                                {
-                                    name: "Pablo",
-                                    type: "line",
-                                    stack: "Total",
-                                    data: [220, 182, 191, 234, 290, 330, 310]
+                                legend: {
+                                    data: ["Juan", "Pablo", "Roberto", "Marcelo", "Enrique"]
                                 },
-                                {
-                                    name: "Roberto",
-                                    type: "line",
-                                    stack: "Total",
-                                    data: [150, 232, 201, 154, 190, 330, 410]
+                                grid: {
+                                    left: "3%",
+                                    right: "4%",
+                                    bottom: "3%",
+                                    containLabel: true
                                 },
-                                {
-                                    name: "Marcelo",
-                                    type: "line",
-                                    stack: "Total",
-                                    data: [320, 332, 301, 334, 390, 330, 320]
+                                toolbox: {
+                                    feature: {
+                                        saveAsImage: {}
+                                    }
                                 },
-                                {
-                                    name: "Enrique",
-                                    type: "line",
-                                    stack: "Total",
-                                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                                }
-                            ]
-                        };
-                    };
-
-                    const getOptionChart3 = () => {
-                        return {
-                            tooltip: {
-                                show: true
-                            },
-                            xAxis: {
-                                type: "category",
-                                data: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]
-                            },
-                            yAxis: {
-                                type: "value"
-                            },
-                            series: [
-                                {
-                                    data: [120, 200, 150, 80, 70, 110, 130],
-                                    type: "bar"
-                                }
-                            ]
-                        };
-                    };
-
-                    const getOptionChart4 = () => {
-                        return {
-                            tooltip: {
-                                trigger: "item"
-                            },
-                            legend: {
-                                top: "5%",
-                                left: "center"
-                            },
-                            series: [
-                                {
-                                    name: "Cantidad de paradas",
-                                    type: "pie",
-                                    radius: ["40%", "70%"],
-                                    avoidLabelOverlap: false,
-                                    itemStyle: {
-                                        borderRadius: 10,
-                                        borderColor: "#fff",
-                                        borderWidth: 2
+                                xAxis: [
+                                    {
+                                        type: "category",
+                                        boundaryGap: false,
+                                        data: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"],
+                                        axisLine: {show: false},
+                                        axisTick: {show: false},
+                                        axisPointer: {type: "shadow"}
+                                    }
+                                ],
+                                yAxis: [
+                                    {
+                                        type: "value"
+                                    }
+                                ],
+                                series: [
+                                    {
+                                        name: "Juan",
+                                        type: "line",
+                                        stack: "Total",
+                                        data: [120, 132, 101, 134, 90, 230, 210]
                                     },
-                                    label: {
-                                        show: false,
-                                        position: "center"
+                                    {
+                                        name: "Pablo",
+                                        type: "line",
+                                        stack: "Total",
+                                        data: [220, 182, 191, 234, 290, 330, 310]
                                     },
-                                    emphasis: {
+                                    {
+                                        name: "Roberto",
+                                        type: "line",
+                                        stack: "Total",
+                                        data: [150, 232, 201, 154, 190, 330, 410]
+                                    },
+                                    {
+                                        name: "Marcelo",
+                                        type: "line",
+                                        stack: "Total",
+                                        data: [320, 332, 301, 334, 390, 330, 320]
+                                    },
+                                    {
+                                        name: "Enrique",
+                                        type: "line",
+                                        stack: "Total",
+                                        data: [820, 932, 901, 934, 1290, 1330, 1320]
+                                    }
+                                ]
+                            };
+                        };
+
+                        const getOptionChart3 = () => {
+                            return {
+                                tooltip: {
+                                    show: true
+                                },
+                                xAxis: {
+                                    type: "category",
+                                    data: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio"]
+                                },
+                                yAxis: {
+                                    type: "value"
+                                },
+                                series: [
+                                    {
+                                        data: [120, 200, 150, 80, 70, 110, 130],
+                                        type: "bar"
+                                    }
+                                ]
+                            };
+                        };
+
+                        const getOptionChart4 = () => {
+                            return {
+                                tooltip: {
+                                    trigger: "item"
+                                },
+                                legend: {
+                                    top: "5%",
+                                    left: "center"
+                                },
+                                series: [
+                                    {
+                                        name: "Cantidad de paradas",
+                                        type: "pie",
+                                        radius: ["40%", "70%"],
+                                        avoidLabelOverlap: false,
+                                        itemStyle: {
+                                            borderRadius: 10,
+                                            borderColor: "#fff",
+                                            borderWidth: 2
+                                        },
                                         label: {
-                                            show: true,
-                                            fontSize: "40",
-                                            fontWeight: "bold"
-                                        }
-                                    },
-                                    labelLine: {
-                                        show: false
-                                    },
-                                    data: [
-                                        { value: cantidadMecanicas, name: "Mecánicas" },
-                                        { value: cantidadHidraulicas, name: "Electrónicas" },
-                                        { value: cantidadNeumaticas, name: "Neumática" },
-                                        { value: cantidadElectronicas, name: "Hidráulica" },
-                                        { value: cantidadProgramacion, name: "Programación" }
-                                        
-                                         
-                                        
-                                    ]
-                                }
-                            ]
+                                            show: false,
+                                            position: "center"
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: "40",
+                                                fontWeight: "bold"
+                                            }
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: [
+                                            {value: cantidadMecanicas, name: "Mecánicas"},
+                                            {value: cantidadHidraulicas, name: "Electrónicas"},
+                                            {value: cantidadNeumaticas, name: "Neumática"},
+                                            {value: cantidadElectronicas, name: "Hidráulica"},
+                                            {value: cantidadProgramacion, name: "Programación"}
+
+
+
+                                        ]
+                                    }
+                                ]
+                            };
                         };
-                    };
 
-                    const initCharts = () => {
-                        const chart1 = echarts.init(document.getElementById("grafico1"));
-                        const chart2 = echarts.init(document.getElementById("grafico2"));
-                        const chart3 = echarts.init(document.getElementById("grafico3"));
-                        const chart4 = echarts.init(document.getElementById("grafico4"));
-                        chart1.setOption(getOptionChart1());
-                        chart2.setOption(getOptionChart2());
-                        chart3.setOption(getOptionChart3());
-                        chart4.setOption(getOptionChart4());
+                        const initCharts = () => {
+                            const chart1 = echarts.init(document.getElementById("grafico1"));
+                            const chart2 = echarts.init(document.getElementById("grafico2"));
+                            const chart3 = echarts.init(document.getElementById("grafico3"));
+                            const chart4 = echarts.init(document.getElementById("grafico4"));
+                            chart1.setOption(getOptionChart1());
+                            chart2.setOption(getOptionChart2());
+                            chart3.setOption(getOptionChart3());
+                            chart4.setOption(getOptionChart4());
 
-                        chart1.resize();
-                        chart2.resize();
-                        chart3.resize();
-                        chart4.resize();
-                    };
+                            chart1.resize();
+                            chart2.resize();
+                            chart3.resize();
+                            chart4.resize();
+                        };
 
-                    window.addEventListener("load", () => {
-                        initCharts();
-                    });
+                        window.addEventListener("load", () => {
+                            initCharts();
+                        });
 
-                        
-                        
-                        
+
+
+
                     </script>
 
                     </body>

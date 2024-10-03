@@ -217,9 +217,11 @@ public class ControladorTecnicos {
         model.addAttribute("formacionContinua",Math.round(formacionContinua * 100.0) / 100.0);
         
         int cuentaNull=0;
+       
+        Double promedioGral=0.0;
+                        
         
-        Double promedioGral=(
-                
+        promedioGral=(
                 (!satisfaccion.isNaN()?satisfaccion:cuentaNull++)+
                 (!predisposicion.isNaN()?predisposicion:cuentaNull++)+
                 (!responsabilidad.isNaN()?responsabilidad:cuentaNull++)+
@@ -238,7 +240,7 @@ public class ControladorTecnicos {
                 (!autogestion.isNaN()?autogestion:cuentaNull++)+
                 (!formacionContinua.isNaN()?formacionContinua:cuentaNull++)
                 )/(17-cuentaNull);
-        
+        if(cuentaNull==17)promedioGral=0.0;
         
         log.info("promedio: "+promedioGral+" cuentanull: "+cuentaNull);
         tecnico.setPromedioEvaluaciones(Double.toString(Math.round(promedioGral * 100.0) / 100.0));

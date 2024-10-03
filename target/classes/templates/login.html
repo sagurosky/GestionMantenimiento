@@ -10,43 +10,130 @@
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous">
     </script>
-    
-    <body>
-        <h1 id="login">Login</h1>
-     
-     <section id="actions" class="py-4 mb-4 bg-light">
-            <div class="container">
-                <div class="row">
-                    <!--se pueden agregar botones-->
-                </div>
-            </div>
-        </section>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
 
-        <section id="login">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6 mx-auto">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 >Login</h4>
-                            </div>
-                            <div class="card-body">
-                                <form method="POST" th:action="@{/login}">
-                                    <div class="form-group">
-                                        <label for="username">Username:</label>
-                                        <input type="text" name="username" id="username"/>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="password">Password:</label>
-                                        <input type="password" name="password" id="password"/>
-                                    </div>
-                                    <input type="submit" value="Login" class="btn btn-primary btn-block"/>
-                                </form>
-                            </div>
-                        </div>
+
+    
+    <div class="container">
+
+
+
+<div class="row">
+    <div class="col">
+     </div> 
+    
+<!--     <div class="col">
+        <div class="letters">
+            
+            <div class="letter">S</div>
+            <div class="letter">I</div>
+            <div class="letter">M</div>
+            <div class="letter">P</div>
+            <div class="letter">i</div>
+            <div class="letter">o</div>
+            <div class="letter">Web</div>
+        </div>
+        <div class="words">
+            <div class="word">Sistema</div>
+            <div class="word">Integral de</div>
+            <div class="word">Mantenimiento y</div>
+            <div class="word">Producción</div>
+            <div class="word">Industrial</div>
+            <div class="word">Optimizado</div>
+        </div>
+    </div>-->
+    
+    
+    
+<!--    <div class="col">
+        <div class="letters">
+            
+            <div class="letter">S</div>
+            <div class="letter">I</div>
+            <div class="letter">M</div>
+            <div class="letter">P</div>
+            <div class="letter">L</div>
+            <div class="letter">E</div>
+            <div class="letter">Web</div>
+        </div>
+        <div class="words">
+            <div class="word">Sistema</div>
+            <div class="word">Integral de</div>
+            <div class="word">Mantenimiento y</div>
+            <div class="word">Producción</div>
+            <div class="word">Ligero y</div>
+            <div class="word">Eficaz</div>
+        </div>
+    </div>-->
+
+ <div class="col">
+        <div class="letters">
+            
+            <div class="letter">S</div>
+            <div class="letter">I</div>
+            <div class="letter">G</div>
+            <div class="letter">M</div>
+            <div class="letter">A</div>
+            <div class="letter">Web</div>
+        </div>
+        <div class="words">
+            <div class="word">Sistema</div>
+            <div class="word">Integral de</div>
+            <div class="word">Gestión de</div>
+            <div class="word">Mantenimiento</div>
+        </div>
+    </div>
+
+    <div class="col">
+        
+     <div class="wrapper fadeInDown">
+        <br><br><br><br><br><br><br>
+                                 
+                <div id="formContent">
+                    <!-- Tabs Titles -->
+
+                    <!-- Icon -->
+                    <div class="fadeIn first">
+                        <h3>Login</h3>
                     </div>
+
+                    <!-- Login Form -->
+                    <form method="POST" th:action="@{/login}" >
+                        <input type="text"  class="fadeIn second" name="username" placeholder="usuario">
+                        <input type="text"  class="fadeIn third" name="password" placeholder="contraseña">
+                        <input type="submit" class="fadeIn fourth" value="Login">
+                    </form>
+ 
+                                        <!-- Remind Passowrd -->
+                    <div id="formFooter">
+                        <a class="underlineHover" href="#">Forgot Password?</a>
+                    </div>
+
                 </div>
             </div>
+    </div>
+
+
+</div>
+
+
+        
+   
+        
+       
+    
+
+
+         
+
+    
+  
+
+
+    
+            
             <br/><!-- comment -->
            <br/>
             <div class="container primerAdmin" >
@@ -75,11 +162,16 @@
                            </div>
                         </div>
                 </div>
+           <div class="credit">
+        <a href="http://www.freepik.com" target="_blank">Designed by starline / Freepik</a>
+    </div>
+
+    </div>
         </section>
       </body>
     <script>
         $(".primerAdmin").hide();
-        $("#login").click(function(){
+        $("#pp").click(function(){
            $(".primerAdmin").show(); 
         });
     </script>

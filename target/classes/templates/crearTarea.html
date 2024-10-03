@@ -37,8 +37,19 @@
                                 -->
                             </div>
                             <div class="form-group">
-                                <label  for="descripcion">categoría técnica</label>
-                                <select th:field="*{categoriaTecnica}" class="form-control" >
+                                <label  for="responsable">departamento Responsable</label>
+                                <select th:field="*{departamentoResponsable}" th:id="responsable" onchange="mostrarCategoria()"class="form-control" required="true">
+                                    <option value="0">seleccione</option>
+                                    <option value="mantenimiento">mantenimiento</option>
+                                    <option value="logistica">logística</option>
+                                    <option value="calidad">calidad</option>
+                                </select>
+
+                            </div>
+                            
+                            <div class="form-group" id="categoriaDiv">
+                                <label  for="categoria">categoría técnica</label>
+                                <select th:field="*{categoriaTecnica}" th:id="categoria" class="form-control" >
                                     <option value="0">seleccione</option>
                                     <option value="mecánica">mecánica</option>
                                     <option value="hidráulica">hidráulica</option>
@@ -48,6 +59,7 @@
                                 </select>
 
                             </div>
+                            
                             <div class="form-group">
                                 <label  for="descripcion">descripcion del problema</label>
                                 <input type="text" th:field="*{descripcion}"class="form-control" required="true"/>
@@ -90,6 +102,28 @@
         </div>
         <footer th:replace="plantillas/plantilla::footer"></footer>    
         <script>
+            
+            // muestra categoria tecnica cuando se sselecciona mantenimiento
+            $(document).ready(function(){
+                $("#categoriaDiv").hide();
+            });
+            
+            function mostrarCategoria()
+            {
+                if($("#responsable").val()=="mantenimiento")
+                   {
+                       $("#categoriaDiv").show(500);
+                   }else
+                   {
+                        $("#categoriaDiv").hide(500);
+                   }
+
+            }
+            
+            
+            
+            
+            
             var segundosRestantes = 120; // Define el tiempo inicial en segundos
 
             // Función para actualizar dinámicamente el tiempo restante y realizar la redirección

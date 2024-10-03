@@ -5,6 +5,8 @@
  */
 package mantenimiento.gestorTareas.util;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author daniel
@@ -60,6 +62,20 @@ public class Convertidor {
         }
 
         return result.toString();
+    }
+    
+    
+    
+     public static String obtenerTurno(LocalDateTime fechaHora) {
+        int hora = fechaHora.getHour();
+
+        if (hora >= 6 && hora < 14) {
+            return "turno 1";
+        } else if (hora >= 14 && hora < 22) {
+            return "turno 2";
+        } else {
+            return "turno 3";
+        }
     }
     
 }

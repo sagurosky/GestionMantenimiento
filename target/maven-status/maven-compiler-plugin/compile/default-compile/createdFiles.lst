@@ -14,9 +14,11 @@ mantenimiento\gestorTareas\dominio\Activo.class
 mantenimiento\gestorTareas\servicio\ServicioImpl.class
 mantenimiento\gestorTareas\dominio\Evaluacion.class
 mantenimiento\gestorTareas\web\ControladorTecnicos.class
+mantenimiento\gestorTareas\dominio\Produccion.class
 mantenimiento\gestorTareas\datos\AsignacionDao.class
 mantenimiento\gestorTareas\util\Convertidor.class
 mantenimiento\gestorTareas\servicio\Servicio.class
+mantenimiento\gestorTareas\servicio\ProduccionService.class
 mantenimiento\gestorTareas\servicio\TecnicoService.class
 mantenimiento\gestorTareas\web\WebConfig.class
 mantenimiento\gestorTareas\dominio\Rol.class
@@ -26,6 +28,7 @@ mantenimiento\gestorTareas\web\ControladorUsuarios.class
 mantenimiento\gestorTareas\web\SecurityConfig.class
 mantenimiento\gestorTareas\web\equipos\ControladorEquipos.class
 mantenimiento\gestorTareas\web\Controlador.class
+mantenimiento\gestorTareas\web\ControladorProduccion.class
 mantenimiento\gestorTareas\dominio\Asignacion.class
 mantenimiento\gestorTareas\dominio\Tarea.class
 mantenimiento\gestorTareas\dominio\Tecnico.class

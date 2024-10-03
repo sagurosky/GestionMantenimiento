@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.tymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <meta http-equiv="refresh" content="10">
+    <!--<meta id="meta-refresh" http-equiv="refresh" content="5">-->
 
         <head th:replace="plantillas/plantilla::head">
             <title>Lista de tareas</title>
@@ -20,7 +20,10 @@
 
             body{
                 /*background: #4169E1;*/
+                background: url('/recursos/fondoLayout3.jpg') no-repeat center center fixed;
+                     background-size: cover;
             }
+            
             .mapadiv{
                 widht:70vw;
                 margin:auto;
@@ -38,8 +41,8 @@
                             border:solid 1px;
                         }*/
             
-        </style>
-
+       
+    </style>
         <body>
             <header th:replace="plantillas/plantilla::header">lista de tareas</header>
 
@@ -47,16 +50,84 @@
                 <div class="row">
                     <div class="col-md-2">
                         <br/>
-                        <a th:href="@{tareas}" class="btn btn-primary btn-block mt-3">
+                        <div  sec:authorize="hasRole('ROLE_PROD')">
+                            <a sec:authorize="hasRole('ROLE_PROD')" 
+                                       href="#" 
+                                       data-toggle="modal" 
+                                       th:data-target="'#modalCarga'" 
+                                       class="btn btn-primary btn-block"
+                                       >
+                                Producción
+                            </a>
+                        <br/>
+                        </div>
+                        
+                        
+                        
+                        <div class="modal fade bd-example-modal-lg" th:id="'modalCarga'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel" >Ingrese producción  <span th:text="${turno}"></span></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <form th:id="'cargaProduccion'" th:object="${produccion}"th:action="@{/cargaProduccion}" method="post" > 
+                                                <input type="hidden" name="url" value="layoutPlanta3"/>
+                                                <div class="modal-body">
+      			
+                                                   
+                                                    <div class="row">
+                                                        <div class="form-floating mb-3 col">
+                                                            <input type="text" th:value="*{cantidadProducto1}"class="form-control" th:id="floatingInput"th:name="producto1"oninput="checkInput(this)" placeHolder="producto 1">
+                                                            <label for="floatingInput">producto 1</label>
+                                                        </div>
+                                                        <div class="form-floating mb-3 col">
+                                                            <input type="text" th:value="*{cantidadProducto2}" class="form-control" th:id="floatingInput"th:name="producto2"oninput="checkInput(this)" placeHolder="producto 2">
+                                                            <label for="floatingInput">producto 2</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-floating mb-3 col">
+                                                            <input type="text" th:value="*{cantidadProducto3}" class="form-control" id="floatingInput"th:name="producto3"oninput="checkInput(this)" placeHolder="producto 3">
+                                                            <label for="floatingInput">producto 3</label>
+                                                        </div>
+                                                        <div class="form-floating mb-3 col">
+                                                            <input type="text" th:value="*{cantidadProducto4}" class="form-control" id="floatingInput"th:name="producto4"oninput="checkInput(this)" placeHolder="producto 4">
+                                                            <label for="floatingInput">producto 4</label>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                     
+                                                   
+                                        </div>
+                                        <div class="modal-footer">
+                                                 <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <a th:href="@{tareas}" class="btn btn-primary btn-block">
                             tareas
                         </a>
                         <br/>
                         <div  sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a th:href="@{gestionUsuarios}" class="btn btn-primary btn-block mt-4">
+                            <a th:href="@{gestionUsuarios}" class="btn btn-primary btn-block">
                                 Gestión de usuarios
                             </a>
-                        </div>
                         <br/>
+                        </div>
+                        
                         <a th:href="@{/registro/}+${'layout'}" class="btn btn-primary btn-block ">
                             registro historico
                         </a>
@@ -113,6 +184,11 @@
                                 </g>
                                 <g id="textos">
                                     <use id="textos" href="#img3" x="63" y="63" />
+                                </g>
+                                <g id="lamparas">
+                                        <path id="lamparaSaldanteAposito" class="s0" d="m171 715c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
+                                        <path id="lamparaCorteFinalAdulto3" class="s0" d="m667 288c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
+                                        <path id="lamparaDobladoAdulto3" class="s0" d="m606 289c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
                                 </g>
                                 <g id="modulos">
                                     <g id="adulto3">
@@ -246,6 +322,13 @@
 
 
             <script th:inline="javascript">
+                
+        
+                
+                
+                
+                
+                
 
 //capturo todas las variables de falla que vienen del modelo
                 var fallaMolinoAdulto3                                  =[[${fallaMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
@@ -381,7 +464,9 @@
                 if (fallaTransporteDeMantaYGrabadorAposito)parpadearRojo("transporteDeMantaYGrabadorAposito");
                 if (fallaMolinoAposito)parpadearRojo("molinoAposito");
                 
-                
+//                parpadearRojo("lamparaDobladoAdulto3");
+//                parpadearRojo("lamparaCorteFinalAdulto3");
+//                 parpadearRojo("lamparaSaldanteAposito");
                 //si hay algun activo detenido en planta 2 parpadea el boton
                 if([[${fallaPlanta2}]])parpadearRojo("botonPlanta2");
                 if([[${cierrePlanta2}]])parpadearAmarillo("botonPlanta2");
@@ -471,8 +556,37 @@
             </script>
 
 
+<script>
+    //desactivo el refresh cuando tengo abierto el modal de carga de produccion
+  let refreshTimer;
 
-            <footer th:replace="plantillas/plantilla::footer"></footer>
+  // Función que inicia el temporizador de refresco de la página
+  function iniciarAutoRefresh() {
+    refreshTimer = setTimeout(function() {
+      location.reload();
+    }, 20000); // Refresca después de 20 segundos (20,000 milisegundos)
+  }
+
+  // Función que detiene el temporizador de refresco
+  function detenerAutoRefresh() {
+    clearTimeout(refreshTimer);
+  }
+
+  // Detectar cuando se abre el modal y detener el refresco
+  $('#modalCarga').on('shown.bs.modal', function () {
+    detenerAutoRefresh();
+  });
+
+  // Detectar cuando se cierra el modal y reiniciar el refresco
+  $('#modalCarga').on('hidden.bs.modal', function () {
+    iniciarAutoRefresh();
+  });
+
+  // Iniciar el auto-refresh al cargar la página
+  window.onload = iniciarAutoRefresh;
+</script>
+
+            <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->
         </body>
 </html>
 

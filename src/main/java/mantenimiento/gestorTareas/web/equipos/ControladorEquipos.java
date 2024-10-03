@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +14,11 @@ import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
+import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TareaService;
+import mantenimiento.gestorTareas.servicio.TecnicoService;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import mantenimiento.gestorTareas.util.Convertidor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +50,8 @@ public class ControladorEquipos {
     @Autowired
     TareaService tareaService;
     @Autowired
+    TecnicoService tecnicoService;
+    @Autowired
     ActivoDao activo;
 //    dejo ejemplo paravolver a armar plantilla cuando sea necesario
 //    @GetMapping("/aplicadoresDeAdhesivo")
@@ -62,7 +67,9 @@ public class ControladorEquipos {
     @GetMapping("/molinoAdulto3")
     public String aspiracion(Model model) {
         Activo activo = activoService.findByName("Molino adulto 3");
+       
         cargarModel(model, activo);
+        
         return "equipos/activo";
     }
 
@@ -544,9 +551,35 @@ public class ControladorEquipos {
         return "redirect:/" + url;
     }
 
+    @PostMapping("/cambiarEstado/{id}")
+    public String cambiarEstado( Model model,  Activo activoRequest) {
+        log.info("######## "+activoRequest.getEstado());
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+        activoSeleccionado.setEstado(activoRequest.getEstado());
+        activo.save(activoSeleccionado);
+        
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
+        
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
+        
+        
+        
+        
+        
+        
+        log.info("url: " + url);
+        return "redirect:/" + url;
+    }
+    
+    
+    
     private void cargarModel(Model model, Activo activo) {
         model.addAttribute("activo", activo);
-
+        List<Tecnico> tecnicos=tecnicoService.traerPorTareaEnActivo(activo);
+        model.addAttribute("tecnicos", tecnicos);
         List<Tarea> tareas = servicio.listar();
         Integer cantidadMecanicas = 0;
         Integer cantidadElectronicas = 0;
@@ -641,6 +674,7 @@ public class ControladorEquipos {
         }
         String confiabilidadFormateado = String.format("%.2f", confiabilidad);
         model.addAttribute("confiabilidad", confiabilidadFormateado);
+        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
 
     }
 

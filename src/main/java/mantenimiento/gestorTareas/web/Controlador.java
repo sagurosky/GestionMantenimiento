@@ -24,11 +24,13 @@ import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Asignacion;
 import mantenimiento.gestorTareas.dominio.Evaluacion;
+import mantenimiento.gestorTareas.dominio.Produccion;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.dominio.Usuario;
 import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.AsignacionService;
+import mantenimiento.gestorTareas.servicio.ProduccionService;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TecnicoService;
@@ -69,6 +71,8 @@ public class Controlador {
     TecnicoService tecnicoService;
     @Autowired
     AsignacionService asignacionService;
+    @Autowired
+    ProduccionService produccionService;
 
     @GetMapping("/")
     public String inicio(Model model) {
@@ -121,6 +125,37 @@ public class Controlador {
         model.addAttribute("cierrePlanta2", cierrePlanta2);
         model.addAttribute("tecnicos", tecnicoService.findAll());
 
+        LocalDateTime fechaActual = LocalDateTime.now();
+
+        String turno = Convertidor.obtenerTurno(fechaActual);
+        LocalDateTime inicioRango=null;
+        LocalDateTime finRango=null;
+        if (turno.equals("turno 1")) {
+            inicioRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
+            finRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
+        }
+        if (turno.equals("turno 2")) {
+            inicioRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
+            finRango = fechaActual.withHour(22).withMinute(0).withSecond(0).withNano(0);
+        }
+        if (turno.equals("turno 3")) {
+            
+            finRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
+            inicioRango=fechaActual.minusDays(1);
+            inicioRango = inicioRango.withHour(22).withMinute(0).withSecond(0).withNano(0);
+        }
+        log.info("fecha actual: "+fechaActual);
+        log.info("turno: "+turno);
+        log.info("inicio rango: "+inicioRango);
+        log.info("fin rango: "+finRango);
+        Produccion produccion = produccionService.traerPorRangoHorario(inicioRango, finRango);
+
+       if(produccion==null)produccion=new Produccion();
+        model.addAttribute("produccion", produccion);
+        model.addAttribute("turno", turno);
+         
+        
+        
         return "layoutPlanta3";
     }
 
@@ -215,12 +250,13 @@ public class Controlador {
     public String editar(Tarea tarea, Model model) {
         model.addAttribute("activos", activo.findAll());
         model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
+           model.addAttribute("estadosTareas", Arrays.asList("abierto", "enProceso","liberada","cerrada"));
         model.addAttribute("tarea", servicio.encontrar(tarea));
         model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
 //        model.addAttribute("asignacion", asignacionService.traerPorTarea(tarea));
 
         // Crear lista de IDs de técnicos asignados
-        Tarea t=servicio.encontrar(tarea);
+        Tarea t = servicio.encontrar(tarea);
         List<Long> idsTecnicosAsignados = t.getAsignaciones().stream()
                 .map(asignacion -> asignacion.getTecnico().getId())
                 .collect(Collectors.toList());
@@ -231,28 +267,38 @@ public class Controlador {
     }
 
     @PostMapping("/guardarEdicion")
-    public String guardarEdicion(Model model, @Valid Tarea tarea, @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Errors errores) {
-        if (errores.hasErrors()) {
-            log.info("error de validacion!!" + errores.getAllErrors());
-            return "modificar";
+    public String guardarEdicion(Model model, @Valid Tarea tarea, @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds) {
+       
+        
+
+        
+        
+        
+        List<Asignacion> asignaciones = asignacionService.traerPorTarea(tarea);
+
+        
+        if(tecnicosIds!=null)
+        {
+            for (Asignacion asignacion : asignaciones) {
+                asignacionService.delete(asignacion);
+            }
+            
+            
+            
+            for (Long idTecnico : tecnicosIds) {
+                Tecnico tecnico = tecnicoService.getById(idTecnico);
+                Asignacion asignacion = new Asignacion();
+                asignacion.setTecnico(tecnico);
+                asignacion.setTarea(tarea);
+                asignacionService.save(asignacion);
+            }
         }
 
-        for (Long tecnicosId : tecnicosIds) {
-            log.info("tecnico: " + tecnicoService.findById(tecnicosId).get().getApellido());
-        }
-
-        List<Asignacion> asignaciones = new ArrayList<>();
-
-        for (Long idTecnico : tecnicosIds) {
-            Tecnico tecnico = tecnicoService.getById(idTecnico);
-            Asignacion asignacion = new Asignacion();
-            asignacion.setTecnico(tecnico);
-            asignacion.setTarea(tarea);
-            asignaciones.add(asignacion);
-        }
-
+       
+       
+       
         servicio.guardar(tarea);
-
+        
         model.addAttribute("tareas", tareaService.traerNoCerradas());
 
         return "redirect:/tareas";
@@ -302,31 +348,30 @@ public class Controlador {
 
     @GetMapping("/CerrarSolicitud/{id}")
     public String CerrarSolicitud(
-            @RequestParam(required = false,name="satisfaccion") String satisfaccion,
-            @RequestParam(required = false,name="predisposicion") String predisposicion,
-            @RequestParam(required = false,name="responsabilidad") String responsabilidad,
-            @RequestParam(required = false,name="seguridad") String seguridad,
-            @RequestParam(required = false,name="conocimiento") String conocimiento,
-            @RequestParam(required = false,name="trato") String trato,
-            @RequestParam(required = false,name="prolijidad") String prolijidad,
-            @RequestParam(required = false,name="puntualidad") String puntualidad,
-            @RequestParam(required = false,name="eficiencia") String eficiencia,
-            @RequestParam(required = false,name="calidad") String calidad,
-            @RequestParam(required = false,name="comunicacion") String comunicacion,
-            @RequestParam(required = false,name="trabajoEnEquipo") String trabajoEnEquipo,
-            @RequestParam(required = false,name="resolucion") String resolucion,
-            @RequestParam(required = false,name="creatividad") String creatividad,
-            @RequestParam(required = false,name="iniciativa") String iniciativa,
-            @RequestParam(required = false,name="autogestion") String autogestion,
-            @RequestParam(required = false,name="formacionContinua") String formacionContinua,
+            @RequestParam(required = false, name = "satisfaccion") String satisfaccion,
+            @RequestParam(required = false, name = "predisposicion") String predisposicion,
+            @RequestParam(required = false, name = "responsabilidad") String responsabilidad,
+            @RequestParam(required = false, name = "seguridad") String seguridad,
+            @RequestParam(required = false, name = "conocimiento") String conocimiento,
+            @RequestParam(required = false, name = "trato") String trato,
+            @RequestParam(required = false, name = "prolijidad") String prolijidad,
+            @RequestParam(required = false, name = "puntualidad") String puntualidad,
+            @RequestParam(required = false, name = "eficiencia") String eficiencia,
+            @RequestParam(required = false, name = "calidad") String calidad,
+            @RequestParam(required = false, name = "comunicacion") String comunicacion,
+            @RequestParam(required = false, name = "trabajoEnEquipo") String trabajoEnEquipo,
+            @RequestParam(required = false, name = "resolucion") String resolucion,
+            @RequestParam(required = false, name = "creatividad") String creatividad,
+            @RequestParam(required = false, name = "iniciativa") String iniciativa,
+            @RequestParam(required = false, name = "autogestion") String autogestion,
+            @RequestParam(required = false, name = "formacionContinua") String formacionContinua,
             Model model, Tarea tarea) {
-       
 
         Tarea t = servicio.encontrar(tarea);
         t.getActivo().setEstado("operativa");
         t.setEstado("cerrada");
-        
-        Evaluacion evaluacion=new Evaluacion();
+
+        Evaluacion evaluacion = new Evaluacion();
         evaluacion.setSatisfaccion(satisfaccion);
         evaluacion.setPredisposicion(predisposicion);
         evaluacion.setResponsabilidad(responsabilidad);
@@ -344,12 +389,9 @@ public class Controlador {
         evaluacion.setIniciativa(iniciativa);
         evaluacion.setAutogestion(autogestion);
         evaluacion.setFormacionContinua(formacionContinua);
-      
+
         t.setEvaluacion(evaluacion);
-        
-        
-        
-        
+
         t.setMomentoCierre(LocalDateTime.now());
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
