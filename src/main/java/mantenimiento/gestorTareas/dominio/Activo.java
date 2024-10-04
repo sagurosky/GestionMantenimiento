@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
@@ -34,6 +35,8 @@ public class Activo implements Serializable {
     private String estado;// detenida, operativa, disponible para preventivo o mejora. 
     
     private LocalDateTime momentoDetencion;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime disponibilidadHasta;
     
 
 }

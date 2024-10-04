@@ -553,7 +553,6 @@ public class ControladorEquipos {
 
     @PostMapping("/cambiarEstado/{id}")
     public String cambiarEstado( Model model,  Activo activoRequest) {
-        log.info("######## "+activoRequest.getEstado());
         Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
         activoSeleccionado.setEstado(activoRequest.getEstado());
         activo.save(activoSeleccionado);
@@ -565,12 +564,43 @@ public class ControladorEquipos {
         url=url.substring(1);
         url=primerCaracterMinuscula+url;
         
+        return "redirect:/" + url;
+    }
+    
+    
+    
+    @PostMapping("/ponerADisponibilidad/{id}")
+    public String ponerADisponibilidad( Model model,  Activo activoRequest) {
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+        activoSeleccionado.setEstado("disponible");
+        activoSeleccionado.setDisponibilidadHasta(activoRequest.getDisponibilidadHasta());
+//        
+        activo.save(activoSeleccionado);
         
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
         
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
         
+        return "redirect:/" + url;
+    }
+    @PostMapping("/cancelarDisponibilidad/{id}")
+    public String cancelarDisponibilidad( Model model,  Activo activoRequest) {
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+        activoSeleccionado.setEstado("operativa");
+        activoSeleccionado.setDisponibilidadHasta(null);
+//        
+        activo.save(activoSeleccionado);
         
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
         
-        log.info("url: " + url);
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
+        
         return "redirect:/" + url;
     }
     
@@ -674,7 +704,7 @@ public class ControladorEquipos {
         }
         String confiabilidadFormateado = String.format("%.2f", confiabilidad);
         model.addAttribute("confiabilidad", confiabilidadFormateado);
-        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
+        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible"));
 
     }
 

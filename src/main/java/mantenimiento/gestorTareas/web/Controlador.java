@@ -113,6 +113,7 @@ public class Controlador {
             aux = aux.toUpperCase().charAt(0) + aux.substring(1);
             model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
             model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+            model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
             //detecto si algun activo de polanta2 esta detenido o aguardando cierre
             if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("detenida")) {
                 fallaPlanta2 = true;
@@ -172,6 +173,7 @@ public class Controlador {
             aux = aux.toUpperCase().charAt(0) + aux.substring(1);
             model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
             model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
+            model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
             if ((activo.getNombre().contains("adulto 3") || activo.getNombre().contains("adulto 2") || activo.getNombre().contains("aposito")) && activo.getEstado().equals("detenida")) {
                 fallaPlanta3 = true;
             }
@@ -249,7 +251,7 @@ public class Controlador {
     @GetMapping("/editar/{id}")
     public String editar(Tarea tarea, Model model) {
         model.addAttribute("activos", activo.findAll());
-        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible para preventivo"));
+        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible"));
            model.addAttribute("estadosTareas", Arrays.asList("abierto", "enProceso","liberada","cerrada"));
         model.addAttribute("tarea", servicio.encontrar(tarea));
         model.addAttribute("todosLosTecnicos", tecnicoService.findAll());

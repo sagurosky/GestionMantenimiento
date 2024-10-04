@@ -34,7 +34,7 @@
                             <h4> 
                                 <span  th:if="${activo.estado=='detenida'}" th:text=" ${activo.estado}" style="background-color:red"></span>
                                 <span  th:if="${activo.estado=='operativa'||activo.estado=='liberada'}" th:text=" ${activo.estado}" style="background-color:greenyellow"></span>
-                                <span  th:if="${activo.estado=='disponible para preventivo'}" th:text=" ${activo.estado}" style="background-color:yellow"></span>
+                                <span  th:if="${activo.estado=='disponible'}" th:text=" ${activo.estado}" style="background-color:orange"></span>
 
                             </h4>
 
@@ -54,8 +54,72 @@
                                     </div>
                                 </form>    
                             </span>
+                           
                         </div>
                     </div>
+                     <div sec:authorize="hasRole('ROLE_PROD') and not hasRole('ROLE_ADMIN') " th:if="${activo.estado!='detenida'}" class='row card card-body'>
+                       <form th:action="@{/ponerADisponibilidad/}+ ${activo.id}" method="post"th:id="formCambiarEstadoProd" th:object="${activo}" enctype="multipart/form-data" >
+                         <div class='row'>
+                             <h3 style="text-align: center">Poner a disponibilidad:</h3>
+                         
+                         </div>  
+                        <div class='row'>
+                             <div class='col '>
+                                 Indique hasta cuándo el activo estará disponible
+                           </div>
+                            <div class='col '>
+                              <!--<input type="date" class="form-control" id="fechaNacimiento"th:field="*{fechaNacimiento}" required="true">-->
+                              <input type="datetime-local"th:field="*{disponibilidadHasta}" class="form-control" id="disponibilidadHasta" name="disponibilidadHasta">
+                                  <label style="color: red" hidden="true" id="errorDisponibilidad">debe ingresar un valor mayor al actual</label>
+                                  
+                           </div>
+                        </div>
+                          <div class='row'th:if="${activo.estado=='disponible'}">
+                             <div class='col '>
+                                 Tiempo restante disponible:
+                           </div>
+                            <div class='col '>
+                               <h4>  <span th:id="tiempoRestanteDisponibilidad"></span> </h4>   
+                           </div>
+                        </div>
+                        <div class='row'style="text-align: center"th:if="${activo.estado!='disponible'}">
+                            <div class='col '>
+                                <input type='button' value="Confirmar" class="btn btn-primary "  onclick='validarHasta()'>
+                            </div>  
+                        </div>      
+                            
+                        </form>    
+                        <form th:action="@{/cancelarDisponibilidad/}+ ${activo.id}" method="post"th:id="formCancelarCambiarEstadoProd" th:object="${activo}" enctype="multipart/form-data" >    
+                         <div class='row'style="text-align: center"th:if="${activo.estado=='disponible'}">   
+                             <div class='col '>
+                                <input type='submit' value="Cancelar" class="btn btn-primary "/>
+                            </div> 
+                        </div>    
+                          </form>  
+                    </div>
+                    <script>
+                        
+                        function validarHasta()
+                        {
+                        let fechaDisponibilidad =new Date($('#disponibilidadHasta').val());
+                            
+                        if(fechaDisponibilidad<=(new Date()))
+                        {
+                            document.getElementById("errorDisponibilidad").hidden = false;
+                            
+                        }else 
+                        {
+                            
+                        document.getElementById("errorDisponibilidad").hidden=true;
+                           document.getElementById('formCambiarEstadoProd').submit()
+                        }
+                    }
+                    function cancelar(){
+                        
+                        document.getElementById('formCambiarEstadoProd').submit()
+                    }
+                        
+                    </script>   
 
                     <br>
 
@@ -195,9 +259,41 @@
                             //                // Mostrar la diferencia de tiempo en el elemento span
                             tiempoSpan.textContent = horas + ":" + minutos + ":" + segundos;
                         }
+                        
+                        
+                        
+                        function actualizarTiempoRestante() {
+                            // Obtener el elemento span
+                            var tiempoSpan = document.getElementById("tiempoRestanteDisponibilidad");
+
+                            // Obtener el tiempo detenido de Thymeleaf
+//                            var tiempoDetenido = [[ ${activo.momentoDetencion
+//                            }
+//                            ]];
+                            // Calcular la diferencia de tiempo
+                            var tiempoActual = new Date();
+                            var diferencia = new Date($("#disponibilidadHasta").val()).getTime()-tiempoActual.getTime() ;
+                            //
+                            //                // Convertir la diferencia de tiempo a horas, minutos y segundos
+                            if(new Date($("#disponibilidadHasta").val())<new Date())document.getElementById("formCancelarCambiarEstadoProd").submit();
+                            
+                            var horas = Math.floor(diferencia / (1000 * 60 * 60));
+                            var minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                            var segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                            //
+                            //                // Mostrar la diferencia de tiempo en el elemento span
+                            tiempoSpan.textContent = horas + ":" + minutos + ":" + segundos;
+                        }
 
                         // Llamar a la función actualizarTiempo cada segundo para actualizar dinámicamente el tiempo
+                        if($("#tiempoTranscurrido").length)
                         setInterval(actualizarTiempo, 1000);
+                        
+                        if($("#tiempoRestanteDisponibilidad").length)
+                        setInterval(actualizarTiempoRestante, 1000);
+                    
+                    
+                    
 
 
                     </script>   
