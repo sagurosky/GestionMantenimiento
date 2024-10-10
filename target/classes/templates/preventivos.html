@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <!--<meta http-equiv="refresh" id="metaRefresh" content="60">-->
+
+        <head th:replace="plantillas/plantilla::head">
+            <title>Lista de tareas</title>
+            <meta charset="UTF-8"/>
+        </head>
+
+        <body>
+            <header th:replace="plantillas/plantilla::header">lista de preventivos</header>
+            <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
+                Serás redirigido en: <span id="tiempoRestante">60</span> segundos
+            </div>
+            <section  class="py-4 mb-4 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3" >
+                            <a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">
+                                 
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <section  class="py-2 mb-4  bg-light">
+                <form th:action="@{/filtrar}" method="post"   class="form-group">
+                    <div class="container">
+                        <label  for="palabraClave">filtrar: PENDIENTE</label>
+                        <input type="text"  name="palabraClave" id="palabraClave" th:value="${palabraClave}"placeholder="digite valor a buscar" autocomplete="off"/>
+                        <input th:type="submit"  th:value="buscar" class="btn btn-primary "/>
+                    </div>
+                </form>
+            </section>
+            <div class="container ">
+                <table class="table table-bordered table-hover table-sm "  >
+                    <thead class="thead-light " >
+                        <tr > 
+                            <th >activo</th>
+                            <th >estado preventivo</th>
+                            <th >descripcion </th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">solicita</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr th:each="tarea: ${tareas}">
+
+                            <td th:text="${tarea.activo.nombre}" >activo</td>
+                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red">estado</td>
+                            
+                        
+                        <td th:text="${tarea.descripcion}">descripcion</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${tarea.solicita}">usuario</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.id}">editar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar/}+${tarea.id}" >eliminar</a></td>
+
+
+<!--                        <td  th:if='${tarea.activo.estado=="detenida"}'>
+                            <span th:text="${#temporals.format(tarea.activo.momentoDetencion, ' dd/MM/yyyy  HH:mm:ss')}"></span>
+                        </td>-->
+
+
+                    </tr>
+                </tbody>
+            </table>
+                
+                
+                
+                
+        </div>
+         <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}+${url}" class="btn btn-primary btn-block">
+                             Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+      
+
+        
+        
+        
+
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+        
+        
+         <script>
+             
+                function checkInput(element) {
+                    let value = parseInt(element.value, 10);
+                    if (value > 10) {
+                        element.value = 10;
+                    }
+                    if (value < 0) {
+                        element.value = 0;
+                    }
+                    if (isNaN(value) ) {
+                         element.value = ""; // Asignar valor vacío
+                    }
+                }
+             
+             
+             
+                var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+                // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+                function actualizarTiempoRestante() {
+                    // Actualizar el contenido del span con el tiempo restante
+                    document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+                    // Disminuir el tiempo restante en 1 segundo
+                    segundosRestantes--;
+
+                    // Verificar si se alcanzó el tiempo límite
+                    if (segundosRestantes < 0) {
+                        // Realizar la redirección después de 60 segundos
+                        window.location.href = '/';
+                    } else {
+                        // Llamar a esta función nuevamente después de 1 segundo
+                        setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+                    }
+                }
+
+                // Llamar a la función para iniciar el contador
+                actualizarTiempoRestante();
+           </script>
+    </body>
+</html>

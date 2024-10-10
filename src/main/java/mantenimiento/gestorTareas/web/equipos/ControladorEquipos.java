@@ -5,7 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +16,11 @@ import mantenimiento.gestorTareas.datos.ActivoDao;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
+import mantenimiento.gestorTareas.dominio.Preventivo;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.servicio.ActivoService;
+import mantenimiento.gestorTareas.servicio.PreventivoService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.TecnicoService;
@@ -53,6 +58,8 @@ public class ControladorEquipos {
     TecnicoService tecnicoService;
     @Autowired
     ActivoDao activo;
+    @Autowired
+    PreventivoService preventivoService;
 //    dejo ejemplo paravolver a armar plantilla cuando sea necesario
 //    @GetMapping("/aplicadoresDeAdhesivo")
 //    public String aplicadoresDeAdhesivo(Model model) {
@@ -542,12 +549,6 @@ public class ControladorEquipos {
         url=url.substring(1);
         url=primerCaracterMinuscula+url;
         
-        
-        
-        
-        
-        
-        log.info("url: " + url);
         return "redirect:/" + url;
     }
 
@@ -574,7 +575,8 @@ public class ControladorEquipos {
         Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
         activoSeleccionado.setEstado("disponible");
         activoSeleccionado.setDisponibilidadHasta(activoRequest.getDisponibilidadHasta());
-//        
+        activoSeleccionado.setDisponibilidadDesde(LocalDateTime.now());
+
         activo.save(activoSeleccionado);
         
         String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
@@ -586,6 +588,8 @@ public class ControladorEquipos {
         
         return "redirect:/" + url;
     }
+    
+    
     @PostMapping("/cancelarDisponibilidad/{id}")
     public String cancelarDisponibilidad( Model model,  Activo activoRequest) {
         Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
@@ -603,6 +607,70 @@ public class ControladorEquipos {
         
         return "redirect:/" + url;
     }
+    @GetMapping("/preventivos/{id}")
+    public String Preventivos( Model model, Activo activoRequest) {
+        
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
+       
+        
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
+        
+        model.addAttribute("url",url);
+        model.addAttribute("activo",activoSeleccionado);
+        model.addAttribute("preventivos",preventivoService.traerPorActivo(activoSeleccionado));
+        
+        
+        return "Preventivos";
+    }
+    
+    
+    @GetMapping("/sugerenciaPreventivo/{id}")
+    public String sugerenciaPreventivo( Model model, Activo activoRequest) {
+        
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
+       
+        
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
+        
+        model.addAttribute("url",url);
+        model.addAttribute("activo",activoSeleccionado);
+        return "sugerenciaPreventivo";
+    }
+    
+    @PostMapping("/guardarSugerencia/{id}")
+//    public String guardarSugerencia(@Param("descripcion")String descripcion, Model model,  Activo activoRequest,Preventivo preventivo) {
+    public String guardarSugerencia( Model model,  Activo activoRequest,Preventivo preventivo) {
+      
+//        Preventivo preventivo=new Preventivo();
+//        preventivo.setDescripcion(descripcion);
+        
+        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+         preventivo.setActivo(activoSeleccionado);
+
+//        activo.save(activoSeleccionado);
+        preventivoService.save(preventivo);
+        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
+        
+        //me aseguro que el primer caracter sea minuscula sino falla
+        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+        url=url.substring(1);
+        url=primerCaracterMinuscula+url;
+        
+        return "redirect:/preventivos/" + activoSeleccionado.getId();
+    }
+    
+    
+    
+    
+    
     
     
     

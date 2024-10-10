@@ -117,7 +117,7 @@
                             </div>
                         
                         <a th:href="@{tareas}" class="btn btn-primary btn-block">
-                            tareas
+                            detenciones
                         </a>
                         <br/>
                         <div  sec:authorize="hasRole('ROLE_ADMIN')">
@@ -357,6 +357,43 @@
                 var cierreAspiracionAdulto5                          =[[${cierreAspiracionAdulto5}]];
                 var cierreSalaDeCompresoresPlanta2                   =[[${cierreSalaDeCompresoresPlanta2}]];
   
+     //capturo todas las variables de disponible que vienen del modelo   
+                
+    
+    
+    
+                var disponibleTransmisionAdulto4                         =[[${disponibleTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
+                var disponibleSelladoraAdulto4                           =[[${disponibleSelladoraAdulto4}]];
+                var disponibleStackerAdulto4                             =[[${disponibleStackerAdulto4}]];
+                var disponibleDobladoAdulto4                             =[[${disponibleDobladoAdulto4}]];
+                var disponibleCorteFinalAdulto4                          =[[${disponibleCorteFinalAdulto4}]];
+                var disponiblePlegadoYTransporteAdulto4                  =[[${disponiblePlegadoYTransporteAdulto4}]];
+                var disponibleCortePorRodaduraYBarreraAdulto4            =[[${disponibleCortePorRodaduraYBarreraAdulto4}]];
+                var disponibleTraccionDeTresRodillosAdulto4              =[[${disponibleTraccionDeTresRodillosAdulto4}]];
+                var disponiblePrimerYSegundoModuloDeEtiquetasAdulto4     =[[${disponiblePrimerYSegundoModuloDeEtiquetasAdulto4}]];
+                var disponibleTransporteDeLineasAdulto4                  =[[${disponibleTransporteDeLineasAdulto4}]];
+                var disponibleAplicacionDeAdhesivoAdulto4                =[[${disponibleAplicacionDeAdhesivoAdulto4}]];
+                var disponibleTransporteDeMantaAdulto4                   =[[${disponibleTransporteDeMantaAdulto4}]];
+                var disponibleAspiracionAdulto4                          =[[${disponibleAspiracionAdulto4}]];
+                var disponibleMolinoChicoAdulto4                         =[[${disponibleMolinoChicoAdulto4}]];
+                var disponibleMolinoGrandeAdulto4                        =[[${disponibleMolinoGrandeAdulto4}]];
+                
+                var disponibleTransmisionAdulto5                         =[[${disponibleTransmisionAdulto5}]];
+                var disponibleSelladoraAdulto5                           =[[${disponibleSelladoraAdulto5}]];
+                var disponibleStackerAdulto5                             =[[${disponibleStackerAdulto5}]];
+                var disponibleDobladoAdulto5                             =[[${disponibleDobladoAdulto5}]];
+                var disponibleCorteFinalAdulto5                          =[[${disponibleCorteFinalAdulto5}]];
+                var disponiblePlegadoYTransporteAdulto5                  =[[${disponiblePlegadoYTransporteAdulto5}]];
+                var disponibleEtiquetaYTransporteDeProductoAdulto5       =[[${disponibleEtiquetaYTransporteDeProductoAdulto5}]];
+                var disponibleSaldanteYAplicacionDeAdhesivoAdulto5       =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto5}]];
+                var disponibleCorteDePadAdulto5                          =[[${disponibleCorteDePadAdulto5}]];
+                var disponibleFormacionAdulto5                           =[[${disponibleFormacionAdulto5}]];
+                var disponibleMolinoAdulto5                              =[[${disponibleMolinoAdulto5}]];
+                var disponibleAspiracionAdulto5                          =[[${disponibleAspiracionAdulto5}]];
+                var disponibleSalaDeCompresoresPlanta2                   =[[${disponibleSalaDeCompresoresPlanta2}]];
+  
+  
+  
                 if([[${fallaPlanta3}]])parpadearRojo("botonPlanta3");
                 if([[${cierrePlanta3}]])parpadearAmarillo("botonPlanta3");
   
@@ -424,6 +461,38 @@
                 if (cierreAspiracionAdulto5)parpadearAmarillo("AspiracionAdulto5");   
                 if (cierreSalaDeCompresoresPlanta2)parpadearAmarillo("SalaDeCompresoresPlanta2");   
                 
+  
+                
+                if (disponibleTransmisionAdulto4)pintarNaranja("TransmisionAdulto4");                        
+                if (disponibleSelladoraAdulto4)pintarNaranja("SelladoraAdulto4");                          
+                if (disponibleStackerAdulto4)pintarNaranja("StackerAdulto4");                            
+                if (disponibleDobladoAdulto4)pintarNaranja("DobladoAdulto4");                             
+                if (disponibleCorteFinalAdulto4)pintarNaranja("CorteFinalAdulto4");                          
+                if (disponiblePlegadoYTransporteAdulto4)pintarNaranja("PlegadoYTransporteAdulto4");                  
+                if (disponibleCortePorRodaduraYBarreraAdulto4)pintarNaranja("CortePorRodaduraYBarreraAdulto4");            
+                if (disponibleTraccionDeTresRodillosAdulto4)pintarNaranja("TraccionDeTresRodillosAdulto4");              
+                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto4)pintarNaranja("PrimerYSegundoModuloDeEtiquetasAdulto4");     
+                if (disponibleTransporteDeLineasAdulto4)pintarNaranja("TransporteDeLineasAdulto4");                  
+                if (disponibleAplicacionDeAdhesivoAdulto4)pintarNaranja("AplicacionDeAdhesivoAdulto4");                
+                if (disponibleTransporteDeMantaAdulto4)pintarNaranja("TransporteDeMantaAdulto4");                   
+                if (disponibleAspiracionAdulto4)pintarNaranja("AspiracionAdulto4");                          
+                if (disponibleMolinoChicoAdulto4)pintarNaranja("MolinoChicoAdulto4");                         
+                if (disponibleMolinoGrandeAdulto4)pintarNaranja("MolinoGrandeAdulto4");                        
+                
+                if (disponibleTransmisionAdulto5)pintarNaranja("TransmisionAdulto5");                         
+                if (disponibleSelladoraAdulto5)pintarNaranja("SelladoraAdulto5");                           
+                if (disponibleStackerAdulto5)pintarNaranja("StackerAdulto5");                             
+                if (disponibleDobladoAdulto5)pintarNaranja("DobladoAdulto5");                           
+                if (disponibleCorteFinalAdulto5)pintarNaranja("CorteFinalAdulto5");                        
+                if (disponiblePlegadoYTransporteAdulto5)pintarNaranja("PlegadoYTransporteAdulto5");                
+                if (disponibleEtiquetaYTransporteDeProductoAdulto5)pintarNaranja("EtiquetaYTransporteDeProductoAdulto5");     
+                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto5)pintarNaranja("SaldanteYAplicacionDeAdhesivoAdulto5");     
+                if (disponibleCorteDePadAdulto5)pintarNaranja("CorteDePadAdulto5");                        
+                if (disponibleFormacionAdulto5)pintarNaranja("FormacionAdulto5");                         
+                if (disponibleMolinoAdulto5)pintarNaranja("MolinoAdulto5");                            
+                if (disponibleAspiracionAdulto5)pintarNaranja("AspiracionAdulto5");   
+                if (disponibleSalaDeCompresoresPlanta2)pintarNaranja("SalaDeCompresoresPlanta2");   
+                
                
     
                 function parpadearRojo(id)
@@ -461,7 +530,12 @@
 
 
                 }
+                function pintarNaranja(id)
+                {
+                var elemento = document.getElementById(id);
+                elemento.style.fill ='rgba(255,138,0, 0.7)';
 
+                }
 
 
 

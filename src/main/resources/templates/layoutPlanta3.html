@@ -118,7 +118,7 @@
                         
                         
                         <a th:href="@{tareas}" class="btn btn-primary btn-block">
-                            tareas
+                            detenciones
                         </a>
                         <br/>
                         <div  sec:authorize="hasRole('ROLE_ADMIN')">
@@ -185,11 +185,11 @@
                                 <g id="textos">
                                     <use id="textos" href="#img3" x="63" y="63" />
                                 </g>
-                                <g id="lamparas">
+<!--                                <g id="lamparas">
                                         <path id="lamparaSaldanteAposito" class="s0" d="m171 715c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
                                         <path id="lamparaCorteFinalAdulto3" class="s0" d="m667 288c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
                                         <path id="lamparaDobladoAdulto3" class="s0" d="m606 289c-6.6 0-12-5.4-12-12 0-6.6 5.4-12 12-12 6.6 0 12 5.4 12 12 0 6.6-5.4 12-12 12z"/>
-                                </g>
+                                </g>-->
                                 <g id="modulos">
                                     <g id="adulto3">
                                         <a   th:href="@{/molinoAdulto3}">
@@ -220,7 +220,7 @@
                                             <path id="corteFinalAdulto3" class="s0" d="m685 361h-58v-100h58z"/>
                                         </a>
                                         <a   th:href="@{/dobladoAdulto3}">
-                                            <path id="dobladoAdulto3" class="s0" d="m627 360l-120 1v-101l120 1z"/>
+                                            <path id="dobladoAdulto3"  class="s0" d="m627 360l-120 1v-101l120 1z"/>
                                         </a>
                                         <a   th:href="@{/compactadorAdulto3}">
                                             <path id="compactadorAdulto3" class="s0" d="m507 311h-112v50h112z"/>
@@ -558,35 +558,35 @@
                 if (cierreTransporteDeMantaYGrabadorAposito)parpadearAmarillo("transporteDeMantaYGrabadorAposito"); 
                 if (cierreMolinoAposito)parpadearAmarillo("molinoAposito"); 
 
-                if (disponibleMolinoAdulto3)pintarNaranja("molinoAdulto3");else normalizar("molinoAdulto3");
-                if (disponibleFormacionAdulto3)pintarNaranja("formacionAdulto3");else normalizar("formacionAdulto3");
-                if (disponibleAspiracionAdulto3)pintarNaranja("aspiracionAdulto3");else normalizar("aspiracionAdulto3"); 
-                if (disponibleTransporteDeMantaYGrabadorAdulto3)pintarNaranja("transporteDeMantaYGrabadorAdulto3");else normalizar("transporteDeMantaYGrabadorAdulto3"); 
-                if (disponibleCorteDePadAdulto3)pintarNaranja("corteDePadAdulto3");else normalizar("corteDePadAdulto3"); 
-                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto3)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto3");else normalizar("saldanteYAplicacionDeAdhesivoAdulto3"); 
-                if (disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3)pintarNaranja("moduloDeEtiquetasYTransporteDeProductoAdulto3");else normalizar("moduloDeEtiquetasYTransporteDeProductoAdulto3"); 
-                if (disponiblePlegadoYTransporteAdulto3)pintarNaranja("plegadoYTransporteAdulto3");else normalizar("plegadoYTransporteAdulto3"); 
-                if (disponibleCorteFinalAdulto3)pintarNaranja("corteFinalAdulto3");else normalizar("corteFinalAdulto3"); 
-                if (disponibleDobladoAdulto3)pintarNaranja("dobladoAdulto3");else normalizar("dobladoAdulto3"); 
-                if (disponibleCompactadorAdulto3)pintarNaranja("compactadorAdulto3");else normalizar("compactadorAdulto3"); 
-                if (disponibleSelladoraAdulto3)pintarNaranja("selladoraAdulto3");else normalizar("selladoraAdulto3"); 
-                if (disponibleTransmisionAdulto3)pintarNaranja("transmisionAdulto3");else normalizar("transmisionAdulto3"); 
+                if (disponibleMolinoAdulto3)pintarNaranja("molinoAdulto3");
+                if (disponibleFormacionAdulto3)pintarNaranja("formacionAdulto3");
+                if (disponibleAspiracionAdulto3)pintarNaranja("aspiracionAdulto3");
+                if (disponibleTransporteDeMantaYGrabadorAdulto3)pintarNaranja("transporteDeMantaYGrabadorAdulto3");
+                if (disponibleCorteDePadAdulto3)pintarNaranja("corteDePadAdulto3");
+                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto3)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto3");
+                if (disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3)pintarNaranja("moduloDeEtiquetasYTransporteDeProductoAdulto3");
+                if (disponiblePlegadoYTransporteAdulto3)pintarNaranja("plegadoYTransporteAdulto3");
+                if (disponibleCorteFinalAdulto3)pintarNaranja("corteFinalAdulto3");
+                if (disponibleDobladoAdulto3)pintarNaranja("dobladoAdulto3");
+                if (disponibleCompactadorAdulto3)pintarNaranja("compactadorAdulto3");
+                if (disponibleSelladoraAdulto3)pintarNaranja("selladoraAdulto3");
+                if (disponibleTransmisionAdulto3)pintarNaranja("transmisionAdulto3");
 
-                if (disponibleTransmisionAdulto2)pintarNaranja("transmisionAdulto2");else normalizar("transmisionAdulto2"); 
-                if (disponibleSelladoraAdulto2)pintarNaranja("selladoraAdulto2");else normalizar("selladoraAdulto2"); 
-                if (disponibleStackerAdulto2)pintarNaranja("stackerAdulto2");else normalizar("stackerAdulto2"); 
-                if (disponibleDobladoAdulto2)pintarNaranja("dobladoAdulto2");else normalizar("dobladoAdulto2"); 
-                if (disponibleCorteFinalAdulto2)pintarNaranja("corteFinalAdulto2");else normalizar("corteFinalAdulto2"); 
-                if (disponibleSaldanteAdulto2)pintarNaranja("saldanteAdulto2");else normalizar("saldanteAdulto2"); 
-                if (disponiblePlegadoYTransporteAdulto2)pintarNaranja("plegadoYTransporteAdulto2");else normalizar("plegadoYTransporteAdulto2"); 
-                if (disponibleCorteTangencialAdulto2)pintarNaranja("corteTangencialAdulto2");else normalizar("corteTangencialAdulto2"); 
-                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto2)pintarNaranja("primerYSegundoModuloDeEtiquetasAdulto2");else normalizar("primerYSegundoModuloDeEtiquetasAdulto2"); 
-                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto2)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto2");else normalizar("saldanteYAplicacionDeAdhesivoAdulto2"); 
-                if (disponibleCorteDePadAdulto2)pintarNaranja("corteDePadAdulto2");else normalizar("corteDePadAdulto2"); 
-                if (disponibleTransporteDeMantaAdulto2)pintarNaranja("transporteDeMantaAdulto2");else normalizar("transporteDeMantaAdulto2"); 
-                if (disponibleAspiracionAdulto2)pintarNaranja("aspiracionAdulto2");else normalizar("aspiracionAdulto2"); 
-                if (disponibleFormacionAdulto2)pintarNaranja("formacionAdulto2");else normalizar("formacionAdulto2"); 
-                if (disponibleMolinoAdulto2)pintarNaranja("molinoAdulto2");else normalizar("molinoAdulto2");
+                if (disponibleTransmisionAdulto2)pintarNaranja("transmisionAdulto2");
+                if (disponibleSelladoraAdulto2)pintarNaranja("selladoraAdulto2");
+                if (disponibleStackerAdulto2)pintarNaranja("stackerAdulto2");
+                if (disponibleDobladoAdulto2)pintarNaranja("dobladoAdulto2");
+                if (disponibleCorteFinalAdulto2)pintarNaranja("corteFinalAdulto2");
+                if (disponibleSaldanteAdulto2)pintarNaranja("saldanteAdulto2");
+                if (disponiblePlegadoYTransporteAdulto2)pintarNaranja("plegadoYTransporteAdulto2");
+                if (disponibleCorteTangencialAdulto2)pintarNaranja("corteTangencialAdulto2");
+                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto2)pintarNaranja("primerYSegundoModuloDeEtiquetasAdulto2");
+                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto2)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto2");
+                if (disponibleCorteDePadAdulto2)pintarNaranja("corteDePadAdulto2");
+                if (disponibleTransporteDeMantaAdulto2)pintarNaranja("transporteDeMantaAdulto2");
+                if (disponibleAspiracionAdulto2)pintarNaranja("aspiracionAdulto2");
+                if (disponibleFormacionAdulto2)pintarNaranja("formacionAdulto2");
+                if (disponibleMolinoAdulto2)pintarNaranja("molinoAdulto2");
                 
                 if (disponibleTransmisionAposito)pintarNaranja("transmisionAposito"); 
                 if (disponibleSelladora2Aposito)pintarNaranja("selladora2Aposito"); 
@@ -637,16 +637,11 @@
                 function pintarNaranja(id)
                 {
                 var elemento = document.getElementById(id);
-                elemento.style.fill = 'orange';
+                elemento.style.fill ='rgba(255,138,0, 0.7)';
 
                 }
                 
-                function normalizar(id)
-{
-                var elemento = document.getElementById(id);
-                elemento.style.fill = 'transparent';
-
-                }
+                
 
 
 
@@ -682,6 +677,12 @@
 
   // Iniciar el auto-refresh al cargar la página
   window.onload = iniciarAutoRefresh;
+  
+  
+  
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 
             <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->

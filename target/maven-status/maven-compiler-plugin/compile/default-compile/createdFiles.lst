@@ -14,6 +14,7 @@ mantenimiento\gestorTareas\dominio\Activo.class
 mantenimiento\gestorTareas\servicio\ServicioImpl.class
 mantenimiento\gestorTareas\dominio\Evaluacion.class
 mantenimiento\gestorTareas\web\ControladorTecnicos.class
+mantenimiento\gestorTareas\dominio\Preventivo.class
 mantenimiento\gestorTareas\dominio\Produccion.class
 mantenimiento\gestorTareas\datos\AsignacionDao.class
 mantenimiento\gestorTareas\util\Convertidor.class
@@ -24,6 +25,7 @@ mantenimiento\gestorTareas\web\WebConfig.class
 mantenimiento\gestorTareas\dominio\Rol.class
 mantenimiento\gestorTareas\servicio\TareaService.class
 mantenimiento\gestorTareas\util\EncriptarPassword.class
+mantenimiento\gestorTareas\servicio\PreventivoService.class
 mantenimiento\gestorTareas\web\ControladorUsuarios.class
 mantenimiento\gestorTareas\web\SecurityConfig.class
 mantenimiento\gestorTareas\web\equipos\ControladorEquipos.class

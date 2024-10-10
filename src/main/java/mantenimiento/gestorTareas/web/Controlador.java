@@ -107,13 +107,27 @@ public class Controlador {
         String aux = "";
         Boolean fallaPlanta2 = false;
         Boolean cierrePlanta2 = false;
-
+        
+        
+        
         for (Activo activo : activos) {
             aux = Convertidor.aCamelCase(activo.getNombre());
             aux = aux.toUpperCase().charAt(0) + aux.substring(1);
             model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
             model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-            model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
+//le paso la variable disponible si la hora cargada de la disponibilidad es mayor a la hora actual  
+            if(activo.getDisponibilidadHasta()!=null)
+            if(LocalDateTime.now().isBefore(activo.getDisponibilidadHasta()))
+            {
+                model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
+                model.addAttribute("tiempo" + aux, activo.getDisponibilidadHasta());
+                
+            }else
+            {
+                activo.setEstado("operativa");
+                activoService.save(activo);
+            }
+
             //detecto si algun activo de polanta2 esta detenido o aguardando cierre
             if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("detenida")) {
                 fallaPlanta2 = true;

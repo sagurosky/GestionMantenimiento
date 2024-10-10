@@ -10,6 +10,9 @@
             width: 100%;
             min-height: 400px;
         }
+/*        .col{
+            border:solid 1px;
+        }*/
     </style>
     <body>
         <!--<div th:replace="plantillas/plantilla::head"></div>-->
@@ -17,6 +20,8 @@
         <div class="container ">
             <h2 th:text="${activo.nombre}"></h2>
             <div class="row ">
+<!--                 <div class="col ">
+                 </div>-->
                 <div class="col ">
                     <!--<img th:src="/recursos/${nombreFoto}.jpg" usemap="#workmap" width="600px" height="600px" />-->
                     <!--<img th:src="${linkFoto}" usemap="#workmap" width="600px" height="600px" />-->
@@ -74,14 +79,32 @@
                                   
                            </div>
                         </div>
-                          <div class='row'th:if="${activo.estado=='disponible'}">
-                             <div class='col '>
-                                 Tiempo restante disponible:
-                           </div>
-                            <div class='col '>
-                               <h4>  <span th:id="tiempoRestanteDisponibilidad"></span> </h4>   
-                           </div>
-                        </div>
+                          <div th:if="${activo.estado=='disponible'}"> 
+                                <div class='row'>
+                                   <div class='col '>
+                                       Tiempo restante disponible:
+                                 </div>
+                                  <div class='col '>
+                                     <h4>  <span th:id="tiempoRestanteDisponibilidad"></span> </h4>   
+                                 </div>
+                              </div>
+                                <div class='row'>
+                                   <div class='col '>
+                                       Disponible desde:
+                                 </div>
+                                  <div class='col '>
+                                     <h4>  <span th:id="disponibilidadDesde"></span> </h4>   
+                                 </div>
+                              </div>
+                                <div class='row'>
+                                   <div class='col '>
+                                       Tiempo desde disponibilidad:
+                                 </div>
+                                  <div class='col '>
+                                     <h4>  <span th:id="transcurridoDesdeDisponibilidad"></span> </h4>   
+                                 </div>
+                              </div>
+                          </div> 
                         <div class='row'style="text-align: center"th:if="${activo.estado!='disponible'}">
                             <div class='col '>
                                 <input type='button' value="Confirmar" class="btn btn-primary "  onclick='validarHasta()'>
@@ -158,7 +181,12 @@
 
 
                         <br/>
-
+                        <a th:href="@{/crearTarea/}+ ${activo.id}" th:text="'Notificar detención'" class="btn btn-primary"></a>
+                        <br/>
+                        <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="'historial de detenciones'" class="btn btn-primary"></a>
+                        <br/>
+                        <a th:href="@{/preventivos/}+ ${activo.id}" th:text="'preventivos'" class="btn btn-primary"></a>
+                        <br/>
                         <h2 align=center>indicadores   
                             <!--<span> <a th:href="@{/configurarIndicadores}" th:text="configurar" class="btn btn-primary"></a></span>-->
                         </h2>
@@ -197,10 +225,7 @@
                             </div>
                         </div><!-- comment -->
 
-                        <a th:href="@{/registroActivo/}+ ${activo.id}" th:text="historial" class="btn btn-primary"></a>
-                        <br/><br/>
-                        <a th:href="@{/crearTarea/}+ ${activo.id}" class="btn btn-primary"><i class="fas fa-plus"></i> Crear tarea</a>
-                        <br/><br/>
+                        
 
 
 
@@ -264,26 +289,47 @@
                         
                         function actualizarTiempoRestante() {
                             // Obtener el elemento span
-                            var tiempoSpan = document.getElementById("tiempoRestanteDisponibilidad");
-
+                            var tiempoRestante = document.getElementById("tiempoRestanteDisponibilidad");
+                            var tiempoDesde = document.getElementById("disponibilidadDesde");
+                            var tiempoTranscurridoDesde = document.getElementById("transcurridoDesdeDisponibilidad");
                             // Obtener el tiempo detenido de Thymeleaf
-//                            var tiempoDetenido = [[ ${activo.momentoDetencion
-//                            }
-//                            ]];
+                            var disponibilidadDesde = [[ ${activo.disponibilidadDesde}]];
                             // Calcular la diferencia de tiempo
                             var tiempoActual = new Date();
                             var diferencia = new Date($("#disponibilidadHasta").val()).getTime()-tiempoActual.getTime() ;
-                            //
-                            //                // Convertir la diferencia de tiempo a horas, minutos y segundos
+                            //cuando alcanza el tiempo hace submit a cancelar automaticamente
                             if(new Date($("#disponibilidadHasta").val())<new Date())document.getElementById("formCancelarCambiarEstadoProd").submit();
+                            //                // Convertir la diferencia de tiempo a horas, minutos y segundos
                             
                             var horas = Math.floor(diferencia / (1000 * 60 * 60));
                             var minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
                             var segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
                             //
                             //                // Mostrar la diferencia de tiempo en el elemento span
-                            tiempoSpan.textContent = horas + ":" + minutos + ":" + segundos;
-                        }
+                            tiempoRestante.textContent = horas + ":" + minutos + ":" + segundos;
+                            
+                            
+                            
+                           // diferencia=
+                            
+                            
+                            
+                            
+//                            diferencia = tiempoActual.getTime()-new Date(disponibilidadDesde).getTime() ;
+                            var momentoDesdeDisponibilidad=new Date(disponibilidadDesde);
+                             tiempoDesde.textContent =momentoDesdeDisponibilidad.getDate()+"/"+(momentoDesdeDisponibilidad.getMonth()+1)+"/"+momentoDesdeDisponibilidad.getFullYear()+" - " +momentoDesdeDisponibilidad.getHours()  + ":" +momentoDesdeDisponibilidad.getMinutes()  + ":" +momentoDesdeDisponibilidad.getSeconds();
+                        
+    
+    
+    
+                              diferencia = tiempoActual.getTime()-new Date(disponibilidadDesde).getTime() ;
+    
+                             horas = Math.floor(diferencia / (1000 * 60 * 60));
+                             minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+                             segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+                             tiempoTranscurridoDesde.textContent= horas + ":" + minutos + ":" + segundos;
+    
+                          }
 
                         // Llamar a la función actualizarTiempo cada segundo para actualizar dinámicamente el tiempo
                         if($("#tiempoTranscurrido").length)

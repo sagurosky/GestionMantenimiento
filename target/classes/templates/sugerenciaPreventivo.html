@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="plantillas/plantilla::head">
+        <title>Modificar</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <header th:replace="plantillas/plantilla::header"></header>
+        <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
+            Serás redirigido en: <span id="tiempoRestante">60</span> segundos
+        </div>
+
+        <div class="container" >
+
+
+                        <h5 class="modal-title" >Generar sugerencia de preventivo (TPM)</h5>
+        <br/>
+                        <form th:action="@{/guardarSugerencia/}+ ${activo.id}" method="post"th:id="guardarSugerencia" th:object="${preventivo}" enctype="multipart/form-data"class="was-validated" >    
+                            <div class='row'> 
+                                <div class="col">
+                                    <label th:text="'descripcion'" ></label>   
+                                </div>
+                                <div class="col">
+                                 <input type="text" th:name="descripcion"class="form-control"/>
+                                </div>
+                            </div>
+                             <br/>
+                                <div class='row'>   
+                                <div class='col'>
+                                   <input type='submit' value="Guardar" class="btn btn-primary "/>
+                                </div> 
+                                <div class='col'>
+                                   <a  class="btn btn-primary" th:href="'/preventivos/'+${activo.id}" th:text="'Regresar'"></a>
+                               </div> 
+                           </div>    
+                        </form> 
+
+        </div>
+        <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->    
+        <script>
+            
+            
+            
+            
+            
+            
+            
+            var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+            // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+            function actualizarTiempoRestante() {
+                // Actualizar el contenido del span con el tiempo restante
+                document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+                // Disminuir el tiempo restante en 1 segundo
+                segundosRestantes--;
+
+                // Verificar si se alcanzó el tiempo límite
+                if (segundosRestantes < 0) {
+                    // Realizar la redirección después de 60 segundos
+                    window.location.href = '/';
+                } else {
+                    // Llamar a esta función nuevamente después de 1 segundo
+                    setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+                }
+            }
+
+            // Llamar a la función para iniciar el contador
+            actualizarTiempoRestante();
+        </script>
+
+
+
+
+    </body>
+</html>

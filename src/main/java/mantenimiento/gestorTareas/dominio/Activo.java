@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import lombok.Data;
@@ -37,6 +38,9 @@ public class Activo implements Serializable {
     private LocalDateTime momentoDetencion;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime disponibilidadHasta;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime disponibilidadDesde;
     
+     
 
 }
