@@ -21,12 +21,45 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-3" >
-                            <a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">
-                                 
-                            </a>
+                            <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
+                              <a 
+                                         href="#" 
+                                         data-toggle="modal" 
+                                         th:data-target="'#myModal'" 
+                                         class="btn btn-primary ">sugerencia de preventivo</a>   
+                            <!--</a>-->
                         </div>
 
                     </div>
+                    <div class="modal fade" th:id="'myModal'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Sugerir preventivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form th:id="'sugerenciaPreventivo'" th:action="@{/guardarSugerencia/}+ ${activo.id}"th:object="${preventivo}" method="post"> 
+                                        <div class="modal-body">
+                                            <div class='row'> 
+                                                <div class="col">
+                                                    <label th:text="'descripcion'" ></label>   
+                                                </div>
+                                                <div class="col">
+                                                 <input type="text" th:name="descripcion"class="form-control"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                                 
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" th:type="submit">guardar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
                 </div>
             </section>
             <section  class="py-2 mb-4  bg-light">
@@ -43,25 +76,34 @@
                     <thead class="thead-light " >
                         <tr > 
                             <th >activo</th>
+                            <th >estado activo</th>
                             <th >estado preventivo</th>
                             <th >descripcion </th>
-                            <th  sec:authorize="hasRole('ROLE_ADMIN')">solicita</th>
-                            <th sec:authorize="hasRole('ROLE_ADMIN')">editar</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')">solicita</th>
                             <th  sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')or hasRole('ROLE_TECNICO')">acción</th>
 
                         </tr>
                     </thead>
                     <tbody >
-                        <tr th:each="tarea: ${tareas}">
+                        <tr th:each="preventivo: ${preventivos}">
 
-                            <td th:text="${tarea.activo.nombre}" >activo</td>
-                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red">estado</td>
+                            <td th:text="${preventivo.activo.nombre}" >activo</td>
+                            <td th:text="${preventivo.activo.estado}" th:if='${preventivo.activo.estado=="detenida"}'style="background: red">estado</td>
+                            <td th:text="${preventivo.activo.estado}" th:if='${preventivo.activo.estado=="disponible"}'style="background: orange">estado</td>     
+                            <td th:text="${preventivo.activo.estado}" th:if='${preventivo.activo.estado=="operativa"}'style="background:lightgreen">estado</td>    
+                                
+                                
                             
-                        
-                        <td th:text="${tarea.descripcion}">descripcion</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${tarea.solicita}">usuario</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"> <a th:href="@{/editar/} + ${tarea.id}">editar</a></td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminar/}+${tarea.id}" >eliminar</a></td>
+                        <td th:text="${preventivo.estado}">estado preventivo</td>
+                        <td th:text="${preventivo.descripcion}">descripcion preventivo</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')" th:text="${preventivo.solicita}">usuario</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarPreventivo/}+${preventivo.id}" >eliminar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')" th:if='${preventivo.estado=="pendiente"}'>
+                            <a th:href="@{/validarPreventivo/}+${preventivo.id}" >validar</a></td>
+                         <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')or hasRole('ROLE_TECNICO')"th:if='${preventivo.estado=="validado"}'>
+                            <a th:href="@{/cerrarPreventivo/}+${preventivo.id}" >cerrar</a></td>   
+                            
 
 
 <!--                        <td  th:if='${tarea.activo.estado=="detenida"}'>

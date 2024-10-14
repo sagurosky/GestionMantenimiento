@@ -31,6 +31,7 @@ mantenimiento\gestorTareas\web\SecurityConfig.class
 mantenimiento\gestorTareas\web\equipos\ControladorEquipos.class
 mantenimiento\gestorTareas\web\Controlador.class
 mantenimiento\gestorTareas\web\ControladorProduccion.class
+mantenimiento\gestorTareas\web\ControladorAjax.class
 mantenimiento\gestorTareas\dominio\Asignacion.class
 mantenimiento\gestorTareas\dominio\Tarea.class
 mantenimiento\gestorTareas\dominio\Tecnico.class

@@ -116,7 +116,7 @@ public class Controlador {
             model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
             model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
 //le paso la variable disponible si la hora cargada de la disponibilidad es mayor a la hora actual  
-            if(activo.getDisponibilidadHasta()!=null)
+            if(activo.getDisponibilidadHasta()!=null&&activo.getEstado().equals("disponible"))
             if(LocalDateTime.now().isBefore(activo.getDisponibilidadHasta()))
             {
                 model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));

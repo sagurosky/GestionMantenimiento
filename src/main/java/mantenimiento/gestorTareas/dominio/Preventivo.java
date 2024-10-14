@@ -24,6 +24,7 @@ public class Preventivo implements Serializable {
     private Long id;
     private String descripcion;
     private String estado;
+    private String solicita;
     private String validacionMantenimiento;
     
     @OneToOne(cascade = CascadeType.ALL)

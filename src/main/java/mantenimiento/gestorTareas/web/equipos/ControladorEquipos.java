@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.ActivoDao;
@@ -627,23 +628,23 @@ public class ControladorEquipos {
         return "Preventivos";
     }
     
-    
-    @GetMapping("/sugerenciaPreventivo/{id}")
-    public String sugerenciaPreventivo( Model model, Activo activoRequest) {
-        
-        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
-        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
-       
-        
-        //me aseguro que el primer caracter sea minuscula sino falla
-        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
-        url=url.substring(1);
-        url=primerCaracterMinuscula+url;
-        
-        model.addAttribute("url",url);
-        model.addAttribute("activo",activoSeleccionado);
-        return "sugerenciaPreventivo";
-    }
+//    borrar
+//    @GetMapping("/sugerenciaPreventivo/{id}")
+//    public String sugerenciaPreventivo( Model model, Activo activoRequest) {
+//        
+//        Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
+//        String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
+//       
+//        
+//        //me aseguro que el primer caracter sea minuscula sino falla
+//        char primerCaracterMinuscula = Character.toLowerCase(url.charAt(0));
+//        url=url.substring(1);
+//        url=primerCaracterMinuscula+url;
+//        
+//        model.addAttribute("url",url);
+//        model.addAttribute("activo",activoSeleccionado);
+//        return "sugerenciaPreventivo";
+//    }
     
     @PostMapping("/guardarSugerencia/{id}")
 //    public String guardarSugerencia(@Param("descripcion")String descripcion, Model model,  Activo activoRequest,Preventivo preventivo) {
@@ -654,7 +655,11 @@ public class ControladorEquipos {
         
         Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
          preventivo.setActivo(activoSeleccionado);
+         preventivo.setEstado("pendiente");
 
+          Authentication aut = SecurityContextHolder.getContext().getAuthentication();
+        preventivo.setSolicita(aut.getName());
+         
 //        activo.save(activoSeleccionado);
         preventivoService.save(preventivo);
         String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
@@ -667,9 +672,33 @@ public class ControladorEquipos {
         return "redirect:/preventivos/" + activoSeleccionado.getId();
     }
     
+  @GetMapping("/eliminarPreventivo/{id}")
+    public String eliminarPreventivo(Model model, Preventivo preventivo) {
+        
+        Long id=preventivoService.findById(preventivo.getId()).orElse(null).getActivo().getId();
+        preventivoService.delete(preventivo);
+         return "redirect:/preventivos/" + id;
+    }
     
+    @GetMapping("/validarPreventivo/{id}")
+    public String validarPreventivo(Model model, Preventivo preventivo) {
+        
+        Preventivo preventivoBd=preventivoService.findById(preventivo.getId()).orElse(null);
+        preventivoBd.setEstado("validado");
+       preventivoService.save(preventivoBd);
+       
+        return "redirect:/preventivos/" + preventivoBd.getActivo().getId();
+    }
     
-    
+    @GetMapping("/cerrarPreventivo/{id}")
+    public String cerrarPreventivo(Model model, Preventivo preventivo) {
+        
+        Preventivo preventivoBd=preventivoService.findById(preventivo.getId()).orElse(null);
+        preventivoBd.setEstado("cerrado");
+       preventivoService.save(preventivoBd);
+       
+        return "redirect:/preventivos/" + preventivoBd.getActivo().getId();
+    }
     
     
     

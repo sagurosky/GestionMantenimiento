@@ -13,5 +13,9 @@ public interface PreventivoService extends JpaRepository<Preventivo,Long> {
             + "t.activo=?1")
     public List<Preventivo> traerPorActivo(Activo activo );
     
+    @Query("SELECT t FROM Preventivo t  WHERE "
+            + "t.activo.nombre=?1 and t.estado='validado'")
+    public List<Preventivo> traerActivosValidadosPorNombreActivo(String activo );
+    
     
 }

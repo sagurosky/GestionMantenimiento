@@ -41,7 +41,23 @@
                             border:solid 1px;
                         }*/
             
-       
+                    /* Ocultar el card por defecto */
+             #cardInfo {
+                 display: none;
+                 z-index: 1000;
+             }
+
+             /* Mostrar el card cuando el path está en hover */
+             a:hover + #cardInfo {
+                 display: block;
+             }
+
+             /* Si quieres posicionar el card de manera más flexible */
+             a:hover + #cardInfo {
+                 display: block;
+                 left: 50px; /* Ajusta la posición */
+                 top: 50px;  /* Ajusta la posición */
+             }
     </style>
         <body>
             <header th:replace="plantillas/plantilla::header">lista de tareas</header>
@@ -165,6 +181,22 @@
                             planta 2
                         </a>
                     </div>
+                    
+                    
+                    
+                    
+                    
+                                        <!-- Contenedor del card, inicialmente oculto -->
+                    <div id="cardInfo" class="card" style="width: 18rem; display: none; position: absolute;box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
+                      <div class="card-body">
+                        <h5 class="card-title">Preventivos validados</h5>
+                        <p class="card-text"id="listaPreventivos"></p>
+                      </div>
+                    </div>
+                    
+                    
+                    
+                    
 
                     <div class="col-md-10" style="text-align: center; padding-left: 50px"  >
                         <div class=" mapadiv">
@@ -324,322 +356,157 @@
             <script th:inline="javascript">
                 
         
+                //seteo todos los atributos en "operativa" que es la condicion normal
+                $("path").attr("data-estado", "operativa"); 
                 
-                
-                
-                
-                
-
-//capturo todas las variables de falla que vienen del modelo
-                var fallaMolinoAdulto3                                  =[[${fallaMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
-                var fallaFormacionAdulto3                               =[[${fallaFormacionAdulto3}]];
-                var fallaAspiracionAdulto3                              =[[${fallaAspiracionAdulto3}]];
-                var fallaTransporteDeMantaYGrabadorAdulto3              =[[${fallaTransporteDeMantaYGrabadorAdulto3}]];
-                var fallaCorteDePadAdulto3                              =[[${fallaCorteDePadAdulto3}]];
-                var fallaSaldanteYAplicacionDeAdhesivoAdulto3           =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto3}]];
-                var fallaModuloDeEtiquetasYTransporteDeProductoAdulto3  =[[${fallaModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
-                var fallaPlegadoYTransporteAdulto3                      =[[${fallaPlegadoYTransporteAdulto3}]];
-                var fallaCorteFinalAdulto3                              =[[${fallaCorteFinalAdulto3}]];
-                var fallaDobladoAdulto3                                 =[[${fallaDobladoAdulto3}]];
-                var fallaCompactadorAdulto3                             =[[${fallaCompactadorAdulto3}]];
-                var fallaSelladoraAdulto3                               =[[${fallaSelladoraAdulto3}]];
-                var fallaTransmisionAdulto3                             =[[${fallaTransmisionAdulto3}]];
-                
-                var fallaTransmisionAdulto2                             =[[${fallaTransmisionAdulto2}]];
-                var fallaSelladoraAdulto2                               =[[${fallaSelladoraAdulto2}]];
-                var fallaStackerAdulto2                                 =[[${fallaStackerAdulto2}]];
-                var fallaDobladoAdulto2                                 =[[${fallaDobladoAdulto2}]];
-                var fallaCorteFinalAdulto2                              =[[${fallaCorteFinalAdulto2}]];
-                var fallaSaldanteAdulto2                                =[[${fallaSaldanteAdulto2}]];
-                var fallaPlegadoYTransporteAdulto2                      =[[${fallaPlegadoYTransporteAdulto2}]];
-                var fallaCorteTangencialAdulto2                         =[[${fallaCorteTangencialAdulto2}]];
-                var fallaPrimerYSegundoModuloDeEtiquetasAdulto2         =[[${fallaPrimerYSegundoModuloDeEtiquetasAdulto2}]];
-                var fallaSaldanteYAplicacionDeAdhesivoAdulto2           =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto2}]];
-                var fallaCorteDePadAdulto2                              =[[${fallaCorteDePadAdulto2}]];
-                var fallaTransporteDeMantaAdulto2                       =[[${fallaTransporteDeMantaAdulto2}]];
-                var fallaAspiracionAdulto2                              =[[${fallaAspiracionAdulto2}]];
-                var fallaFormacionAdulto2                               =[[${fallaFormacionAdulto2}]];
-                var fallaMolinoAdulto2                                  =[[${fallaMolinoAdulto2}]];
-                
-                var fallaTransmisionAposito                             =[[${fallaTransmisionAposito}]];
-                var fallaSelladora2Aposito                              =[[${fallaSelladora2Aposito}]];
-                var fallaSelladoraAposito                               =[[${fallaSelladoraAposito}]];
-                var fallaCompactadorAposito                             =[[${fallaCompactadorAposito}]];
-                var fallaModuloPlegadoYCompactadoAposito                =[[${fallaModuloPlegadoYCompactadoAposito}]];
-                var fallaSaldanteAposito                                =[[${fallaSaldanteAposito}]];
-                var fallaSaldanteYAplicacionDeAdhesivoAposito           =[[${fallaSaldanteYAplicacionDeAdhesivoAposito}]];
-                var fallaCortePadAposito                                =[[${fallaCortePadAposito}]];
-                var fallaTransporteDeMantaYGrabadorAposito              =[[${fallaTransporteDeMantaYGrabadorAposito}]];
-                var fallaMolinoAposito                                  =[[${fallaMolinoAposito}]];
+//                
+//                
+//
+////capturo todas las variables de falla que vienen del modelo
+//                var fallaMolinoAdulto3                                  =[[${fallaMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var fallaFormacionAdulto3                               =[[${fallaFormacionAdulto3}]];
+//                var fallaAspiracionAdulto3                              =[[${fallaAspiracionAdulto3}]];
+//                var fallaTransporteDeMantaYGrabadorAdulto3              =[[${fallaTransporteDeMantaYGrabadorAdulto3}]];
+//                var fallaCorteDePadAdulto3                              =[[${fallaCorteDePadAdulto3}]];
+//                var fallaSaldanteYAplicacionDeAdhesivoAdulto3           =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto3}]];
+//                var fallaModuloDeEtiquetasYTransporteDeProductoAdulto3  =[[${fallaModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
+//                var fallaPlegadoYTransporteAdulto3                      =[[${fallaPlegadoYTransporteAdulto3}]];
+//                var fallaCorteFinalAdulto3                              =[[${fallaCorteFinalAdulto3}]];
+//                var fallaDobladoAdulto3                                 =[[${fallaDobladoAdulto3}]];
+//                var fallaCompactadorAdulto3                             =[[${fallaCompactadorAdulto3}]];
+//                var fallaSelladoraAdulto3                               =[[${fallaSelladoraAdulto3}]];
+//                var fallaTransmisionAdulto3                             =[[${fallaTransmisionAdulto3}]];
+//                
+//                var fallaTransmisionAdulto2                             =[[${fallaTransmisionAdulto2}]];
+//                var fallaSelladoraAdulto2                               =[[${fallaSelladoraAdulto2}]];
+//                var fallaStackerAdulto2                                 =[[${fallaStackerAdulto2}]];
+//                var fallaDobladoAdulto2                                 =[[${fallaDobladoAdulto2}]];
+//                var fallaCorteFinalAdulto2                              =[[${fallaCorteFinalAdulto2}]];
+//                var fallaSaldanteAdulto2                                =[[${fallaSaldanteAdulto2}]];
+//                var fallaPlegadoYTransporteAdulto2                      =[[${fallaPlegadoYTransporteAdulto2}]];
+//                var fallaCorteTangencialAdulto2                         =[[${fallaCorteTangencialAdulto2}]];
+//                var fallaPrimerYSegundoModuloDeEtiquetasAdulto2         =[[${fallaPrimerYSegundoModuloDeEtiquetasAdulto2}]];
+//                var fallaSaldanteYAplicacionDeAdhesivoAdulto2           =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto2}]];
+//                var fallaCorteDePadAdulto2                              =[[${fallaCorteDePadAdulto2}]];
+//                var fallaTransporteDeMantaAdulto2                       =[[${fallaTransporteDeMantaAdulto2}]];
+//                var fallaAspiracionAdulto2                              =[[${fallaAspiracionAdulto2}]];
+//                var fallaFormacionAdulto2                               =[[${fallaFormacionAdulto2}]];
+//                var fallaMolinoAdulto2                                  =[[${fallaMolinoAdulto2}]];
+//                
+//                var fallaTransmisionAposito                             =[[${fallaTransmisionAposito}]];
+//                var fallaSelladora2Aposito                              =[[${fallaSelladora2Aposito}]];
+//                var fallaSelladoraAposito                               =[[${fallaSelladoraAposito}]];
+//                var fallaCompactadorAposito                             =[[${fallaCompactadorAposito}]];
+//                var fallaModuloPlegadoYCompactadoAposito                =[[${fallaModuloPlegadoYCompactadoAposito}]];
+//                var fallaSaldanteAposito                                =[[${fallaSaldanteAposito}]];
+//                var fallaSaldanteYAplicacionDeAdhesivoAposito           =[[${fallaSaldanteYAplicacionDeAdhesivoAposito}]];
+//                var fallaCortePadAposito                                =[[${fallaCortePadAposito}]];
+//                var fallaTransporteDeMantaYGrabadorAposito              =[[${fallaTransporteDeMantaYGrabadorAposito}]];
+//                var fallaMolinoAposito                                  =[[${fallaMolinoAposito}]];
              //capturo todas las variables de cierre que vienen del modelo   
                 
     
     
     
 
-                var cierreMolinoAdulto3                                 =[[${cierreMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
-                var cierreFormacionAdulto3                              =[[${cierreFormacionAdulto3}]];
-                var cierreAspiracionAdulto3                             =[[${cierreAspiracionAdulto3}]];
-                var cierreTransporteDeMantaYGrabadorAdulto3             =[[${cierreTransporteDeMantaYGrabadorAdulto3}]];
-                var cierreCorteDePadAdulto3                             =[[${cierreCorteDePadAdulto3}]];
-                var cierreSaldanteYAplicacionDeAdhesivoAdulto3          =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto3}]];
-                var cierreModuloDeEtiquetasYTransporteDeProductoAdulto3 =[[${cierreModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
-                var cierrePlegadoYTransporteAdulto3                     =[[${cierrePlegadoYTransporteAdulto3}]];
-                var cierreCorteFinalAdulto3                             =[[${cierreCorteFinalAdulto3}]];
-                var cierreDobladoAdulto3                                =[[${cierreDobladoAdulto3}]];
-                var cierreCompactadorAdulto3                            =[[${cierreCompactadorAdulto3}]];
-                var cierreSelladoraAdulto3                              =[[${cierreSelladoraAdulto3}]];
-                var cierreTransmisionAdulto3                            =[[${cierreTransmisionAdulto3}]];
-                
-                var cierreTransmisionAdulto2                            =[[${cierreTransmisionAdulto2}]];
-                var cierreSelladoraAdulto2                              =[[${cierreSelladoraAdulto2}]];
-                var cierreStackerAdulto2                                =[[${cierreStackerAdulto2}]];
-                var cierreDobladoAdulto2                                =[[${cierreDobladoAdulto2}]];
-                var cierreCorteFinalAdulto2                             =[[${cierreCorteFinalAdulto2}]];
-                var cierreSaldanteAdulto2                               =[[${cierreSaldanteAdulto2}]];
-                var cierrePlegadoYTransporteAdulto2                     =[[${cierrePlegadoYTransporteAdulto2}]]; 
-                var cierreCorteTangencialAdulto2                        =[[${cierreCorteTangencialAdulto2}]];
-                var cierrePrimerYSegundoModuloDeEtiquetasAdulto2        =[[${cierrePrimerYSegundoModuloDeEtiquetasAdulto2}]];
-                var cierreSaldanteYAplicacionDeAdhesivoAdulto2          =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto2}]];
-                var cierreCorteDePadAdulto2                             =[[${cierreCorteDePadAdulto2}]];
-                var cierreTransporteDeMantaAdulto2                      =[[${cierreTransporteDeMantaAdulto2}]];
-                var cierreAspiracionAdulto2                             =[[${cierreAspiracionAdulto2}]];
-                var cierreFormacionAdulto2                              =[[${cierreFormacionAdulto2}]]; 
-                var cierreMolinoAdulto2                                 =[[${cierreMolinoAdulto2}]];
-                
-                var cierreTransmisionAposito                            =[[${cierreTransmisionAposito}]];
-                var cierreSelladora2Aposito                             =[[${cierreSelladora2Aposito}]];
-                var cierreSelladoraAposito                              =[[${cierreSelladoraAposito}]];
-                var cierreCompactadorAposito                            =[[${cierreCompactadorAposito}]];
-                var cierreModuloPlegadoYCompactadoAposito               =[[${cierreModuloPlegadoYCompactadoAposito}]];
-                var cierreSaldanteAposito                               =[[${cierreSaldanteAposito}]];
-                var cierreSaldanteYAplicacionDeAdhesivoAposito          =[[${cierreSaldanteYAplicacionDeAdhesivoAposito}]];
-                var cierreCortePadAposito                               =[[${cierreCortePadAposito}]];
-                var cierreTransporteDeMantaYGrabadorAposito             =[[${cierreTransporteDeMantaYGrabadorAposito}]];
-                var cierreMolinoAposito                                 =[[${cierreMolinoAposito}]];
+//                var cierreMolinoAdulto3                                 =[[${cierreMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var cierreFormacionAdulto3                              =[[${cierreFormacionAdulto3}]];
+//                var cierreAspiracionAdulto3                             =[[${cierreAspiracionAdulto3}]];
+//                var cierreTransporteDeMantaYGrabadorAdulto3             =[[${cierreTransporteDeMantaYGrabadorAdulto3}]];
+//                var cierreCorteDePadAdulto3                             =[[${cierreCorteDePadAdulto3}]];
+//                var cierreSaldanteYAplicacionDeAdhesivoAdulto3          =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto3}]];
+//                var cierreModuloDeEtiquetasYTransporteDeProductoAdulto3 =[[${cierreModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
+//                var cierrePlegadoYTransporteAdulto3                     =[[${cierrePlegadoYTransporteAdulto3}]];
+//                var cierreCorteFinalAdulto3                             =[[${cierreCorteFinalAdulto3}]];
+//                var cierreDobladoAdulto3                                =[[${cierreDobladoAdulto3}]];
+//                var cierreCompactadorAdulto3                            =[[${cierreCompactadorAdulto3}]];
+//                var cierreSelladoraAdulto3                              =[[${cierreSelladoraAdulto3}]];
+//                var cierreTransmisionAdulto3                            =[[${cierreTransmisionAdulto3}]];
+//                
+//                var cierreTransmisionAdulto2                            =[[${cierreTransmisionAdulto2}]];
+//                var cierreSelladoraAdulto2                              =[[${cierreSelladoraAdulto2}]];
+//                var cierreStackerAdulto2                                =[[${cierreStackerAdulto2}]];
+//                var cierreDobladoAdulto2                                =[[${cierreDobladoAdulto2}]];
+//                var cierreCorteFinalAdulto2                             =[[${cierreCorteFinalAdulto2}]];
+//                var cierreSaldanteAdulto2                               =[[${cierreSaldanteAdulto2}]];
+//                var cierrePlegadoYTransporteAdulto2                     =[[${cierrePlegadoYTransporteAdulto2}]]; 
+//                var cierreCorteTangencialAdulto2                        =[[${cierreCorteTangencialAdulto2}]];
+//                var cierrePrimerYSegundoModuloDeEtiquetasAdulto2        =[[${cierrePrimerYSegundoModuloDeEtiquetasAdulto2}]];
+//                var cierreSaldanteYAplicacionDeAdhesivoAdulto2          =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto2}]];
+//                var cierreCorteDePadAdulto2                             =[[${cierreCorteDePadAdulto2}]];
+//                var cierreTransporteDeMantaAdulto2                      =[[${cierreTransporteDeMantaAdulto2}]];
+//                var cierreAspiracionAdulto2                             =[[${cierreAspiracionAdulto2}]];
+//                var cierreFormacionAdulto2                              =[[${cierreFormacionAdulto2}]]; 
+//                var cierreMolinoAdulto2                                 =[[${cierreMolinoAdulto2}]];
+//                
+//                var cierreTransmisionAposito                            =[[${cierreTransmisionAposito}]];
+//                var cierreSelladora2Aposito                             =[[${cierreSelladora2Aposito}]];
+//                var cierreSelladoraAposito                              =[[${cierreSelladoraAposito}]];
+//                var cierreCompactadorAposito                            =[[${cierreCompactadorAposito}]];
+//                var cierreModuloPlegadoYCompactadoAposito               =[[${cierreModuloPlegadoYCompactadoAposito}]];
+//                var cierreSaldanteAposito                               =[[${cierreSaldanteAposito}]];
+//                var cierreSaldanteYAplicacionDeAdhesivoAposito          =[[${cierreSaldanteYAplicacionDeAdhesivoAposito}]];
+//                var cierreCortePadAposito                               =[[${cierreCortePadAposito}]];
+//                var cierreTransporteDeMantaYGrabadorAposito             =[[${cierreTransporteDeMantaYGrabadorAposito}]];
+//                var cierreMolinoAposito                                 =[[${cierreMolinoAposito}]];
   
    //capturo todas las variables de disponible que vienen del modelo   
                 
     
     
     
-
-                var disponibleMolinoAdulto3                                 =[[${disponibleMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
-                var disponibleFormacionAdulto3                              =[[${disponibleFormacionAdulto3}]];
-                var disponibleAspiracionAdulto3                             =[[${disponibleAspiracionAdulto3}]];
-                var disponibleTransporteDeMantaYGrabadorAdulto3             =[[${disponibleTransporteDeMantaYGrabadorAdulto3}]];
-                var disponibleCorteDePadAdulto3                             =[[${disponibleCorteDePadAdulto3}]];
-                var disponibleSaldanteYAplicacionDeAdhesivoAdulto3          =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto3}]];
-                var disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3 =[[${disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
-                var disponiblePlegadoYTransporteAdulto3                     =[[${disponiblePlegadoYTransporteAdulto3}]];
-                var disponibleCorteFinalAdulto3                             =[[${disponibleCorteFinalAdulto3}]];
-                var disponibleDobladoAdulto3                                =[[${disponibleDobladoAdulto3}]];
-                var disponibleCompactadorAdulto3                            =[[${disponibleCompactadorAdulto3}]];
-                var disponibleSelladoraAdulto3                              =[[${disponibleSelladoraAdulto3}]];
-                var disponibleTransmisionAdulto3                            =[[${disponibleTransmisionAdulto3}]];
-                
-                var disponibleTransmisionAdulto2                            =[[${disponibleTransmisionAdulto2}]];
-                var disponibleSelladoraAdulto2                              =[[${disponibleSelladoraAdulto2}]];
-                var disponibleStackerAdulto2                                =[[${disponibleStackerAdulto2}]];
-                var disponibleDobladoAdulto2                                =[[${disponibleDobladoAdulto2}]];
-                var disponibleCorteFinalAdulto2                             =[[${disponibleCorteFinalAdulto2}]];
-                var disponibleSaldanteAdulto2                               =[[${disponibleSaldanteAdulto2}]];
-                var disponiblePlegadoYTransporteAdulto2                     =[[${disponiblePlegadoYTransporteAdulto2}]]; 
-                var disponibleCorteTangencialAdulto2                        =[[${disponibleCorteTangencialAdulto2}]];
-                var disponiblePrimerYSegundoModuloDeEtiquetasAdulto2        =[[${disponiblePrimerYSegundoModuloDeEtiquetasAdulto2}]];
-                var disponibleSaldanteYAplicacionDeAdhesivoAdulto2          =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto2}]];
-                var disponibleCorteDePadAdulto2                             =[[${disponibleCorteDePadAdulto2}]];
-                var disponibleTransporteDeMantaAdulto2                      =[[${disponibleTransporteDeMantaAdulto2}]];
-                var disponibleAspiracionAdulto2                             =[[${disponibleAspiracionAdulto2}]];
-                var disponibleFormacionAdulto2                              =[[${disponibleFormacionAdulto2}]]; 
-                var disponibleMolinoAdulto2                                 =[[${disponibleMolinoAdulto2}]];
-                
-                var disponibleTransmisionAposito                            =[[${disponibleTransmisionAposito}]];
-                var disponibleSelladora2Aposito                             =[[${disponibleSelladora2Aposito}]];
-                var disponibleSelladoraAposito                              =[[${disponibleSelladoraAposito}]];
-                var disponibleCompactadorAposito                            =[[${disponibleCompactadorAposito}]];
-                var disponibleModuloPlegadoYCompactadoAposito               =[[${disponibleModuloPlegadoYCompactadoAposito}]];
-                var disponibleSaldanteAposito                               =[[${disponibleSaldanteAposito}]];
-                var disponibleSaldanteYAplicacionDeAdhesivoAposito          =[[${disponibleSaldanteYAplicacionDeAdhesivoAposito}]];
-                var disponibleCortePadAposito                               =[[${disponibleCortePadAposito}]];
-                var disponibleTransporteDeMantaYGrabadorAposito             =[[${disponibleTransporteDeMantaYGrabadorAposito}]];
-                var disponibleMolinoAposito                                 =[[${disponibleMolinoAposito}]];
+//
+//                var disponibleMolinoAdulto3                                 =[[${disponibleMolinoAdulto3}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var disponibleFormacionAdulto3                              =[[${disponibleFormacionAdulto3}]];
+//                var disponibleAspiracionAdulto3                             =[[${disponibleAspiracionAdulto3}]];
+//                var disponibleTransporteDeMantaYGrabadorAdulto3             =[[${disponibleTransporteDeMantaYGrabadorAdulto3}]];
+//                var disponibleCorteDePadAdulto3                             =[[${disponibleCorteDePadAdulto3}]];
+//                var disponibleSaldanteYAplicacionDeAdhesivoAdulto3          =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto3}]];
+//                var disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3 =[[${disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3}]];
+//                var disponiblePlegadoYTransporteAdulto3                     =[[${disponiblePlegadoYTransporteAdulto3}]];
+//                var disponibleCorteFinalAdulto3                             =[[${disponibleCorteFinalAdulto3}]];
+//                var disponibleDobladoAdulto3                                =[[${disponibleDobladoAdulto3}]];
+//                var disponibleCompactadorAdulto3                            =[[${disponibleCompactadorAdulto3}]];
+//                var disponibleSelladoraAdulto3                              =[[${disponibleSelladoraAdulto3}]];
+//                var disponibleTransmisionAdulto3                            =[[${disponibleTransmisionAdulto3}]];
+//                
+//                var disponibleTransmisionAdulto2                            =[[${disponibleTransmisionAdulto2}]];
+//                var disponibleSelladoraAdulto2                              =[[${disponibleSelladoraAdulto2}]];
+//                var disponibleStackerAdulto2                                =[[${disponibleStackerAdulto2}]];
+//                var disponibleDobladoAdulto2                                =[[${disponibleDobladoAdulto2}]];
+//                var disponibleCorteFinalAdulto2                             =[[${disponibleCorteFinalAdulto2}]];
+//                var disponibleSaldanteAdulto2                               =[[${disponibleSaldanteAdulto2}]];
+//                var disponiblePlegadoYTransporteAdulto2                     =[[${disponiblePlegadoYTransporteAdulto2}]]; 
+//                var disponibleCorteTangencialAdulto2                        =[[${disponibleCorteTangencialAdulto2}]];
+//                var disponiblePrimerYSegundoModuloDeEtiquetasAdulto2        =[[${disponiblePrimerYSegundoModuloDeEtiquetasAdulto2}]];
+//                var disponibleSaldanteYAplicacionDeAdhesivoAdulto2          =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto2}]];
+//                var disponibleCorteDePadAdulto2                             =[[${disponibleCorteDePadAdulto2}]];
+//                var disponibleTransporteDeMantaAdulto2                      =[[${disponibleTransporteDeMantaAdulto2}]];
+//                var disponibleAspiracionAdulto2                             =[[${disponibleAspiracionAdulto2}]];
+//                var disponibleFormacionAdulto2                              =[[${disponibleFormacionAdulto2}]]; 
+//                var disponibleMolinoAdulto2                                 =[[${disponibleMolinoAdulto2}]];
+//                
+//                var disponibleTransmisionAposito                            =[[${disponibleTransmisionAposito}]];
+//                var disponibleSelladora2Aposito                             =[[${disponibleSelladora2Aposito}]];
+//                var disponibleSelladoraAposito                              =[[${disponibleSelladoraAposito}]];
+//                var disponibleCompactadorAposito                            =[[${disponibleCompactadorAposito}]];
+//                var disponibleModuloPlegadoYCompactadoAposito               =[[${disponibleModuloPlegadoYCompactadoAposito}]];
+//                var disponibleSaldanteAposito                               =[[${disponibleSaldanteAposito}]];
+//                var disponibleSaldanteYAplicacionDeAdhesivoAposito          =[[${disponibleSaldanteYAplicacionDeAdhesivoAposito}]];
+//                var disponibleCortePadAposito                               =[[${disponibleCortePadAposito}]];
+//                var disponibleTransporteDeMantaYGrabadorAposito             =[[${disponibleTransporteDeMantaYGrabadorAposito}]];
+//                var disponibleMolinoAposito                                 =[[${disponibleMolinoAposito}]];
+//  
+//  
   
   
-  
-  
-                if (fallaMolinoAdulto3)parpadearRojo("molinoAdulto3");
-                if (fallaFormacionAdulto3)parpadearRojo("formacionAdulto3");
-                if (fallaAspiracionAdulto3)parpadearRojo("aspiracionAdulto3");
-                if (fallaTransporteDeMantaYGrabadorAdulto3)parpadearRojo("transporteDeMantaYGrabadorAdulto3");
-                if (fallaCorteDePadAdulto3)parpadearRojo("corteDePadAdulto3");
-                if (fallaSaldanteYAplicacionDeAdhesivoAdulto3)parpadearRojo("saldanteYAplicacionDeAdhesivoAdulto3");
-                if (fallaModuloDeEtiquetasYTransporteDeProductoAdulto3)parpadearRojo("moduloDeEtiquetasYTransporteDeProductoAdulto3");
-                if (fallaPlegadoYTransporteAdulto3)parpadearRojo("plegadoYTransporteAdulto3");
-                if (fallaCorteFinalAdulto3)parpadearRojo("corteFinalAdulto3");
-                if (fallaDobladoAdulto3)parpadearRojo("dobladoAdulto3");
-                if (fallaCompactadorAdulto3)parpadearRojo("compactadorAdulto3");
-                if (fallaSelladoraAdulto3)parpadearRojo("selladoraAdulto3");
-                if (fallaTransmisionAdulto3)parpadearRojo("transmisionAdulto3");
-                
-                if (fallaTransmisionAdulto2)parpadearRojo("transmisionAdulto2");
-                if (fallaSelladoraAdulto2)parpadearRojo("selladoraAdulto2");
-                if (fallaStackerAdulto2)parpadearRojo("stackerAdulto2");
-                if (fallaDobladoAdulto2)parpadearRojo("dobladoAdulto2");
-                if (fallaCorteFinalAdulto2)parpadearRojo("corteFinalAdulto2");
-                if (fallaSaldanteAdulto2)parpadearRojo("saldanteAdulto2");
-                if (fallaPlegadoYTransporteAdulto2)parpadearRojo("plegadoYTransporteAdulto2");
-                if (fallaCorteTangencialAdulto2)parpadearRojo("corteTangencialAdulto2");
-                if (fallaPrimerYSegundoModuloDeEtiquetasAdulto2)parpadearRojo("primerYSegundoModuloDeEtiquetasAdulto2");
-                if (fallaSaldanteYAplicacionDeAdhesivoAdulto2)parpadearRojo("saldanteYAplicacionDeAdhesivoAdulto2");
-                if (fallaCorteDePadAdulto2)parpadearRojo("corteDePadAdulto2");
-                if (fallaTransporteDeMantaAdulto2)parpadearRojo("transporteDeMantaAdulto2");
-                if (fallaAspiracionAdulto2)parpadearRojo("aspiracionAdulto2");
-                if (fallaFormacionAdulto2)parpadearRojo("formacionAdulto2");
-                if (fallaMolinoAdulto2)parpadearRojo("molinoAdulto2");
-                
-                if (fallaTransmisionAposito)parpadearRojo("transmisionAposito");
-                if (fallaSelladora2Aposito)parpadearRojo("selladora2Aposito");
-                if (fallaSelladoraAposito)parpadearRojo("selladoraAposito");
-                if (fallaCompactadorAposito)parpadearRojo("compactadorAposito");
-                if (fallaModuloPlegadoYCompactadoAposito)parpadearRojo("moduloPlegadoYCompactadoAposito");
-                if (fallaSaldanteAposito)parpadearRojo("saldanteAposito");
-                if (fallaSaldanteYAplicacionDeAdhesivoAposito)parpadearRojo("saldanteYAplicacionDeAdhesivoAposito");
-                if (fallaCortePadAposito)parpadearRojo("cortePadAposito");
-                if (fallaTransporteDeMantaYGrabadorAposito)parpadearRojo("transporteDeMantaYGrabadorAposito");
-                if (fallaMolinoAposito)parpadearRojo("molinoAposito");
-                
-//                parpadearRojo("lamparaDobladoAdulto3");
-//                parpadearRojo("lamparaCorteFinalAdulto3");
-//                 parpadearRojo("lamparaSaldanteAposito");
                 //si hay algun activo detenido en planta 2 parpadea el boton
                 if([[${fallaPlanta2}]])parpadearRojo("botonPlanta2");
+//                else clearInterval(interval);
                 if([[${cierrePlanta2}]])parpadearAmarillo("botonPlanta2");
+//                else clearInterval(interval);
                 
 
-                if (cierreMolinoAdulto3)parpadearAmarillo("molinoAdulto3");
-                if (cierreFormacionAdulto3)parpadearAmarillo("formacionAdulto3");
-                if (cierreAspiracionAdulto3)parpadearAmarillo("aspiracionAdulto3"); 
-                if (cierreTransporteDeMantaYGrabadorAdulto3)parpadearAmarillo("transporteDeMantaYGrabadorAdulto3"); 
-                if (cierreCorteDePadAdulto3)parpadearAmarillo("corteDePadAdulto3"); 
-                if (cierreSaldanteYAplicacionDeAdhesivoAdulto3)parpadearAmarillo("saldanteYAplicacionDeAdhesivoAdulto3"); 
-                if (cierreModuloDeEtiquetasYTransporteDeProductoAdulto3)parpadearAmarillo("moduloDeEtiquetasYTransporteDeProductoAdulto3"); 
-                if (cierrePlegadoYTransporteAdulto3)parpadearAmarillo("plegadoYTransporteAdulto3"); 
-                if (cierreCorteFinalAdulto3)parpadearAmarillo("corteFinalAdulto3"); 
-                if (cierreDobladoAdulto3)parpadearAmarillo("dobladoAdulto3"); 
-                if (cierreCompactadorAdulto3)parpadearAmarillo("compactadorAdulto3"); 
-                if (cierreSelladoraAdulto3)parpadearAmarillo("selladoraAdulto3"); 
-                if (cierreTransmisionAdulto3)parpadearAmarillo("transmisionAdulto3"); 
-
-                if (cierreTransmisionAdulto2)parpadearAmarillo("transmisionAdulto2"); 
-                if (cierreSelladoraAdulto2)parpadearAmarillo("selladoraAdulto2"); 
-                if (cierreStackerAdulto2)parpadearAmarillo("stackerAdulto2"); 
-                if (cierreDobladoAdulto2)parpadearAmarillo("dobladoAdulto2"); 
-                if (cierreCorteFinalAdulto2)parpadearAmarillo("corteFinalAdulto2"); 
-                if (cierreSaldanteAdulto2)parpadearAmarillo("saldanteAdulto2"); 
-                if (cierrePlegadoYTransporteAdulto2)parpadearAmarillo("plegadoYTransporteAdulto2"); 
-                if (cierreCorteTangencialAdulto2)parpadearAmarillo("corteTangencialAdulto2"); 
-                if (cierrePrimerYSegundoModuloDeEtiquetasAdulto2)parpadearAmarillo("primerYSegundoModuloDeEtiquetasAdulto2"); 
-                if (cierreSaldanteYAplicacionDeAdhesivoAdulto2)parpadearAmarillo("saldanteYAplicacionDeAdhesivoAdulto2"); 
-                if (cierreCorteDePadAdulto2)parpadearAmarillo("corteDePadAdulto2"); 
-                if (cierreTransporteDeMantaAdulto2)parpadearAmarillo("transporteDeMantaAdulto2"); 
-                if (cierreAspiracionAdulto2)parpadearAmarillo("aspiracionAdulto2"); 
-                if (cierreFormacionAdulto2)parpadearAmarillo("formacionAdulto2"); 
-                if (cierreMolinoAdulto2)parpadearAmarillo("molinoAdulto2");
-                
-                if (cierreTransmisionAposito)parpadearAmarillo("transmisionAposito"); 
-                if (cierreSelladora2Aposito)parpadearAmarillo("selladora2Aposito"); 
-                if (cierreSelladoraAposito)parpadearAmarillo("selladoraAposito"); 
-                if (cierreCompactadorAposito)parpadearAmarillo("compactadorAposito"); 
-                if (cierreModuloPlegadoYCompactadoAposito)parpadearAmarillo("moduloPlegadoYCompactadoAposito"); 
-                if (cierreSaldanteAposito)parpadearAmarillo("saldanteAposito"); 
-                if (cierreSaldanteYAplicacionDeAdhesivoAposito)parpadearAmarillo("saldanteYAplicacionDeAdhesivoAposito"); 
-                if (cierreCortePadAposito)parpadearAmarillo("cortePadAposito"); 
-                if (cierreTransporteDeMantaYGrabadorAposito)parpadearAmarillo("transporteDeMantaYGrabadorAposito"); 
-                if (cierreMolinoAposito)parpadearAmarillo("molinoAposito"); 
-
-                if (disponibleMolinoAdulto3)pintarNaranja("molinoAdulto3");
-                if (disponibleFormacionAdulto3)pintarNaranja("formacionAdulto3");
-                if (disponibleAspiracionAdulto3)pintarNaranja("aspiracionAdulto3");
-                if (disponibleTransporteDeMantaYGrabadorAdulto3)pintarNaranja("transporteDeMantaYGrabadorAdulto3");
-                if (disponibleCorteDePadAdulto3)pintarNaranja("corteDePadAdulto3");
-                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto3)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto3");
-                if (disponibleModuloDeEtiquetasYTransporteDeProductoAdulto3)pintarNaranja("moduloDeEtiquetasYTransporteDeProductoAdulto3");
-                if (disponiblePlegadoYTransporteAdulto3)pintarNaranja("plegadoYTransporteAdulto3");
-                if (disponibleCorteFinalAdulto3)pintarNaranja("corteFinalAdulto3");
-                if (disponibleDobladoAdulto3)pintarNaranja("dobladoAdulto3");
-                if (disponibleCompactadorAdulto3)pintarNaranja("compactadorAdulto3");
-                if (disponibleSelladoraAdulto3)pintarNaranja("selladoraAdulto3");
-                if (disponibleTransmisionAdulto3)pintarNaranja("transmisionAdulto3");
-
-                if (disponibleTransmisionAdulto2)pintarNaranja("transmisionAdulto2");
-                if (disponibleSelladoraAdulto2)pintarNaranja("selladoraAdulto2");
-                if (disponibleStackerAdulto2)pintarNaranja("stackerAdulto2");
-                if (disponibleDobladoAdulto2)pintarNaranja("dobladoAdulto2");
-                if (disponibleCorteFinalAdulto2)pintarNaranja("corteFinalAdulto2");
-                if (disponibleSaldanteAdulto2)pintarNaranja("saldanteAdulto2");
-                if (disponiblePlegadoYTransporteAdulto2)pintarNaranja("plegadoYTransporteAdulto2");
-                if (disponibleCorteTangencialAdulto2)pintarNaranja("corteTangencialAdulto2");
-                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto2)pintarNaranja("primerYSegundoModuloDeEtiquetasAdulto2");
-                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto2)pintarNaranja("saldanteYAplicacionDeAdhesivoAdulto2");
-                if (disponibleCorteDePadAdulto2)pintarNaranja("corteDePadAdulto2");
-                if (disponibleTransporteDeMantaAdulto2)pintarNaranja("transporteDeMantaAdulto2");
-                if (disponibleAspiracionAdulto2)pintarNaranja("aspiracionAdulto2");
-                if (disponibleFormacionAdulto2)pintarNaranja("formacionAdulto2");
-                if (disponibleMolinoAdulto2)pintarNaranja("molinoAdulto2");
-                
-                if (disponibleTransmisionAposito)pintarNaranja("transmisionAposito"); 
-                if (disponibleSelladora2Aposito)pintarNaranja("selladora2Aposito"); 
-                if (disponibleSelladoraAposito)pintarNaranja("selladoraAposito"); 
-                if (disponibleCompactadorAposito)pintarNaranja("compactadorAposito"); 
-                if (disponibleModuloPlegadoYCompactadoAposito)pintarNaranja("moduloPlegadoYCompactadoAposito"); 
-                if (disponibleSaldanteAposito)pintarNaranja("saldanteAposito"); 
-                if (disponibleSaldanteYAplicacionDeAdhesivoAposito)pintarNaranja("saldanteYAplicacionDeAdhesivoAposito"); 
-                if (disponibleCortePadAposito)pintarNaranja("cortePadAposito"); 
-                if (disponibleTransporteDeMantaYGrabadorAposito)pintarNaranja("transporteDeMantaYGrabadorAposito"); 
-                if (disponibleMolinoAposito)pintarNaranja("molinoAposito"); 
-    
-                function parpadearRojo(id)
-                {
-                var elemento = document.getElementById(id);
-                var count = 0;
-                var interval = setInterval(function () {
-                if (count % 2 == 0) {
-                elemento.style.fill = 'red';
-                if(id=="botonPlanta2")elemento.style.backgroundColor = 'red';
-                } else {
-                elemento.style.fill = 'transparent'; // O el color de texto original
-                 if(id=="botonPlanta2")elemento.style.backgroundColor = '';
-                }
-                count++;
-                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
-
-
-                }
-
-                function parpadearAmarillo(id)
-                {
-                var elemento = document.getElementById(id);
-                var count = 0;
-                var interval = setInterval(function () {
-                if (count % 2 == 0) {
-                elemento.style.fill = 'yellow';
-                if(id=="botonPlanta2")elemento.style.backgroundColor = 'yellow';
-                } else {
-                elemento.style.fill = 'transparent'; // O el color de texto original
-                 if(id=="botonPlanta2")elemento.style.backgroundColor = '';
-                }
-                count++;
-                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
-
-
-                }
-                function pintarNaranja(id)
-                {
-                var elemento = document.getElementById(id);
-                elemento.style.fill ='rgba(255,138,0, 0.7)';
-
-                }
                 
                 
 
@@ -650,40 +517,179 @@
 
 
 <script>
-    //desactivo el refresh cuando tengo abierto el modal de carga de produccion
-  let refreshTimer;
-
-  // Función que inicia el temporizador de refresco de la página
-  function iniciarAutoRefresh() {
-    refreshTimer = setTimeout(function() {
-      location.reload();
-    }, 20000); // Refresca después de 20 segundos (20,000 milisegundos)
-  }
-
-  // Función que detiene el temporizador de refresco
-  function detenerAutoRefresh() {
-    clearTimeout(refreshTimer);
-  }
-
-  // Detectar cuando se abre el modal y detener el refresco
-  $('#modalCarga').on('shown.bs.modal', function () {
-    detenerAutoRefresh();
-  });
-
-  // Detectar cuando se cierra el modal y reiniciar el refresco
-  $('#modalCarga').on('hidden.bs.modal', function () {
-    iniciarAutoRefresh();
-  });
-
-  // Iniciar el auto-refresh al cargar la página
-  window.onload = iniciarAutoRefresh;
+    
   
   
   
-  $(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-});
+  
+
+let elementosParpadeantes = new Map();
+
+
+
+
+setInterval(function() {
+    traerEstados();
+}, 5000);  // 5000 milisegundos = 5 segundos
+
+
+
+function traerEstados(){
+    $.ajax({
+        url: '/actualizarEstados/',   // La URL del método en tu controlador
+        type: 'GET',                  // Método HTTP  
+        success: function(response) {
+            
+            elementosParpadeantes=response;
+            
+        },
+        error: function(error) {
+            console.error("Error en actualizacion de estados", error);
+        }
+    });
+}
+
+
+setInterval(function() {
+     Object.entries(elementosParpadeantes).forEach(function([key, value]) {
+//            console.log("Clave: " + key + ", Valor: " + value);  // Imprimir clave y valor
+            let elemento=document.getElementById(key);
+            
+            if(!(elemento===null))
+            {
+                    if(value=="detenida")
+                 {
+                      let isRed = (elemento.style.fill === 'red');
+                     elemento.style.fill = isRed ? 'transparent' : 'red';
+                     elemento.setAttribute("data-estado", "detenida");
+                     
+                     
+                 }
+
+
+
+                 if(value=="liberada")
+                 { 
+                     let isYellow = (elemento.style.fill === 'yellow');
+                     elemento.style.fill = isYellow ? 'transparent' : 'yellow';
+                      elemento.setAttribute("data-estado", "liberada");
+                 }
+                 if(value=="disponible")
+                 {
+                     elemento.style.fill =  'rgba(255, 165, 0, 0.5)';//naranja 
+                      elemento.setAttribute("data-estado", "disponible");
+                 }
+                  if(value==="operativa")
+                  {
+                    elemento.style.fill = 'transparent'; 
+                    elemento.setAttribute("data-estado", "operativa");
+                  }
+            }
+            
+        });
+    
+    
+}, 500); 
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
+            
+            
+            <script>
+              
+
+
+
+                    $(document).ready(function() {
+                        // Seleccionamos todos los elementos <path> y los ponemos a la escucha del evento hover
+                        traerEstados();
+                       
+                    var funcionTimeout;
+                        
+                        $("path").hover(function() {
+                            // Esto se ejecuta al hacer hover (mouseenter)
+                            
+                            
+                            var elementId = this.id;  // Obtenemos el id del elemento actual
+                            var estadoElemento=this.dataset.estado;
+                            if(estadoElemento==="disponible")
+                            funcionTimeout=setTimeout(function() {
+                                 //primero borro el card
+                             cardInfo.style.display = "none";
+                            isCardVisible = false;
+                                ajax(elementId,estadoElemento);  // Llamamos a la función ajax pasando el ID
+                            }, 1000);  // 1000 milisegundos = 2 segundos
+                            
+                        }, function() {
+                            clearTimeout(funcionTimeout);
+                            // Esto se ejecuta cuando se sale del hover (mouseleave)
+                            // Si quieres hacer algo cuando el mouse sale, puedes añadir aquí tu lógica
+                        });
+                    });
+
+
+
+
+            function ajax(nombre,estado){
+                 $.ajax({
+                        url: '/traerPreventivosAlLayout/',   // La URL del método en tu controlador
+                        type: 'GET',// Método HTTP  
+                        data:{nombre:nombre,
+                              estado:estado  },// Enviar el nombre del activo como parámetro
+                        success: function(response) {
+                            // Limpiar el contenedor de salida
+                            $("#listaPreventivos").html("");
+
+                            // Recorrer la lista de objetos y mostrar sus campos
+                            response.forEach(function(objeto) {
+                                $("#listaPreventivos").append("<p>- " + objeto.descripcion + "</p>");
+                            });
+//                            success: function(response) {
+//                           // response ahora es un objeto JSON, puedes acceder a sus campos
+//                                  $("#output").html("Campo1: " + response.campo1 );
+//                             });
+                        },
+                        error: function(error) {
+                            console.error("Error en la petición", error);
+                        }
+                      });
+                    
+                    
+                    
+                    
+                    cardInfo.style.display = "block";
+                    cardInfo.style.left = `5%`;  
+                    cardInfo.style.top = `60%`;
+                    }
+
+
+
+
+
+
+
+
+                    document.addEventListener("click", (event) => {
+                        // Si haces clic fuera del card y del path
+                        if (!cardInfo.contains(event.target) ) {
+                            cardInfo.style.display = "none";
+                            isCardVisible = false;
+                        }
+                    });
+
+                </script>
+            
+            
 
             <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->
         </body>
