@@ -5,11 +5,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -704,6 +712,10 @@ public class ControladorEquipos {
     
     
     private void cargarModel(Model model, Activo activo) {
+        
+ 
+        
+        
         model.addAttribute("activo", activo);
         List<Tecnico> tecnicos=tecnicoService.traerPorTareaEnActivo(activo);
         model.addAttribute("tecnicos", tecnicos);
@@ -747,61 +759,125 @@ public class ControladorEquipos {
         Double auxCalculoMttr = 0.0;
         Double auxCalculoDisponibilidad = 0.0;
         Double auxCalculoEficiancia = 0.0;
+        Double totalMinutos = 0.0;
 
-        //aca es donde tengo que determinar el tipo de calculo, si es promedio movil por dias o detenciones, si es de acuerdo al ultimo periodo....
+        
+        
+         //lógica para llevar los ultimos 12 meses anteriores al mes actual para graficar los minutos de detencion de cada mes
+       List<String> ultimos12Meses = new ArrayList<>();
+        LocalDate fechaActual = LocalDate.now();
+
+        
+         //aca es donde tengo que determinar el tipo de calculo, si es promedio movil por dias o detenciones, si es de acuerdo al ultimo periodo....
         //una vez definido traigo las tareas correspondientes, hay que programarlo en los Dao.
-        List<Tarea> tareasIndicadores = tareaService.traerCerradasPorActivo(activo);
-        for (int i = 0; i < (tareasIndicadores.size() - 1); i++) {
+        
+//        no deberia hacer falta
+//        Boolean cambioAnio=false;
+        
 
-            Duration duration = Duration.between(tareasIndicadores.get(i).getMomentoLiberacion(), tareasIndicadores.get(i + 1).getMomentoDetencion());
+        List<Tarea> tareasTodas = tareaService.traerCerradasPorActivo(activo);
+        Map<String,Long> minutosMes=new LinkedHashMap<>();
 
-            log.info(" liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
-                    + " detencion: " + tareasIndicadores.get(i + 1).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i + 1).getMomentoDetencion().getMinute()
-                    + " en minutos: " + duration.toMinutes());
+        // Obtener los últimos 12 meses en orden inverso
+            Long minutosDetencion=0L;
+        for (int i = 11; i >= 0; i--) {
+            LocalDateTime mesAnterior = fechaActual.minusMonths(i).atStartOfDay().withDayOfMonth(1);
+            LocalDateTime finMesAnterior=mesAnterior.withDayOfMonth(mesAnterior.getMonth().maxLength()).withHour(23).withMinute(59).withSecond(59);
+            
+            for (Tarea tarea : tareasTodas) {
+                if(tarea.getMomentoDetencion().isAfter(mesAnterior)&&tarea.getMomentoDetencion().isBefore(finMesAnterior))
+                {
+                    minutosDetencion+=Duration.between(tarea.getMomentoDetencion(), tarea.getMomentoLiberacion()).toMinutes();
+                }   
+            }
+            
 
-            auxCalculoMtbf += duration.toMinutes();
-
-            duration = Duration.between(tareasIndicadores.get(i).getMomentoDetencion(), tareasIndicadores.get(i).getMomentoLiberacion());
-
-            auxCalculoMttr += duration.toMinutes();
-
-            log.info(" detencion: " + tareasIndicadores.get(i).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i).getMomentoDetencion().getMinute()
-                    + " liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
-                    + " en minutos: " + duration.toMinutes() + " id: " + tareasIndicadores.get(i).getId());
-            log.info(" ");
-
+            String nombreMes = mesAnterior.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+            
+            
+            minutosMes.put(nombreMes,minutosDetencion );
+            
+            minutosDetencion=0L;
+           
+            
         }
+           
+        model.addAttribute("minutosMes",minutosMes);
+        
+//        List<Tarea> tareasIndicadores = tareaService.traerCerradasPorActivo(activo);
+//        Duration  duration = Duration.between(tareasIndicadores.get(i).getMomentoDetencion(), tareasIndicadores.get(i).getMomentoLiberacion());//borrar cuando quiera hacer el calculo bien, va la linea de arriba
+//            totalMinutos += duration.toMinutes();
+        
+        
+        
+        
+       
+//        for (int i = 0; i < (tareasIndicadores.size() - 1); i++) {
 
-        log.info("cantidad: " + tareasIndicadores.size());
+            // cálculo de indicadores como debería ser
+//            Duration duration = Duration.between(tareasIndicadores.get(i).getMomentoLiberacion(), tareasIndicadores.get(i + 1).getMomentoDetencion());
+//
+//            log.info(" liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
+//                    + " detencion: " + tareasIndicadores.get(i + 1).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i + 1).getMomentoDetencion().getMinute()
+//                    + " en minutos: " + duration.toMinutes());
+//
+//            auxCalculoMtbf += duration.toMinutes();
+//
+//            duration = Duration.between(tareasIndicadores.get(i).getMomentoDetencion(), tareasIndicadores.get(i).getMomentoLiberacion());
+//
+//            auxCalculoMttr += duration.toMinutes();
+//
+//            log.info(" detencion: " + tareasIndicadores.get(i).getMomentoDetencion().getHour() + " " + tareasIndicadores.get(i).getMomentoDetencion().getMinute()
+//                    + " liberacion: " + tareasIndicadores.get(i).getMomentoLiberacion().getHour() + " " + tareasIndicadores.get(i).getMomentoLiberacion().getMinute()
+//                    + " en minutos: " + duration.toMinutes() + " id: " + tareasIndicadores.get(i).getId());
+//            log.info(" ");
 
-        Double mtbf = auxCalculoMtbf / (tareasIndicadores.size() - 1);
-        String mtbfFormateado = String.format("%.2f", mtbf);
-        model.addAttribute("mtbf", mtbfFormateado);
+//cálculo como me lo pidieron
 
-        Double mttr = auxCalculoMttr / tareasIndicadores.size();
-        String mttrFormateado = String.format("%.2f", mttr);
-        model.addAttribute("mttr", mttrFormateado);
+
+            
+
+
+
+
+
+//        }
+
+//        log.info("cantidad: " + tareasIndicadores.size());
+//
+//        Double mtbf = auxCalculoMtbf / (tareasIndicadores.size() - 1);
+//        String mtbfFormateado = String.format("%.2f", mtbf);
+//        model.addAttribute("mtbf", mtbfFormateado);
+//
+//        Double mttr = auxCalculoMttr / tareasIndicadores.size();
+//        String mttrFormateado = String.format("%.2f", mttr);
+//        model.addAttribute("mttr", mttrFormateado);
 
         //disponibilidad: (mtbf/(mtbf+mttr))x100 [%]
-        Double disponibilidad = 0.0;
-        if (mtbf + mttr > 0.0) {
-            disponibilidad = (mtbf / (mtbf + mttr)) * 100.0;
-        }
-        String disponibilidadFormateado = String.format("%.2f", disponibilidad);
-        model.addAttribute("disponibilidad", disponibilidadFormateado);
+//        Double disponibilidad = 0.0;
+//        if (mtbf + mttr > 0.0) {
+//            disponibilidad = (mtbf / (mtbf + mttr)) * 100.0;
+//        }
+//        String disponibilidadFormateado = String.format("%.2f", disponibilidad);
+//        model.addAttribute("disponibilidad", disponibilidadFormateado);
 
         // confiabilidad:  e elevado a (-t/mtbf) resultado multiplicado por 100 para tenerlo en porcentaje
         //voy a usar t=43200 que son los minutos en 30 dias
         //la linea de abajo lo resolvería, considerar si mtbf es 0 para evitar error
         //       Math.exp(-t / MTBF)
-        Double confiabilidad = 0.0;
-        if (mtbf > 0.0) {
-            confiabilidad = Math.exp(-1440.0 / mtbf) * 100.0;
-            log.info("confiabilidad: " + confiabilidad);
-        }
-        String confiabilidadFormateado = String.format("%.2f", confiabilidad);
-        model.addAttribute("confiabilidad", confiabilidadFormateado);
-        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible"));
+//        Double confiabilidad = 0.0;
+//        if (mtbf > 0.0) {
+//            confiabilidad = Math.exp(-1440.0 / mtbf) * 100.0;
+//            log.info("confiabilidad: " + confiabilidad);
+//        }
+//        String confiabilidadFormateado = String.format("%.2f", confiabilidad);
+//        model.addAttribute("confiabilidad", confiabilidadFormateado);
+        model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible","operativa condicionada"));
+        
+       
+        
+        
+        
 
     }
 

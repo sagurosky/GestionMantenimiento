@@ -39,7 +39,21 @@
             /*            .col{
                             border:solid 1px;
                         }*/
+            /* Estilo inicial: la tarjeta está fuera de la pantalla */
+            .card-hidden {
+                position: absolute;
+                left: -100%;  /* Comienza fuera de la pantalla (a la izquierda) */
+                top: 60%;     /* Asegúrate de que la posición vertical se mantenga */
+                transition: left 0.5s ease;  /* Transición suave para el desplazamiento horizontal */
+            }
 
+            /* Estilo cuando la tarjeta es visible */
+            .card-visible {
+                position: absolute;
+                left: 5%;   
+                top: 60%; /* La tarjeta se desplaza a la posición final dentro de la pantalla */
+                transition: left 0.5s ease;
+            }
         </style>
 
         <body>
@@ -164,6 +178,20 @@
                         </a>
                     </div>
 
+                     
+                                         <!-- Contenedor del card, inicialmente oculto -->
+                    <div id="cardInfo" class="card card-hidden" style="width: 18rem;  position: absolute;box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
+                      <div class="card-body">
+                        <h5 class="card-title">Preventivos validados</h5>
+                        <p class="card-text"id="listaPreventivos"></p>
+                      </div>
+                    </div>
+                     
+                     
+                     
+                     
+                     
+                     
                     <div class="col-md-10" id="contenido" style="text-align: center; padding-left: 0px;padding-top: 150px"  >
                        
                         <div class=" mapadiv">
@@ -293,284 +321,473 @@
             <script th:inline="javascript">
 
 //capturo todas las variables de falla que vienen del modelo
-                var fallaTransmisionAdulto4                         =[[${fallaTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
-                var fallaSelladoraAdulto4                           =[[${fallaSelladoraAdulto4}]];
-                var fallaStackerAdulto4                             =[[${fallaStackerAdulto4}]];
-                var fallaDobladoAdulto4                             =[[${fallaDobladoAdulto4}]];
-                var fallaCorteFinalAdulto4                          =[[${fallaCorteFinalAdulto4}]];
-                var fallaPlegadoYTransporteAdulto4                  =[[${fallaPlegadoYTransporteAdulto4}]];
-                var fallaCortePorRodaduraYBarreraAdulto4            =[[${fallaCortePorRodaduraYBarreraAdulto4}]];
-                var fallaTraccionDeTresRodillosAdulto4              =[[${fallaTraccionDeTresRodillosAdulto4}]];
-                var fallaPrimerYSegundoModuloDeEtiquetasAdulto4     =[[${fallaPrimerYSegundoModuloDeEtiquetasAdulto4}]];
-                var fallaTransporteDeLineasAdulto4                  =[[${fallaTransporteDeLineasAdulto4}]];
-                var fallaAplicacionDeAdhesivoAdulto4                =[[${fallaAplicacionDeAdhesivoAdulto4}]];
-                var fallaTransporteDeMantaAdulto4                   =[[${fallaTransporteDeMantaAdulto4}]];
-                var fallaAspiracionAdulto4                          =[[${fallaAspiracionAdulto4}]];
-                var fallaMolinoChicoAdulto4                         =[[${fallaMolinoChicoAdulto4}]];
-                var fallaMolinoGrandeAdulto4                        =[[${fallaMolinoGrandeAdulto4}]];
-                var fallaTransmisionAdulto5                         =[[${fallaTransmisionAdulto5}]];
-                var fallaSelladoraAdulto5                           =[[${fallaSelladoraAdulto5}]];
-                var fallaStackerAdulto5                             =[[${fallaStackerAdulto5}]];
-                var fallaDobladoAdulto5                             =[[${fallaDobladoAdulto5}]];
-                var fallaCorteFinalAdulto5                          =[[${fallaCorteFinalAdulto5}]];
-                var fallaPlegadoYTransporteAdulto5                  =[[${fallaPlegadoYTransporteAdulto5}]];
-                var fallaEtiquetaYTransporteDeProductoAdulto5       =[[${fallaEtiquetaYTransporteDeProductoAdulto5}]];
-                var fallaSaldanteYAplicacionDeAdhesivoAdulto5       =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto5}]];
-                var fallaCorteDePadAdulto5                          =[[${fallaCorteDePadAdulto5}]];
-                var fallaFormacionAdulto5                           =[[${fallaFormacionAdulto5}]];
-                var fallaMolinoAdulto5                              =[[${fallaMolinoAdulto5}]];
-                var fallaAspiracionAdulto5                          =[[${fallaAspiracionAdulto5}]];
-                var fallaSalaDeCompresoresPlanta2                   =[[${fallaSalaDeCompresoresPlanta2}]];
-                
-             //capturo todas las variables de cierre que vienen del modelo   
-                
-    
-    
-    
-                var cierreTransmisionAdulto4                         =[[${cierreTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
-                var cierreSelladoraAdulto4                           =[[${cierreSelladoraAdulto4}]];
-                var cierreStackerAdulto4                             =[[${cierreStackerAdulto4}]];
-                var cierreDobladoAdulto4                             =[[${cierreDobladoAdulto4}]];
-                var cierreCorteFinalAdulto4                          =[[${cierreCorteFinalAdulto4}]];
-                var cierrePlegadoYTransporteAdulto4                  =[[${cierrePlegadoYTransporteAdulto4}]];
-                var cierreCortePorRodaduraYBarreraAdulto4            =[[${cierreCortePorRodaduraYBarreraAdulto4}]];
-                var cierreTraccionDeTresRodillosAdulto4              =[[${cierreTraccionDeTresRodillosAdulto4}]];
-                var cierrePrimerYSegundoModuloDeEtiquetasAdulto4     =[[${cierrePrimerYSegundoModuloDeEtiquetasAdulto4}]];
-                var cierreTransporteDeLineasAdulto4                  =[[${cierreTransporteDeLineasAdulto4}]];
-                var cierreAplicacionDeAdhesivoAdulto4                =[[${cierreAplicacionDeAdhesivoAdulto4}]];
-                var cierreTransporteDeMantaAdulto4                   =[[${cierreTransporteDeMantaAdulto4}]];
-                var cierreAspiracionAdulto4                          =[[${cierreAspiracionAdulto4}]];
-                var cierreMolinoChicoAdulto4                         =[[${cierreMolinoChicoAdulto4}]];
-                var cierreMolinoGrandeAdulto4                        =[[${cierreMolinoGrandeAdulto4}]];
-                
-                var cierreTransmisionAdulto5                         =[[${cierreTransmisionAdulto5}]];
-                var cierreSelladoraAdulto5                           =[[${cierreSelladoraAdulto5}]];
-                var cierreStackerAdulto5                             =[[${cierreStackerAdulto5}]];
-                var cierreDobladoAdulto5                             =[[${cierreDobladoAdulto5}]];
-                var cierreCorteFinalAdulto5                          =[[${cierreCorteFinalAdulto5}]];
-                var cierrePlegadoYTransporteAdulto5                  =[[${cierrePlegadoYTransporteAdulto5}]];
-                var cierreEtiquetaYTransporteDeProductoAdulto5       =[[${cierreEtiquetaYTransporteDeProductoAdulto5}]];
-                var cierreSaldanteYAplicacionDeAdhesivoAdulto5       =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto5}]];
-                var cierreCorteDePadAdulto5                          =[[${cierreCorteDePadAdulto5}]];
-                var cierreFormacionAdulto5                           =[[${cierreFormacionAdulto5}]];
-                var cierreMolinoAdulto5                              =[[${cierreMolinoAdulto5}]];
-                var cierreAspiracionAdulto5                          =[[${cierreAspiracionAdulto5}]];
-                var cierreSalaDeCompresoresPlanta2                   =[[${cierreSalaDeCompresoresPlanta2}]];
-  
-     //capturo todas las variables de disponible que vienen del modelo   
-                
-    
-    
-    
-                var disponibleTransmisionAdulto4                         =[[${disponibleTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
-                var disponibleSelladoraAdulto4                           =[[${disponibleSelladoraAdulto4}]];
-                var disponibleStackerAdulto4                             =[[${disponibleStackerAdulto4}]];
-                var disponibleDobladoAdulto4                             =[[${disponibleDobladoAdulto4}]];
-                var disponibleCorteFinalAdulto4                          =[[${disponibleCorteFinalAdulto4}]];
-                var disponiblePlegadoYTransporteAdulto4                  =[[${disponiblePlegadoYTransporteAdulto4}]];
-                var disponibleCortePorRodaduraYBarreraAdulto4            =[[${disponibleCortePorRodaduraYBarreraAdulto4}]];
-                var disponibleTraccionDeTresRodillosAdulto4              =[[${disponibleTraccionDeTresRodillosAdulto4}]];
-                var disponiblePrimerYSegundoModuloDeEtiquetasAdulto4     =[[${disponiblePrimerYSegundoModuloDeEtiquetasAdulto4}]];
-                var disponibleTransporteDeLineasAdulto4                  =[[${disponibleTransporteDeLineasAdulto4}]];
-                var disponibleAplicacionDeAdhesivoAdulto4                =[[${disponibleAplicacionDeAdhesivoAdulto4}]];
-                var disponibleTransporteDeMantaAdulto4                   =[[${disponibleTransporteDeMantaAdulto4}]];
-                var disponibleAspiracionAdulto4                          =[[${disponibleAspiracionAdulto4}]];
-                var disponibleMolinoChicoAdulto4                         =[[${disponibleMolinoChicoAdulto4}]];
-                var disponibleMolinoGrandeAdulto4                        =[[${disponibleMolinoGrandeAdulto4}]];
-                
-                var disponibleTransmisionAdulto5                         =[[${disponibleTransmisionAdulto5}]];
-                var disponibleSelladoraAdulto5                           =[[${disponibleSelladoraAdulto5}]];
-                var disponibleStackerAdulto5                             =[[${disponibleStackerAdulto5}]];
-                var disponibleDobladoAdulto5                             =[[${disponibleDobladoAdulto5}]];
-                var disponibleCorteFinalAdulto5                          =[[${disponibleCorteFinalAdulto5}]];
-                var disponiblePlegadoYTransporteAdulto5                  =[[${disponiblePlegadoYTransporteAdulto5}]];
-                var disponibleEtiquetaYTransporteDeProductoAdulto5       =[[${disponibleEtiquetaYTransporteDeProductoAdulto5}]];
-                var disponibleSaldanteYAplicacionDeAdhesivoAdulto5       =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto5}]];
-                var disponibleCorteDePadAdulto5                          =[[${disponibleCorteDePadAdulto5}]];
-                var disponibleFormacionAdulto5                           =[[${disponibleFormacionAdulto5}]];
-                var disponibleMolinoAdulto5                              =[[${disponibleMolinoAdulto5}]];
-                var disponibleAspiracionAdulto5                          =[[${disponibleAspiracionAdulto5}]];
-                var disponibleSalaDeCompresoresPlanta2                   =[[${disponibleSalaDeCompresoresPlanta2}]];
-  
-  
-  
-                if([[${fallaPlanta3}]])parpadearRojo("botonPlanta3");
-                if([[${cierrePlanta3}]])parpadearAmarillo("botonPlanta3");
-  
-  
-                if (fallaTransmisionAdulto4)parpadearRojo("TransmisionAdulto4");                        
-                if (fallaSelladoraAdulto4)parpadearRojo("SelladoraAdulto4");                          
-                if (fallaStackerAdulto4)parpadearRojo("StackerAdulto4");                            
-                if (fallaDobladoAdulto4)parpadearRojo("DobladoAdulto4");                             
-                if (fallaCorteFinalAdulto4)parpadearRojo("CorteFinalAdulto4");                          
-                if (fallaPlegadoYTransporteAdulto4)parpadearRojo("PlegadoYTransporteAdulto4");                  
-                if (fallaCortePorRodaduraYBarreraAdulto4)parpadearRojo("CortePorRodaduraYBarreraAdulto4");            
-                if (fallaTraccionDeTresRodillosAdulto4)parpadearRojo("TraccionDeTresRodillosAdulto4");              
-                if (fallaPrimerYSegundoModuloDeEtiquetasAdulto4)parpadearRojo("PrimerYSegundoModuloDeEtiquetasAdulto4");
-                if (fallaTransporteDeLineasAdulto4)parpadearRojo("TransporteDeLineasAdulto4");                  
-                if (fallaAplicacionDeAdhesivoAdulto4)parpadearRojo("AplicacionDeAdhesivoAdulto4");                
-                if (fallaTransporteDeMantaAdulto4)parpadearRojo("TransporteDeMantaAdulto4");                   
-                if (fallaAspiracionAdulto4)parpadearRojo("AspiracionAdulto4");                          
-                if (fallaMolinoChicoAdulto4)parpadearRojo("MolinoChicoAdulto4");                         
-                if (fallaMolinoGrandeAdulto4)parpadearRojo("MolinoGrandeAdulto4");                        
-                
-                if (fallaTransmisionAdulto5)parpadearRojo("TransmisionAdulto5");                         
-                if (fallaSelladoraAdulto5)parpadearRojo("SelladoraAdulto5");                           
-                if (fallaStackerAdulto5)parpadearRojo("StackerAdulto5");                             
-                if (fallaDobladoAdulto5)parpadearRojo("DobladoAdulto5");                           
-                if (fallaCorteFinalAdulto5)parpadearRojo("CorteFinalAdulto5");                        
-                if (fallaPlegadoYTransporteAdulto5)parpadearRojo("PlegadoYTransporteAdulto5");                
-                if (fallaEtiquetaYTransporteDeProductoAdulto5)parpadearRojo("EtiquetaYTransporteDeProductoAdulto5");     
-                if (fallaSaldanteYAplicacionDeAdhesivoAdulto5)parpadearRojo("SaldanteYAplicacionDeAdhesivoAdulto5");     
-                if (fallaCorteDePadAdulto5)parpadearRojo("CorteDePadAdulto5");                        
-                if (fallaFormacionAdulto5)parpadearRojo("FormacionAdulto5");                         
-                if (fallaMolinoAdulto5)parpadearRojo("MolinoAdulto5");                            
-                if (fallaAspiracionAdulto5)parpadearRojo("AspiracionAdulto5");                        
-                if (fallaSalaDeCompresoresPlanta2)parpadearRojo("SalaDeCompresoresPlanta2");                        
-                
-  
-  
-                
-                if (cierreTransmisionAdulto4)parpadearAmarillo("TransmisionAdulto4");                        
-                if (cierreSelladoraAdulto4)parpadearAmarillo("SelladoraAdulto4");                          
-                if (cierreStackerAdulto4)parpadearAmarillo("StackerAdulto4");                            
-                if (cierreDobladoAdulto4)parpadearAmarillo("DobladoAdulto4");                             
-                if (cierreCorteFinalAdulto4)parpadearAmarillo("CorteFinalAdulto4");                          
-                if (cierrePlegadoYTransporteAdulto4)parpadearAmarillo("PlegadoYTransporteAdulto4");                  
-                if (cierreCortePorRodaduraYBarreraAdulto4)parpadearAmarillo("CortePorRodaduraYBarreraAdulto4");            
-                if (cierreTraccionDeTresRodillosAdulto4)parpadearAmarillo("TraccionDeTresRodillosAdulto4");              
-                if (cierrePrimerYSegundoModuloDeEtiquetasAdulto4)parpadearAmarillo("PrimerYSegundoModuloDeEtiquetasAdulto4");     
-                if (cierreTransporteDeLineasAdulto4)parpadearAmarillo("TransporteDeLineasAdulto4");                  
-                if (cierreAplicacionDeAdhesivoAdulto4)parpadearAmarillo("AplicacionDeAdhesivoAdulto4");                
-                if (cierreTransporteDeMantaAdulto4)parpadearAmarillo("TransporteDeMantaAdulto4");                   
-                if (cierreAspiracionAdulto4)parpadearAmarillo("AspiracionAdulto4");                          
-                if (cierreMolinoChicoAdulto4)parpadearAmarillo("MolinoChicoAdulto4");                         
-                if (cierreMolinoGrandeAdulto4)parpadearAmarillo("MolinoGrandeAdulto4");                        
-                
-                if (cierreTransmisionAdulto5)parpadearAmarillo("TransmisionAdulto5");                         
-                if (cierreSelladoraAdulto5)parpadearAmarillo("SelladoraAdulto5");                           
-                if (cierreStackerAdulto5)parpadearAmarillo("StackerAdulto5");                             
-                if (cierreDobladoAdulto5)parpadearAmarillo("DobladoAdulto5");                           
-                if (cierreCorteFinalAdulto5)parpadearAmarillo("CorteFinalAdulto5");                        
-                if (cierrePlegadoYTransporteAdulto5)parpadearAmarillo("PlegadoYTransporteAdulto5");                
-                if (cierreEtiquetaYTransporteDeProductoAdulto5)parpadearAmarillo("EtiquetaYTransporteDeProductoAdulto5");     
-                if (cierreSaldanteYAplicacionDeAdhesivoAdulto5)parpadearAmarillo("SaldanteYAplicacionDeAdhesivoAdulto5");     
-                if (cierreCorteDePadAdulto5)parpadearAmarillo("CorteDePadAdulto5");                        
-                if (cierreFormacionAdulto5)parpadearAmarillo("FormacionAdulto5");                         
-                if (cierreMolinoAdulto5)parpadearAmarillo("MolinoAdulto5");                            
-                if (cierreAspiracionAdulto5)parpadearAmarillo("AspiracionAdulto5");   
-                if (cierreSalaDeCompresoresPlanta2)parpadearAmarillo("SalaDeCompresoresPlanta2");   
-                
-  
-                
-                if (disponibleTransmisionAdulto4)pintarNaranja("TransmisionAdulto4");                        
-                if (disponibleSelladoraAdulto4)pintarNaranja("SelladoraAdulto4");                          
-                if (disponibleStackerAdulto4)pintarNaranja("StackerAdulto4");                            
-                if (disponibleDobladoAdulto4)pintarNaranja("DobladoAdulto4");                             
-                if (disponibleCorteFinalAdulto4)pintarNaranja("CorteFinalAdulto4");                          
-                if (disponiblePlegadoYTransporteAdulto4)pintarNaranja("PlegadoYTransporteAdulto4");                  
-                if (disponibleCortePorRodaduraYBarreraAdulto4)pintarNaranja("CortePorRodaduraYBarreraAdulto4");            
-                if (disponibleTraccionDeTresRodillosAdulto4)pintarNaranja("TraccionDeTresRodillosAdulto4");              
-                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto4)pintarNaranja("PrimerYSegundoModuloDeEtiquetasAdulto4");     
-                if (disponibleTransporteDeLineasAdulto4)pintarNaranja("TransporteDeLineasAdulto4");                  
-                if (disponibleAplicacionDeAdhesivoAdulto4)pintarNaranja("AplicacionDeAdhesivoAdulto4");                
-                if (disponibleTransporteDeMantaAdulto4)pintarNaranja("TransporteDeMantaAdulto4");                   
-                if (disponibleAspiracionAdulto4)pintarNaranja("AspiracionAdulto4");                          
-                if (disponibleMolinoChicoAdulto4)pintarNaranja("MolinoChicoAdulto4");                         
-                if (disponibleMolinoGrandeAdulto4)pintarNaranja("MolinoGrandeAdulto4");                        
-                
-                if (disponibleTransmisionAdulto5)pintarNaranja("TransmisionAdulto5");                         
-                if (disponibleSelladoraAdulto5)pintarNaranja("SelladoraAdulto5");                           
-                if (disponibleStackerAdulto5)pintarNaranja("StackerAdulto5");                             
-                if (disponibleDobladoAdulto5)pintarNaranja("DobladoAdulto5");                           
-                if (disponibleCorteFinalAdulto5)pintarNaranja("CorteFinalAdulto5");                        
-                if (disponiblePlegadoYTransporteAdulto5)pintarNaranja("PlegadoYTransporteAdulto5");                
-                if (disponibleEtiquetaYTransporteDeProductoAdulto5)pintarNaranja("EtiquetaYTransporteDeProductoAdulto5");     
-                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto5)pintarNaranja("SaldanteYAplicacionDeAdhesivoAdulto5");     
-                if (disponibleCorteDePadAdulto5)pintarNaranja("CorteDePadAdulto5");                        
-                if (disponibleFormacionAdulto5)pintarNaranja("FormacionAdulto5");                         
-                if (disponibleMolinoAdulto5)pintarNaranja("MolinoAdulto5");                            
-                if (disponibleAspiracionAdulto5)pintarNaranja("AspiracionAdulto5");   
-                if (disponibleSalaDeCompresoresPlanta2)pintarNaranja("SalaDeCompresoresPlanta2");   
-                
-               
-    
-                function parpadearRojo(id)
-                {
-                var elemento = document.getElementById(id);
-                var count = 0;
-                var interval = setInterval(function () {
-                if (count % 2 == 0) {
-                elemento.style.fill = 'red';
-                 if(id=="botonPlanta3")elemento.style.backgroundColor = 'red';
-                } else {
-                elemento.style.fill = 'transparent'; // O el color de texto original
-                 if(id=="botonPlanta3")elemento.style.backgroundColor = '';
-                }
-                count++;
-                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
-
-
-                }
-
-                function parpadearAmarillo(id)
-                {
-                var elemento = document.getElementById(id);
-                var count = 0;
-                var interval = setInterval(function () {
-                if (count % 2 == 0) {
-                elemento.style.fill = 'yellow';
-                if(id=="botonPlanta3")elemento.style.backgroundColor = 'yellow';
-                } else {
-                elemento.style.fill = 'transparent'; // O el color de texto original
-                 if(id=="botonPlanta3")elemento.style.backgroundColor = '';
-                }
-                count++;
-                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
-
-
-                }
-                function pintarNaranja(id)
-                {
-                var elemento = document.getElementById(id);
-                elemento.style.fill ='rgba(255,138,0, 0.7)';
-
-                }
-
+//                var fallaTransmisionAdulto4                         =[[${fallaTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var fallaSelladoraAdulto4                           =[[${fallaSelladoraAdulto4}]];
+//                var fallaStackerAdulto4                             =[[${fallaStackerAdulto4}]];
+//                var fallaDobladoAdulto4                             =[[${fallaDobladoAdulto4}]];
+//                var fallaCorteFinalAdulto4                          =[[${fallaCorteFinalAdulto4}]];
+//                var fallaPlegadoYTransporteAdulto4                  =[[${fallaPlegadoYTransporteAdulto4}]];
+//                var fallaCortePorRodaduraYBarreraAdulto4            =[[${fallaCortePorRodaduraYBarreraAdulto4}]];
+//                var fallaTraccionDeTresRodillosAdulto4              =[[${fallaTraccionDeTresRodillosAdulto4}]];
+//                var fallaPrimerYSegundoModuloDeEtiquetasAdulto4     =[[${fallaPrimerYSegundoModuloDeEtiquetasAdulto4}]];
+//                var fallaTransporteDeLineasAdulto4                  =[[${fallaTransporteDeLineasAdulto4}]];
+//                var fallaAplicacionDeAdhesivoAdulto4                =[[${fallaAplicacionDeAdhesivoAdulto4}]];
+//                var fallaTransporteDeMantaAdulto4                   =[[${fallaTransporteDeMantaAdulto4}]];
+//                var fallaAspiracionAdulto4                          =[[${fallaAspiracionAdulto4}]];
+//                var fallaMolinoChicoAdulto4                         =[[${fallaMolinoChicoAdulto4}]];
+//                var fallaMolinoGrandeAdulto4                        =[[${fallaMolinoGrandeAdulto4}]];
+//                var fallaTransmisionAdulto5                         =[[${fallaTransmisionAdulto5}]];
+//                var fallaSelladoraAdulto5                           =[[${fallaSelladoraAdulto5}]];
+//                var fallaStackerAdulto5                             =[[${fallaStackerAdulto5}]];
+//                var fallaDobladoAdulto5                             =[[${fallaDobladoAdulto5}]];
+//                var fallaCorteFinalAdulto5                          =[[${fallaCorteFinalAdulto5}]];
+//                var fallaPlegadoYTransporteAdulto5                  =[[${fallaPlegadoYTransporteAdulto5}]];
+//                var fallaEtiquetaYTransporteDeProductoAdulto5       =[[${fallaEtiquetaYTransporteDeProductoAdulto5}]];
+//                var fallaSaldanteYAplicacionDeAdhesivoAdulto5       =[[${fallaSaldanteYAplicacionDeAdhesivoAdulto5}]];
+//                var fallaCorteDePadAdulto5                          =[[${fallaCorteDePadAdulto5}]];
+//                var fallaFormacionAdulto5                           =[[${fallaFormacionAdulto5}]];
+//                var fallaMolinoAdulto5                              =[[${fallaMolinoAdulto5}]];
+//                var fallaAspiracionAdulto5                          =[[${fallaAspiracionAdulto5}]];
+//                var fallaSalaDeCompresoresPlanta2                   =[[${fallaSalaDeCompresoresPlanta2}]];
+//                
+//             //capturo todas las variables de cierre que vienen del modelo   
+//                
+//    
+//    
+//    
+//                var cierreTransmisionAdulto4                         =[[${cierreTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var cierreSelladoraAdulto4                           =[[${cierreSelladoraAdulto4}]];
+//                var cierreStackerAdulto4                             =[[${cierreStackerAdulto4}]];
+//                var cierreDobladoAdulto4                             =[[${cierreDobladoAdulto4}]];
+//                var cierreCorteFinalAdulto4                          =[[${cierreCorteFinalAdulto4}]];
+//                var cierrePlegadoYTransporteAdulto4                  =[[${cierrePlegadoYTransporteAdulto4}]];
+//                var cierreCortePorRodaduraYBarreraAdulto4            =[[${cierreCortePorRodaduraYBarreraAdulto4}]];
+//                var cierreTraccionDeTresRodillosAdulto4              =[[${cierreTraccionDeTresRodillosAdulto4}]];
+//                var cierrePrimerYSegundoModuloDeEtiquetasAdulto4     =[[${cierrePrimerYSegundoModuloDeEtiquetasAdulto4}]];
+//                var cierreTransporteDeLineasAdulto4                  =[[${cierreTransporteDeLineasAdulto4}]];
+//                var cierreAplicacionDeAdhesivoAdulto4                =[[${cierreAplicacionDeAdhesivoAdulto4}]];
+//                var cierreTransporteDeMantaAdulto4                   =[[${cierreTransporteDeMantaAdulto4}]];
+//                var cierreAspiracionAdulto4                          =[[${cierreAspiracionAdulto4}]];
+//                var cierreMolinoChicoAdulto4                         =[[${cierreMolinoChicoAdulto4}]];
+//                var cierreMolinoGrandeAdulto4                        =[[${cierreMolinoGrandeAdulto4}]];
+//                
+//                var cierreTransmisionAdulto5                         =[[${cierreTransmisionAdulto5}]];
+//                var cierreSelladoraAdulto5                           =[[${cierreSelladoraAdulto5}]];
+//                var cierreStackerAdulto5                             =[[${cierreStackerAdulto5}]];
+//                var cierreDobladoAdulto5                             =[[${cierreDobladoAdulto5}]];
+//                var cierreCorteFinalAdulto5                          =[[${cierreCorteFinalAdulto5}]];
+//                var cierrePlegadoYTransporteAdulto5                  =[[${cierrePlegadoYTransporteAdulto5}]];
+//                var cierreEtiquetaYTransporteDeProductoAdulto5       =[[${cierreEtiquetaYTransporteDeProductoAdulto5}]];
+//                var cierreSaldanteYAplicacionDeAdhesivoAdulto5       =[[${cierreSaldanteYAplicacionDeAdhesivoAdulto5}]];
+//                var cierreCorteDePadAdulto5                          =[[${cierreCorteDePadAdulto5}]];
+//                var cierreFormacionAdulto5                           =[[${cierreFormacionAdulto5}]];
+//                var cierreMolinoAdulto5                              =[[${cierreMolinoAdulto5}]];
+//                var cierreAspiracionAdulto5                          =[[${cierreAspiracionAdulto5}]];
+//                var cierreSalaDeCompresoresPlanta2                   =[[${cierreSalaDeCompresoresPlanta2}]];
+//  
+//     //capturo todas las variables de disponible que vienen del modelo   
+//                
+//    
+//    
+//    
+//                var disponibleTransmisionAdulto4                         =[[${disponibleTransmisionAdulto4}]]; /* Aquí obtén el valor de la variable del modelo */
+//                var disponibleSelladoraAdulto4                           =[[${disponibleSelladoraAdulto4}]];
+//                var disponibleStackerAdulto4                             =[[${disponibleStackerAdulto4}]];
+//                var disponibleDobladoAdulto4                             =[[${disponibleDobladoAdulto4}]];
+//                var disponibleCorteFinalAdulto4                          =[[${disponibleCorteFinalAdulto4}]];
+//                var disponiblePlegadoYTransporteAdulto4                  =[[${disponiblePlegadoYTransporteAdulto4}]];
+//                var disponibleCortePorRodaduraYBarreraAdulto4            =[[${disponibleCortePorRodaduraYBarreraAdulto4}]];
+//                var disponibleTraccionDeTresRodillosAdulto4              =[[${disponibleTraccionDeTresRodillosAdulto4}]];
+//                var disponiblePrimerYSegundoModuloDeEtiquetasAdulto4     =[[${disponiblePrimerYSegundoModuloDeEtiquetasAdulto4}]];
+//                var disponibleTransporteDeLineasAdulto4                  =[[${disponibleTransporteDeLineasAdulto4}]];
+//                var disponibleAplicacionDeAdhesivoAdulto4                =[[${disponibleAplicacionDeAdhesivoAdulto4}]];
+//                var disponibleTransporteDeMantaAdulto4                   =[[${disponibleTransporteDeMantaAdulto4}]];
+//                var disponibleAspiracionAdulto4                          =[[${disponibleAspiracionAdulto4}]];
+//                var disponibleMolinoChicoAdulto4                         =[[${disponibleMolinoChicoAdulto4}]];
+//                var disponibleMolinoGrandeAdulto4                        =[[${disponibleMolinoGrandeAdulto4}]];
+//                
+//                var disponibleTransmisionAdulto5                         =[[${disponibleTransmisionAdulto5}]];
+//                var disponibleSelladoraAdulto5                           =[[${disponibleSelladoraAdulto5}]];
+//                var disponibleStackerAdulto5                             =[[${disponibleStackerAdulto5}]];
+//                var disponibleDobladoAdulto5                             =[[${disponibleDobladoAdulto5}]];
+//                var disponibleCorteFinalAdulto5                          =[[${disponibleCorteFinalAdulto5}]];
+//                var disponiblePlegadoYTransporteAdulto5                  =[[${disponiblePlegadoYTransporteAdulto5}]];
+//                var disponibleEtiquetaYTransporteDeProductoAdulto5       =[[${disponibleEtiquetaYTransporteDeProductoAdulto5}]];
+//                var disponibleSaldanteYAplicacionDeAdhesivoAdulto5       =[[${disponibleSaldanteYAplicacionDeAdhesivoAdulto5}]];
+//                var disponibleCorteDePadAdulto5                          =[[${disponibleCorteDePadAdulto5}]];
+//                var disponibleFormacionAdulto5                           =[[${disponibleFormacionAdulto5}]];
+//                var disponibleMolinoAdulto5                              =[[${disponibleMolinoAdulto5}]];
+//                var disponibleAspiracionAdulto5                          =[[${disponibleAspiracionAdulto5}]];
+//                var disponibleSalaDeCompresoresPlanta2                   =[[${disponibleSalaDeCompresoresPlanta2}]];
+//  
+//  
+//  
+//                if([[${fallaPlanta3}]])parpadearRojo("botonPlanta3");
+//                if([[${cierrePlanta3}]])parpadearAmarillo("botonPlanta3");
+//  
+//  
+//                if (fallaTransmisionAdulto4)parpadearRojo("TransmisionAdulto4");                        
+//                if (fallaSelladoraAdulto4)parpadearRojo("SelladoraAdulto4");                          
+//                if (fallaStackerAdulto4)parpadearRojo("StackerAdulto4");                            
+//                if (fallaDobladoAdulto4)parpadearRojo("DobladoAdulto4");                             
+//                if (fallaCorteFinalAdulto4)parpadearRojo("CorteFinalAdulto4");                          
+//                if (fallaPlegadoYTransporteAdulto4)parpadearRojo("PlegadoYTransporteAdulto4");                  
+//                if (fallaCortePorRodaduraYBarreraAdulto4)parpadearRojo("CortePorRodaduraYBarreraAdulto4");            
+//                if (fallaTraccionDeTresRodillosAdulto4)parpadearRojo("TraccionDeTresRodillosAdulto4");              
+//                if (fallaPrimerYSegundoModuloDeEtiquetasAdulto4)parpadearRojo("PrimerYSegundoModuloDeEtiquetasAdulto4");
+//                if (fallaTransporteDeLineasAdulto4)parpadearRojo("TransporteDeLineasAdulto4");                  
+//                if (fallaAplicacionDeAdhesivoAdulto4)parpadearRojo("AplicacionDeAdhesivoAdulto4");                
+//                if (fallaTransporteDeMantaAdulto4)parpadearRojo("TransporteDeMantaAdulto4");                   
+//                if (fallaAspiracionAdulto4)parpadearRojo("AspiracionAdulto4");                          
+//                if (fallaMolinoChicoAdulto4)parpadearRojo("MolinoChicoAdulto4");                         
+//                if (fallaMolinoGrandeAdulto4)parpadearRojo("MolinoGrandeAdulto4");                        
+//                
+//                if (fallaTransmisionAdulto5)parpadearRojo("TransmisionAdulto5");                         
+//                if (fallaSelladoraAdulto5)parpadearRojo("SelladoraAdulto5");                           
+//                if (fallaStackerAdulto5)parpadearRojo("StackerAdulto5");                             
+//                if (fallaDobladoAdulto5)parpadearRojo("DobladoAdulto5");                           
+//                if (fallaCorteFinalAdulto5)parpadearRojo("CorteFinalAdulto5");                        
+//                if (fallaPlegadoYTransporteAdulto5)parpadearRojo("PlegadoYTransporteAdulto5");                
+//                if (fallaEtiquetaYTransporteDeProductoAdulto5)parpadearRojo("EtiquetaYTransporteDeProductoAdulto5");     
+//                if (fallaSaldanteYAplicacionDeAdhesivoAdulto5)parpadearRojo("SaldanteYAplicacionDeAdhesivoAdulto5");     
+//                if (fallaCorteDePadAdulto5)parpadearRojo("CorteDePadAdulto5");                        
+//                if (fallaFormacionAdulto5)parpadearRojo("FormacionAdulto5");                         
+//                if (fallaMolinoAdulto5)parpadearRojo("MolinoAdulto5");                            
+//                if (fallaAspiracionAdulto5)parpadearRojo("AspiracionAdulto5");                        
+//                if (fallaSalaDeCompresoresPlanta2)parpadearRojo("SalaDeCompresoresPlanta2");                        
+//                
+//  
+//  
+//                
+//                if (cierreTransmisionAdulto4)parpadearAmarillo("TransmisionAdulto4");                        
+//                if (cierreSelladoraAdulto4)parpadearAmarillo("SelladoraAdulto4");                          
+//                if (cierreStackerAdulto4)parpadearAmarillo("StackerAdulto4");                            
+//                if (cierreDobladoAdulto4)parpadearAmarillo("DobladoAdulto4");                             
+//                if (cierreCorteFinalAdulto4)parpadearAmarillo("CorteFinalAdulto4");                          
+//                if (cierrePlegadoYTransporteAdulto4)parpadearAmarillo("PlegadoYTransporteAdulto4");                  
+//                if (cierreCortePorRodaduraYBarreraAdulto4)parpadearAmarillo("CortePorRodaduraYBarreraAdulto4");            
+//                if (cierreTraccionDeTresRodillosAdulto4)parpadearAmarillo("TraccionDeTresRodillosAdulto4");              
+//                if (cierrePrimerYSegundoModuloDeEtiquetasAdulto4)parpadearAmarillo("PrimerYSegundoModuloDeEtiquetasAdulto4");     
+//                if (cierreTransporteDeLineasAdulto4)parpadearAmarillo("TransporteDeLineasAdulto4");                  
+//                if (cierreAplicacionDeAdhesivoAdulto4)parpadearAmarillo("AplicacionDeAdhesivoAdulto4");                
+//                if (cierreTransporteDeMantaAdulto4)parpadearAmarillo("TransporteDeMantaAdulto4");                   
+//                if (cierreAspiracionAdulto4)parpadearAmarillo("AspiracionAdulto4");                          
+//                if (cierreMolinoChicoAdulto4)parpadearAmarillo("MolinoChicoAdulto4");                         
+//                if (cierreMolinoGrandeAdulto4)parpadearAmarillo("MolinoGrandeAdulto4");                        
+//                
+//                if (cierreTransmisionAdulto5)parpadearAmarillo("TransmisionAdulto5");                         
+//                if (cierreSelladoraAdulto5)parpadearAmarillo("SelladoraAdulto5");                           
+//                if (cierreStackerAdulto5)parpadearAmarillo("StackerAdulto5");                             
+//                if (cierreDobladoAdulto5)parpadearAmarillo("DobladoAdulto5");                           
+//                if (cierreCorteFinalAdulto5)parpadearAmarillo("CorteFinalAdulto5");                        
+//                if (cierrePlegadoYTransporteAdulto5)parpadearAmarillo("PlegadoYTransporteAdulto5");                
+//                if (cierreEtiquetaYTransporteDeProductoAdulto5)parpadearAmarillo("EtiquetaYTransporteDeProductoAdulto5");     
+//                if (cierreSaldanteYAplicacionDeAdhesivoAdulto5)parpadearAmarillo("SaldanteYAplicacionDeAdhesivoAdulto5");     
+//                if (cierreCorteDePadAdulto5)parpadearAmarillo("CorteDePadAdulto5");                        
+//                if (cierreFormacionAdulto5)parpadearAmarillo("FormacionAdulto5");                         
+//                if (cierreMolinoAdulto5)parpadearAmarillo("MolinoAdulto5");                            
+//                if (cierreAspiracionAdulto5)parpadearAmarillo("AspiracionAdulto5");   
+//                if (cierreSalaDeCompresoresPlanta2)parpadearAmarillo("SalaDeCompresoresPlanta2");   
+//                
+//  
+//                
+//                if (disponibleTransmisionAdulto4)pintarNaranja("TransmisionAdulto4");                        
+//                if (disponibleSelladoraAdulto4)pintarNaranja("SelladoraAdulto4");                          
+//                if (disponibleStackerAdulto4)pintarNaranja("StackerAdulto4");                            
+//                if (disponibleDobladoAdulto4)pintarNaranja("DobladoAdulto4");                             
+//                if (disponibleCorteFinalAdulto4)pintarNaranja("CorteFinalAdulto4");                          
+//                if (disponiblePlegadoYTransporteAdulto4)pintarNaranja("PlegadoYTransporteAdulto4");                  
+//                if (disponibleCortePorRodaduraYBarreraAdulto4)pintarNaranja("CortePorRodaduraYBarreraAdulto4");            
+//                if (disponibleTraccionDeTresRodillosAdulto4)pintarNaranja("TraccionDeTresRodillosAdulto4");              
+//                if (disponiblePrimerYSegundoModuloDeEtiquetasAdulto4)pintarNaranja("PrimerYSegundoModuloDeEtiquetasAdulto4");     
+//                if (disponibleTransporteDeLineasAdulto4)pintarNaranja("TransporteDeLineasAdulto4");                  
+//                if (disponibleAplicacionDeAdhesivoAdulto4)pintarNaranja("AplicacionDeAdhesivoAdulto4");                
+//                if (disponibleTransporteDeMantaAdulto4)pintarNaranja("TransporteDeMantaAdulto4");                   
+//                if (disponibleAspiracionAdulto4)pintarNaranja("AspiracionAdulto4");                          
+//                if (disponibleMolinoChicoAdulto4)pintarNaranja("MolinoChicoAdulto4");                         
+//                if (disponibleMolinoGrandeAdulto4)pintarNaranja("MolinoGrandeAdulto4");                        
+//                
+//                if (disponibleTransmisionAdulto5)pintarNaranja("TransmisionAdulto5");                         
+//                if (disponibleSelladoraAdulto5)pintarNaranja("SelladoraAdulto5");                           
+//                if (disponibleStackerAdulto5)pintarNaranja("StackerAdulto5");                             
+//                if (disponibleDobladoAdulto5)pintarNaranja("DobladoAdulto5");                           
+//                if (disponibleCorteFinalAdulto5)pintarNaranja("CorteFinalAdulto5");                        
+//                if (disponiblePlegadoYTransporteAdulto5)pintarNaranja("PlegadoYTransporteAdulto5");                
+//                if (disponibleEtiquetaYTransporteDeProductoAdulto5)pintarNaranja("EtiquetaYTransporteDeProductoAdulto5");     
+//                if (disponibleSaldanteYAplicacionDeAdhesivoAdulto5)pintarNaranja("SaldanteYAplicacionDeAdhesivoAdulto5");     
+//                if (disponibleCorteDePadAdulto5)pintarNaranja("CorteDePadAdulto5");                        
+//                if (disponibleFormacionAdulto5)pintarNaranja("FormacionAdulto5");                         
+//                if (disponibleMolinoAdulto5)pintarNaranja("MolinoAdulto5");                            
+//                if (disponibleAspiracionAdulto5)pintarNaranja("AspiracionAdulto5");   
+//                if (disponibleSalaDeCompresoresPlanta2)pintarNaranja("SalaDeCompresoresPlanta2");   
+//                
+//               
+//    
+//                function parpadearRojo(id)
+//                {
+//                var elemento = document.getElementById(id);
+//                var count = 0;
+//                var interval = setInterval(function () {
+//                if (count % 2 == 0) {
+//                elemento.style.fill = 'red';
+//                 if(id=="botonPlanta3")elemento.style.backgroundColor = 'red';
+//                } else {
+//                elemento.style.fill = 'transparent'; // O el color de texto original
+//                 if(id=="botonPlanta3")elemento.style.backgroundColor = '';
+//                }
+//                count++;
+//                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
+//
+//
+//                }
+//
+//                function parpadearAmarillo(id)
+//                {
+//                var elemento = document.getElementById(id);
+//                var count = 0;
+//                var interval = setInterval(function () {
+//                if (count % 2 == 0) {
+//                elemento.style.fill = 'yellow';
+//                if(id=="botonPlanta3")elemento.style.backgroundColor = 'yellow';
+//                } else {
+//                elemento.style.fill = 'transparent'; // O el color de texto original
+//                 if(id=="botonPlanta3")elemento.style.backgroundColor = '';
+//                }
+//                count++;
+//                }, 500); // Cambia 500 a la velocidad de parpadeo deseada en milisegundos
+//
+//
+//                }
+//                function pintarNaranja(id)
+//                {
+//                var elemento = document.getElementById(id);
+//                elemento.style.fill ='rgba(255,138,0, 0.7)';
+//
+//                }
+//
 
 
 
             </script>
 <script>
     //desactivo el refresh cuando tengo abierto el modal de carga de produccion
-  let refreshTimer;
+//  let refreshTimer;
 
   // Función que inicia el temporizador de refresco de la página
-  function iniciarAutoRefresh() {
-    refreshTimer = setTimeout(function() {
-      location.reload();
-    }, 20000); // Refresca después de 20 segundos (20,000 milisegundos)
-  }
+//  function iniciarAutoRefresh() {
+//    refreshTimer = setTimeout(function() {
+//      location.reload();
+//    }, 20000); // Refresca después de 20 segundos (20,000 milisegundos)
+//  }
 
   // Función que detiene el temporizador de refresco
-  function detenerAutoRefresh() {
-    clearTimeout(refreshTimer);
-  }
+//  function detenerAutoRefresh() {
+//    clearTimeout(refreshTimer);
+//  }
 
   // Detectar cuando se abre el modal y detener el refresco
-  $('#modalCarga').on('shown.bs.modal', function () {
-    detenerAutoRefresh();
-  });
-
-  // Detectar cuando se cierra el modal y reiniciar el refresco
-  $('#modalCarga').on('hidden.bs.modal', function () {
-    iniciarAutoRefresh();
-  });
-
-  // Iniciar el auto-refresh al cargar la página
-  window.onload = iniciarAutoRefresh;
+//  $('#modalCarga').on('shown.bs.modal', function () {
+//    detenerAutoRefresh();
+//  });
+//
+//  // Detectar cuando se cierra el modal y reiniciar el refresco
+//  $('#modalCarga').on('hidden.bs.modal', function () {
+//    iniciarAutoRefresh();
+//  });
+//
+//  // Iniciar el auto-refresh al cargar la página
+//  window.onload = iniciarAutoRefresh;
 </script>
+            <script>
+                
+  
+  
+  
+  
 
+let elementosParpadeantes = new Map();
+let pulsadorPlanta3=document.getElementById("botonPlanta3");
+let isYellow;
+ let isRed;
+
+
+
+setInterval(function() {
+    traerEstados();
+}, 5000);  // 5000 milisegundos = 5 segundos
+
+
+
+function traerEstados(){
+    $.ajax({
+        url: '/actualizarEstados/',   // La URL del método en tu controlador
+        type: 'GET',                  // Método HTTP  
+        success: function(response) {
+            
+            elementosParpadeantes=response;
+            
+        },
+        error: function(error) {
+            console.error("Error en actualizacion de estados", error);
+        }
+    });
+}
+
+
+setInterval(function() { 
+    let algunaDetencionEnPlanta3=false;
+    let algunaLiberacionEnplanta3=false;
+     Object.entries(elementosParpadeantes).forEach(function([key, value]) {
+//            console.log("Clave: " + key + ", Valor: " + value);  // Imprimir clave y valor
+
+            if((key.includes("Adulto2")||key.includes("Adulto3")||key.includes("Aposito"))&&value=="detenida")algunaDetencionEnPlanta3=true;
+            if((key.includes("Adulto2")||key.includes("Adulto3")||key.includes("Aposito"))&&value=="liberada")algunaLiberacionEnplanta3=true;
+
+            let keyModificado=key.charAt(0).toUpperCase()+key.slice(1);
+
+            let elemento=document.getElementById(keyModificado);
+            if(!(elemento===null))
+            {
+                    if(value=="detenida")
+                 {
+                     isRed = (elemento.style.fill === 'red');
+                     elemento.style.fill = isRed ? 'transparent' : 'red';
+                     elemento.setAttribute("data-estado", "detenida");
+                 }
+
+                 if(value=="liberada")
+                 { 
+                     isYellow = (elemento.style.fill === 'yellow');
+                     elemento.style.fill = isYellow ? 'transparent' : 'yellow';
+                      elemento.setAttribute("data-estado", "liberada");
+                 }
+                 if(value=="disponible")
+                 {
+                     elemento.style.fill =  'rgba(255, 165, 0, 0.5)';//naranja 
+                      elemento.setAttribute("data-estado", "disponible");
+                 }
+                  if(value==="operativa")
+                  {
+                    elemento.style.fill = ''; 
+                    elemento.setAttribute("data-estado", "operativa");
+                  }
+            }
+            
+        });
+    if(algunaLiberacionEnplanta3&&!algunaDetencionEnPlanta3)
+    {
+       isYellow = (pulsadorPlanta3.style.backgroundColor === 'yellow');
+       pulsadorPlanta3.style.backgroundColor = isYellow ? '' : 'yellow';
+
+    }
+    if(algunaDetencionEnPlanta3)
+    {
+     isRed = (pulsadorPlanta3.style.backgroundColor === 'red');
+       pulsadorPlanta3.style.backgroundColor = (isRed) ? '' : 'red';
+    }
+    
+}, 500); 
+
+
+
+              
+
+
+
+$(document).ready(function() {
+    // Seleccionamos todos los elementos <path> y los ponemos a la escucha del evento hover
+    traerEstados();
+
+var funcionTimeout;
+
+    $("path").hover(function() {
+        // Esto se ejecuta al hacer hover (mouseenter)
+
+
+        var elementId = this.id;  // Obtenemos el id del elemento actual
+        var estadoElemento=this.dataset.estado;
+        if(estadoElemento==="disponible")
+        funcionTimeout=setTimeout(function() {
+        //jo estan encadenados los dos timeouts, esto hace que se vaya el card actual y luego entre el nuevo
+        setTimeout(function() { ajax(elementId,estadoElemento);},500);
+        
+            ocultarCard(); 
+        }, 500);  
+
+    }, function() {
+        clearTimeout(funcionTimeout);
+        // Esto se ejecuta cuando se sale del hover (mouseleave)
+        // Si quieres hacer algo cuando el mouse sale, puedes añadir aquí tu lógica
+    });
+});
+
+
+
+
+function ajax(nombre,estado){
+     $.ajax({
+            url: '/traerPreventivosAlLayout/',   // La URL del método en tu controlador
+            type: 'GET',// Método HTTP  
+            data:{nombre:nombre,
+                  estado:estado  },// Enviar el nombre del activo como parámetro
+            success: function(response) {
+                // Limpiar el contenedor de salida
+                $("#listaPreventivos").html("");
+
+                // Recorrer la lista de objetos y mostrar sus campos
+                response.forEach(function(objeto) {
+                    $("#listaPreventivos").append("<p>- " + objeto.descripcion + "</p>");
+                });
+//                            success: function(response) {
+//                           // response ahora es un objeto JSON, puedes acceder a sus campos
+//                                  $("#output").html("Campo1: " + response.campo1 );
+//                             });
+            },
+            error: function(error) {
+                console.error("Error en la petición", error);
+            }
+          });
+
+
+
+
+//        cardInfo.style.display = "block";
+        mostrarCard();
+//        cardInfo.style.left = `5%`;  
+//        cardInfo.style.top = `60%`;
+        }
+
+
+
+
+
+
+
+
+        document.addEventListener("click", (event) => {
+            // Si haces clic fuera del card y del path
+            if (!cardInfo.contains(event.target) ) {
+//                cardInfo.style.display = "none";
+                ocultarCard();
+//                isCardVisible = false;
+            }
+        });
+        
+        
+        
+        // Mostrar la tarjeta con animación
+        function mostrarCard() {
+            cardInfo.classList.remove("card-hidden");  // Quita la clase que la oculta
+            cardInfo.classList.add("card-visible");    // Añade la clase que la muestra
+        }
+
+        // Ocultar la tarjeta con animación
+        function ocultarCard() {
+            cardInfo.classList.remove("card-visible"); // Quita la clase que la muestra
+            cardInfo.classList.add("card-hidden");     // Añade la clase que la oculta
+        }
+
+            </script>
 
             <!--<footer th:replace="plantillas/plantilla::footer"></footer>-->
         </body>

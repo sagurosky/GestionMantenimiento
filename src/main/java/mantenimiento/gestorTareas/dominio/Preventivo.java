@@ -23,6 +23,8 @@ public class Preventivo implements Serializable {
     @Column(name = "id")
     private Long id;
     private String descripcion;
+    private String detalle;
+    
     private String estado;
     private String solicita;
     private String validacionMantenimiento;
@@ -36,6 +38,7 @@ public class Preventivo implements Serializable {
     private LocalDateTime fechaDeCreacion;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fechaRealizado;
+    
      
 
 }

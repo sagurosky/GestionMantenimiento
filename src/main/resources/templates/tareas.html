@@ -59,7 +59,8 @@
                             <!--<td th:text="${tarea.activo.codigo}" th:title='${tarea.activo.nombre}'>maquina</td>-->
                             <td th:text="${tarea.activo.nombre}" >activo</td>
                             <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="detenida"}'style="background: red">estado</td>
-                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado!="detenida"}'>estado</td>
+                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado=="operativa condicionada"}'style="background: lightcoral">estado</td>
+                            <td th:text="${tarea.activo.estado}" th:if='${tarea.activo.estado!="detenida"&&tarea.activo.estado!="operativa condicionada"}'>estado</td>
                             <!--<td th:text="${tarea.estado}" >estado solicitud </td>-->
                             <td>
                                 <span th:text="${tarea.estado}">Estado solicitud</span>

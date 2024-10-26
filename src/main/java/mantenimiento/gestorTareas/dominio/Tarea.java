@@ -44,6 +44,7 @@ public class Tarea implements Serializable {
     private String solicita;
 
     private String estado;
+    private String afectaProduccion;
     
     private String imagen;
     

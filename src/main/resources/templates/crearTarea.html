@@ -17,9 +17,9 @@
 
                 <div class="modal-content">
                     <div class="modal-header bg-info text-white">
-                        <h5 class="modal-title" >Generar tarea</h5>
+                        <h5 class="modal-title" >Notificar detención</h5>
                     </div> 
-                    <form th:action="@{/guardar}" method="post" th:object="${tarea}" enctype="multipart/form-data" class="was-validated">
+                    <form th:action="@{/guardar}" method="post" th:object="${tarea}" enctype="multipart/form-data" class="form-group">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label th:text="activo" for="activo"></label>
@@ -64,6 +64,13 @@
                                 <label  for="descripcion">descripcion del problema</label>
                                 <input type="text" th:field="*{descripcion}"class="form-control" required="true"/>
                             </div>
+                          <div class="form-group">
+                            <label for="afectaProduccionSelect">Afecta producción</label>
+                            <select class="form-control" id="afectaProduccionSelect" th:field="*{afectaProduccion}">
+                                <option value="si" th:selected="${afectaProduccion == 'si'}">Sí</option>
+                                <option value="no" th:selected="${afectaProduccion == 'no'}">No</option>
+                            </select>
+                        </div>
 
 <!--                            <div class="form-group">
                                 <label th:text="estado" for="estado"></label>

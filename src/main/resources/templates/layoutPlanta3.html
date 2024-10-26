@@ -37,27 +37,22 @@
             .mapadiv :hover{
                 fill:rgba(0,191,255, 0.7);
             }
-            /*            .col{
-                            border:solid 1px;
-                        }*/
-            
-                    /* Ocultar el card por defecto */
-             #cardInfo {
-                 display: none;
-                 z-index: 1000;
-             }
+               /* Estilo inicial: la tarjeta está fuera de la pantalla */
+            .card-hidden {
+                position: absolute;
+                left: -100%;  /* Comienza fuera de la pantalla (a la izquierda) */
+                top: 60%;     /* Asegúrate de que la posición vertical se mantenga */
+                transition: left 0.5s ease;  /* Transición suave para el desplazamiento horizontal */
+            }
 
-             /* Mostrar el card cuando el path está en hover */
-             a:hover + #cardInfo {
-                 display: block;
-             }
-
-             /* Si quieres posicionar el card de manera más flexible */
-             a:hover + #cardInfo {
-                 display: block;
-                 left: 50px; /* Ajusta la posición */
-                 top: 50px;  /* Ajusta la posición */
-             }
+            /* Estilo cuando la tarjeta es visible */
+            .card-visible {
+                position: absolute;
+                left: 5%;   
+                top: 60%; /* La tarjeta se desplaza a la posición final dentro de la pantalla */
+                transition: left 0.5s ease;
+            }
+          
     </style>
         <body>
             <header th:replace="plantillas/plantilla::header">lista de tareas</header>
@@ -177,7 +172,7 @@
                                    </form>
                             </div>
                          <br/>
-                        <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block mt-2">
+                        <a id="botonPlanta2" th:href="@{layoutPlanta2}" class="btn btn-primary btn-block mt-2" >
                             planta 2
                         </a>
                     </div>
@@ -187,7 +182,7 @@
                     
                     
                                         <!-- Contenedor del card, inicialmente oculto -->
-                    <div id="cardInfo" class="card" style="width: 18rem; display: none; position: absolute;box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
+                     <div id="cardInfo" class="card card-hidden" style="width: 18rem;  position: absolute;box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);">
                       <div class="card-body">
                         <h5 class="card-title">Preventivos validados</h5>
                         <p class="card-text"id="listaPreventivos"></p>
@@ -524,8 +519,11 @@
   
 
 let elementosParpadeantes = new Map();
-
-
+let pulsadorPlanta2=document.getElementById("botonPlanta2");
+let isYellow;
+ let isRed;
+ let isLightRed;
+ let lightRed="rgba(255, 0, 0, 0.3)";
 
 
 setInterval(function() {
@@ -551,15 +549,20 @@ function traerEstados(){
 
 
 setInterval(function() {
+    let algunaDetencionEnPlanta2=false;
+    let algunaLiberacionEnplanta2=false;
      Object.entries(elementosParpadeantes).forEach(function([key, value]) {
 //            console.log("Clave: " + key + ", Valor: " + value);  // Imprimir clave y valor
-            let elemento=document.getElementById(key);
+
+            if((key.includes("Adulto4")||key.includes("Adulto5"))&&value=="detenida")algunaDetencionEnPlanta2=true;
+            if((key.includes("Adulto4")||key.includes("Adulto5"))&&value=="liberada")algunaLiberacionEnplanta2=true;
             
+            let elemento=document.getElementById(key);
             if(!(elemento===null))
             {
                     if(value=="detenida")
                  {
-                      let isRed = (elemento.style.fill === 'red');
+                     isRed = (elemento.style.fill === 'red');
                      elemento.style.fill = isRed ? 'transparent' : 'red';
                      elemento.setAttribute("data-estado", "detenida");
                      
@@ -570,7 +573,7 @@ setInterval(function() {
 
                  if(value=="liberada")
                  { 
-                     let isYellow = (elemento.style.fill === 'yellow');
+                     isYellow = (elemento.style.fill === 'yellow');
                      elemento.style.fill = isYellow ? 'transparent' : 'yellow';
                       elemento.setAttribute("data-estado", "liberada");
                  }
@@ -579,98 +582,95 @@ setInterval(function() {
                      elemento.style.fill =  'rgba(255, 165, 0, 0.5)';//naranja 
                       elemento.setAttribute("data-estado", "disponible");
                  }
+                  if(value==="operativa condicionada")
+                  {
+                   elemento.style.fill =  lightRed;//rojo trasparente
+                    elemento.setAttribute("data-estado", "operativa condicionada");
+                  }
                   if(value==="operativa")
                   {
-                    elemento.style.fill = 'transparent'; 
+                    elemento.style.fill = ''; 
                     elemento.setAttribute("data-estado", "operativa");
                   }
+                  
+                  
             }
-            
+             
         });
-    
+    if(algunaLiberacionEnplanta2&&!algunaDetencionEnPlanta2)
+    {
+       isYellow = (pulsadorPlanta2.style.backgroundColor === 'yellow');
+       pulsadorPlanta2.style.backgroundColor = isYellow ? '' : 'yellow';
+
+    }
+    if(algunaDetencionEnPlanta2)
+    {
+     isRed = (pulsadorPlanta2.style.backgroundColor === 'red');
+       pulsadorPlanta2.style.backgroundColor = (isRed) ? '' : 'red';
+    }
     
 }, 500); 
 
 
 
-
-
-
-
-
-
-
-
-
-</script>
-            
-            
-            <script>
               
 
 
 
-                    $(document).ready(function() {
-                        // Seleccionamos todos los elementos <path> y los ponemos a la escucha del evento hover
-                        traerEstados();
-                       
-                    var funcionTimeout;
-                        
-                        $("path").hover(function() {
-                            // Esto se ejecuta al hacer hover (mouseenter)
-                            
-                            
-                            var elementId = this.id;  // Obtenemos el id del elemento actual
-                            var estadoElemento=this.dataset.estado;
-                            if(estadoElemento==="disponible")
-                            funcionTimeout=setTimeout(function() {
-                                 //primero borro el card
-                             cardInfo.style.display = "none";
-                            isCardVisible = false;
-                                ajax(elementId,estadoElemento);  // Llamamos a la función ajax pasando el ID
-                            }, 1000);  // 1000 milisegundos = 2 segundos
-                            
-                        }, function() {
-                            clearTimeout(funcionTimeout);
-                            // Esto se ejecuta cuando se sale del hover (mouseleave)
-                            // Si quieres hacer algo cuando el mouse sale, puedes añadir aquí tu lógica
-                        });
-                    });
+$(document).ready(function() {
+    // Seleccionamos todos los elementos <path> y los ponemos a la escucha del evento hover
+    traerEstados();
+
+var funcionTimeout;
+
+    $("path").hover(function() {
+        // Esto se ejecuta al hacer hover (mouseenter)
+
+
+        var elementId = this.id;  // Obtenemos el id del elemento actual
+        var estadoElemento=this.dataset.estado;
+        if(estadoElemento==="disponible")
+        funcionTimeout=setTimeout(function() {
+        //jo estan encadenados los dos timeouts, esto hace que se vaya el card actual y luego entre el nuevo
+        setTimeout(function() { ajax(elementId,estadoElemento);},500);
+        
+            ocultarCard(); 
+        }, 500); 
+    }, function() {
+        clearTimeout(funcionTimeout);
+        // Esto se ejecuta cuando se sale del hover (mouseleave)
+        // Si quieres hacer algo cuando el mouse sale, puedes añadir aquí tu lógica
+    });
+});
 
 
 
 
-            function ajax(nombre,estado){
-                 $.ajax({
-                        url: '/traerPreventivosAlLayout/',   // La URL del método en tu controlador
-                        type: 'GET',// Método HTTP  
-                        data:{nombre:nombre,
-                              estado:estado  },// Enviar el nombre del activo como parámetro
-                        success: function(response) {
-                            // Limpiar el contenedor de salida
-                            $("#listaPreventivos").html("");
+function ajax(nombre,estado){
+     $.ajax({
+            url: '/traerPreventivosAlLayout/',   // La URL del método en tu controlador
+            type: 'GET',// Método HTTP  
+            data:{nombre:nombre,
+                  estado:estado  },// Enviar el nombre del activo como parámetro
+            success: function(response) {
+                // Limpiar el contenedor de salida
+                $("#listaPreventivos").html("");
 
-                            // Recorrer la lista de objetos y mostrar sus campos
-                            response.forEach(function(objeto) {
-                                $("#listaPreventivos").append("<p>- " + objeto.descripcion + "</p>");
-                            });
+                // Recorrer la lista de objetos y mostrar sus campos
+                response.forEach(function(objeto) {
+                    $("#listaPreventivos").append("<p>- " + objeto.descripcion + "</p>");
+                });
 //                            success: function(response) {
 //                           // response ahora es un objeto JSON, puedes acceder a sus campos
 //                                  $("#output").html("Campo1: " + response.campo1 );
 //                             });
-                        },
-                        error: function(error) {
-                            console.error("Error en la petición", error);
-                        }
-                      });
-                    
-                    
-                    
-                    
-                    cardInfo.style.display = "block";
-                    cardInfo.style.left = `5%`;  
-                    cardInfo.style.top = `60%`;
-                    }
+            },
+            error: function(error) {
+                console.error("Error en la petición", error);
+            }
+          });
+        mostrarCard();
+        }
 
 
 
@@ -679,13 +679,27 @@ setInterval(function() {
 
 
 
-                    document.addEventListener("click", (event) => {
-                        // Si haces clic fuera del card y del path
-                        if (!cardInfo.contains(event.target) ) {
-                            cardInfo.style.display = "none";
-                            isCardVisible = false;
-                        }
-                    });
+        document.addEventListener("click", (event) => {
+            // Si haces clic fuera del card y del path
+            if (!cardInfo.contains(event.target) ) {
+                ocultarCard();
+            }
+        });
+
+
+
+ // Mostrar la tarjeta con animación
+        function mostrarCard() {
+            
+            cardInfo.classList.remove("card-hidden");  // Quita la clase que la oculta
+            cardInfo.classList.add("card-visible");    // Añade la clase que la muestra
+        }
+
+        // Ocultar la tarjeta con animación
+        function ocultarCard() {
+            cardInfo.classList.remove("card-visible"); // Quita la clase que la muestra
+            cardInfo.classList.add("card-hidden");     // Añade la clase que la oculta
+        }
 
                 </script>
             

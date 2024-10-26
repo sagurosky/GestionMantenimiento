@@ -104,40 +104,20 @@ public class Controlador {
 
         //traigo todos los activos y mando a la vista variables de falla cuando estan detenidos o de cierre cuando estan liberadas y faltan cerrar
         List<Activo> activos = activo.findAll();
-        String aux = "";
-        Boolean fallaPlanta2 = false;
-        Boolean cierrePlanta2 = false;
         
         
         
         for (Activo activo : activos) {
-            aux = Convertidor.aCamelCase(activo.getNombre());
-            aux = aux.toUpperCase().charAt(0) + aux.substring(1);
-            model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
-            model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
 //le paso la variable disponible si la hora cargada de la disponibilidad es mayor a la hora actual  
             if(activo.getDisponibilidadHasta()!=null&&activo.getEstado().equals("disponible"))
-            if(LocalDateTime.now().isBefore(activo.getDisponibilidadHasta()))
-            {
-                model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
-                model.addAttribute("tiempo" + aux, activo.getDisponibilidadHasta());
-                
-            }else
+            if(LocalDateTime.now().isAfter(activo.getDisponibilidadHasta()))
             {
                 activo.setEstado("operativa");
                 activoService.save(activo);
+                
             }
 
-            //detecto si algun activo de polanta2 esta detenido o aguardando cierre
-            if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("detenida")) {
-                fallaPlanta2 = true;
-            }
-            if ((activo.getNombre().contains("adulto 4") || activo.getNombre().contains("adulto 5") || activo.getNombre().contains("planta 2")) && activo.getEstado().equals("liberada")) {
-                cierrePlanta2 = true;
-            }
         }
-        model.addAttribute("fallaPlanta2", fallaPlanta2);
-        model.addAttribute("cierrePlanta2", cierrePlanta2);
         model.addAttribute("tecnicos", tecnicoService.findAll());
 
         LocalDateTime fechaActual = LocalDateTime.now();
@@ -183,21 +163,15 @@ public class Controlador {
         Boolean fallaPlanta3 = false;
         Boolean cierrePlanta3 = false;
         for (Activo activo : activos) {
-            aux = Convertidor.aCamelCase(activo.getNombre());
-            aux = aux.toUpperCase().charAt(0) + aux.substring(1);
-            model.addAttribute("falla" + aux, activo.getEstado().equals("detenida"));
-            model.addAttribute("cierre" + aux, activo.getEstado().equals("liberada"));
-            model.addAttribute("disponible" + aux, activo.getEstado().equals("disponible"));
-            if ((activo.getNombre().contains("adulto 3") || activo.getNombre().contains("adulto 2") || activo.getNombre().contains("aposito")) && activo.getEstado().equals("detenida")) {
-                fallaPlanta3 = true;
-            }
-            if ((activo.getNombre().contains("adulto 3") || activo.getNombre().contains("adulto 2") || activo.getNombre().contains("aposito")) && activo.getEstado().equals("liberada")) {
-                cierrePlanta3 = true;
+             if(activo.getDisponibilidadHasta()!=null&&activo.getEstado().equals("disponible"))
+            if(LocalDateTime.now().isAfter(activo.getDisponibilidadHasta()))
+            {
+                activo.setEstado("operativa");
+                activoService.save(activo);
+                
             }
 
         }
-        model.addAttribute("fallaPlanta3", fallaPlanta3);
-        model.addAttribute("cierrePlanta3", cierrePlanta3);
         model.addAttribute("tecnicos", tecnicoService.findAll());
 
         return "layoutPlanta2";
@@ -217,6 +191,7 @@ public class Controlador {
 
         Activo activoSeleccionado = activo.findById(activoRequest.getId()).orElse(null);
         tarea.setActivo(activoSeleccionado);
+        tarea.setAfectaProduccion("si");
         model.addAttribute("tarea", tarea);
         model.addAttribute("activos", activo.findAll());
 
@@ -254,7 +229,10 @@ public class Controlador {
         //se guarda el momento de la solicitud para calcular el tiempo de parada
         tarea.getActivo().setMomentoDetencion(LocalDateTime.now());
         tarea.setMomentoDetencion(LocalDateTime.now());
-        tarea.getActivo().setEstado("detenida");
+        if(tarea.getAfectaProduccion().equals("no"))tarea.getActivo().setEstado("operativa condicionada");
+        else tarea.getActivo().setEstado("detenida");
+        
+        
         activo.save(tarea.getActivo());
 
         servicio.guardar(tarea);

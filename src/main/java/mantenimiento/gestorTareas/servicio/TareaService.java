@@ -1,5 +1,6 @@
 package mantenimiento.gestorTareas.servicio;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Tarea;
@@ -23,6 +24,14 @@ public interface TareaService extends JpaRepository<Tarea,Long> {
         + "t.estado ='cerrada' and "
             + "t.activo=?1")
     public List<Tarea> traerCerradasPorActivo(Activo activo );
+    
+    
+    @Query("SELECT t FROM Tarea t  WHERE "
+        + "t.estado ='cerrada' and "
+            + "t.activo=?1 and "
+            + "t.activo.momentoDetencion >= ?2 and "
+             + "t.activo.momentoDetencion <= ?3")
+    public List<Tarea> traerCerradasPorActivoEnRangoDeFecha(Activo activo, LocalDateTime  fechainicio, LocalDateTime  fechaFin );
   
     
       @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1")
