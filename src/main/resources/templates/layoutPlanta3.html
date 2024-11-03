@@ -61,71 +61,15 @@
                 <div class="row">
                     <div class="col-md-2">
                         <br/>
+                        
                         <div  sec:authorize="hasRole('ROLE_PROD')">
-                            <a sec:authorize="hasRole('ROLE_PROD')" 
-                                       href="#" 
-                                       data-toggle="modal" 
-                                       th:data-target="'#modalCarga'" 
-                                       class="btn btn-primary btn-block"
-                                       >
+                            <input type="hidden" name="url" id="url" value="/layout">
+                            <a sec:authorize="hasRole('ROLE_PROD')" th:href="@{/produccion/}+${'layout'}"class="btn btn-primary btn-block">
+                                 <!--<a th:href="@{/preventivos/}+ ${activo.id}" th:text="'preventivos'" class="btn btn-primary"></a>-->
                                 Producción
                             </a>
                         <br/>
                         </div>
-                        
-                        
-                        
-                        <div class="modal fade bd-example-modal-lg" th:id="'modalCarga'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel" >Ingrese producción  <span th:text="${turno}"></span></h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <form th:id="'cargaProduccion'" th:object="${produccion}"th:action="@{/cargaProduccion}" method="post" > 
-                                                <input type="hidden" name="url" value="layoutPlanta3"/>
-                                                <div class="modal-body">
-      			
-                                                   
-                                                    <div class="row">
-                                                        <div class="form-floating mb-3 col">
-                                                            <input type="text" th:value="*{cantidadProducto1}"class="form-control" th:id="floatingInput"th:name="producto1"oninput="checkInput(this)" placeHolder="producto 1">
-                                                            <label for="floatingInput">producto 1</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3 col">
-                                                            <input type="text" th:value="*{cantidadProducto2}" class="form-control" th:id="floatingInput"th:name="producto2"oninput="checkInput(this)" placeHolder="producto 2">
-                                                            <label for="floatingInput">producto 2</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="form-floating mb-3 col">
-                                                            <input type="text" th:value="*{cantidadProducto3}" class="form-control" id="floatingInput"th:name="producto3"oninput="checkInput(this)" placeHolder="producto 3">
-                                                            <label for="floatingInput">producto 3</label>
-                                                        </div>
-                                                        <div class="form-floating mb-3 col">
-                                                            <input type="text" th:value="*{cantidadProducto4}" class="form-control" id="floatingInput"th:name="producto4"oninput="checkInput(this)" placeHolder="producto 4">
-                                                            <label for="floatingInput">producto 4</label>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                     
-                                                   
-                                        </div>
-                                        <div class="modal-footer">
-                                                 <button class="btn btn-primary" th:type="submit">Guardar y cerrar</button>
-                                        </div>
-                                             </form> 
-                                       
-                                    </div>
-                                </div>
-                            </div>
-                        
-                        
-                        
-                        
-                        
                         
                         
                         <a th:href="@{tareas}" class="btn btn-primary btn-block">
@@ -151,7 +95,7 @@
                                 <label>datos de técnicos</label>
                                     <form th:action="@{/perfilTecnico}" method="get">
                                          <!-- Campo oculto para la URL de origen -->
-                                        <input type="hidden" name="url" id="url" value="/layoutPlanta2">
+                                        <input type="hidden" name="url" id="url" value="/layout">
                                         <div class="container"> 
                                             <div class="row">
                                                  <select name="id"class="form-control">

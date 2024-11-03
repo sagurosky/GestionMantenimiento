@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <!--<meta http-equiv="refresh" id="metaRefresh" content="60">-->
+
+        <head th:replace="plantillas/plantilla::head">
+            <title>Lista de tareas</title>
+            <meta charset="UTF-8"/>
+        </head>
+
+        <body>
+            <header th:replace="plantillas/plantilla::header">lista de ordenes de trabajo</header>
+            <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
+                Serás redirigido en: <span id="tiempoRestante">60</span> segundos
+            </div>
+            <section  class="py-4 mb-4 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3" >
+                            <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
+                              <a 
+                                         href="#" 
+                                         data-toggle="modal" 
+                                         th:data-target="'#myModal'" 
+                                         class="btn btn-primary ">nueva carga</a>   
+                            <!--</a>-->
+                        </div>
+                        <div class="col-md-3" >
+                            <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
+                              <a th:href="@{/historialOrdenes/}+${url}"
+                                         class="btn btn-primary ">historial</a>   
+                            <!--</a>-->
+                        </div>
+
+                    </div>
+                    <div class="modal fade" th:id="'myModal'" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Orden de trabajo nueva</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form th:id="'cargaOrdenDeTrabajo'" th:action="@{/cargaOrdenDeTrabajo}"th:object="${produccion}" method="post" enctype="multipart/form-data" > 
+                                        <div class="modal-body">
+                                            <div class='row'> 
+                                                <div class="col">
+                                                    <label th:text="'numero de orden'" ></label>   
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" th:field="*{ordenDeTrabajo}" class="form-control" oninput="reiniciarContador()"/>
+                                                </div>
+                                            </div>
+                                            <div class='row'> 
+                                                <div class="col">
+                                                    <label th:text="'producto'" ></label>   
+                                                </div>
+                                                <div class="col">
+                                                    <!--<input type="text" th:field="*{producto}"class="form-control" oninput="reiniciarContador()"/>-->
+                                                    <select name="producto"class="form-control" onselect="reiniciarContador()">
+                                                     <option th:each="producto : ${productos}"
+                                                             th:value="${producto}"
+                                                             th:text="${producto}">
+                                                     </option>
+                                                     </select>
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class='row'> 
+                                                <div class="col">
+                                                    <label th:text="'cantidad'" ></label>   
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" th:field="*{cantidad}"class="form-control" oninput="reiniciarContador()"/>
+                                                </div>
+                                            </div>
+                                            <div class='row'> 
+                                                <div class="col">
+                                                    <label th:text="'linea'" ></label>   
+                                                </div>
+                                                <div class="col">
+                                                    <!--<input type="text" th:field="*{linea}"class="form-control" oninput="reiniciarContador()"/>-->
+                                                    <select name="linea"class="form-control" onselect="reiniciarContador()">
+                                                     <option th:each="linea : ${lineas}"
+                                                             th:value="${linea.toString}"
+                                                             th:text="${linea}">
+                                                     </option>
+                                                     </select>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                                 
+                                        <div class="modal-footer">
+                                            <input type="hidden" name="url" id="url" th:value="${url}">
+                                            <button class="btn btn-primary" th:type="submit">guardar</button>
+                                        </div>
+                                             </form> 
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </section>
+<!--            <section  class="py-2 mb-4  bg-light">
+                <form th:action="@{/filtrar}" method="post"   class="form-group">
+                    <div class="container">
+                        <label  for="palabraClave">filtrar: PENDIENTE</label>
+                        <input type="text"  name="palabraClave" id="palabraClave" th:value="${palabraClave}"placeholder="digite valor a buscar" autocomplete="off"/>
+                        <input th:type="submit"  th:value="buscar" class="btn btn-primary "/>
+                    </div>
+                </form>
+            </section>-->
+            <div class="container ">
+                <table class="table table-bordered table-hover table-sm "  >
+                    <thead class="thead-light " >
+                        <tr > 
+                            <th >numero de orden</th>
+                            <th >estado</th>
+                            <th >producto </th>
+                            <th >cantidad</th>
+                            <th >línea</th>
+                            <!--<th  sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')">solicita</th>-->
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">accion</th>
+                            <!--<th sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')or hasRole('ROLE_TECNICO')">acción</th>-->
+
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr th:each="orden : ${ordenesAbiertas}">
+                        <td th:text="${orden.ordenDeTrabajo}" >orden de trabajo</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')|| hasRole('ROLE_PROD')">
+                            <span  th:text="${orden.estado}">estado</span>     
+                        <span><a th:if="${orden.estado=='abierta'}" 
+                                 th:href="@{/cerrarOrdenDeTrabajo/}+ ${orden.id}+ '?url=' + ${url}"
+                                 class="btn btn-primary ">cerrar</a>
+                        </span>
+                            
+                            
+                        </td>
+                        <td sec:authorize="not hasRole('ROLE_ADMIN') and not hasRole('ROLE_PROD')" th:text="${orden.estado}">estado </td>
+                        <td th:text="${orden.producto}">producto</td>
+                        <td th:text="${orden.cantidad}">cantidad</td>
+                        <td th:text="${orden.linea}">linea</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarOrden/}+${orden.id}" >eliminar</a></td>
+                        
+
+                    </tr>
+                </tbody>
+            </table>
+                
+                
+                
+                
+        </div>
+         <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}+${url}" class="btn btn-primary btn-block">
+                             Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+      
+
+        
+        
+        
+
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+        
+        
+         <script>
+             
+                function reiniciarContador(element) {
+                   segundosRestantes=120;
+                }
+             
+             
+             
+                var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+                // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+                function actualizarTiempoRestante() {
+                    // Actualizar el contenido del span con el tiempo restante
+                    document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+                    // Disminuir el tiempo restante en 1 segundo
+                    segundosRestantes--;
+
+                    // Verificar si se alcanzó el tiempo límite
+                    if (segundosRestantes < 0) {
+                        // Realizar la redirección después de 60 segundos
+                        window.location.href = '/';
+                    } else {
+                        // Llamar a esta función nuevamente después de 1 segundo
+                        setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+                    }
+                }
+
+                // Llamar a la función para iniciar el contador
+                actualizarTiempoRestante();
+           </script>
+    </body>
+</html>

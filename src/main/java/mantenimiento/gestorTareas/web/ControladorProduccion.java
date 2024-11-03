@@ -1,11 +1,14 @@
 package mantenimiento.gestorTareas.web;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import mantenimiento.gestorTareas.datos.ActivoDao;
 import mantenimiento.gestorTareas.datos.RolDao;
 import mantenimiento.gestorTareas.datos.UsuarioDao;
+import mantenimiento.gestorTareas.dominio.Activo;
+import mantenimiento.gestorTareas.dominio.Preventivo;
 import mantenimiento.gestorTareas.dominio.Produccion;
 import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.AsignacionService;
@@ -17,9 +20,12 @@ import mantenimiento.gestorTareas.servicio.UsuarioService;
 import mantenimiento.gestorTareas.util.Convertidor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -48,51 +54,55 @@ public class ControladorProduccion {
     @Autowired
     ProduccionService produccionService;
 
-    @PostMapping("/cargaProduccion")
-    public String cargaProduccion(Model model,
-            @Param( "producto1") String producto1,
-            @Param( "producto2") String producto2,
-            @Param( "producto3") String producto3,
-            @Param( "producto4") String producto4,
-            @Param( "url") String url) {
-
-        LocalDateTime fechaActual = LocalDateTime.now();
-        String turno = Convertidor.obtenerTurno(fechaActual);
-        LocalDateTime inicioRango = null;
-        LocalDateTime finRango = null;
-        if (turno.equals("turno 1")) {
-            inicioRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
-            finRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
-        }
-        if (turno.equals("turno 2")) {
-            inicioRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
-            finRango = fechaActual.withHour(22).withMinute(0).withSecond(0).withNano(0);
-        }
-        if (turno.equals("turno 3")) {
-            inicioRango = fechaActual.withHour(22).withMinute(0).withSecond(0).withNano(0);
-            finRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
-        }
-
-        Produccion produccion = produccionService.traerPorRangoHorario(inicioRango, finRango);
-        if (produccion != null) {
-            produccion.setCantidadProducto1(producto1);
-            produccion.setCantidadProducto2(producto2);
-            produccion.setCantidadProducto3(producto3);
-            produccion.setCantidadProducto4(producto4);
-            produccion.setMomentoDeCarga(fechaActual);
-        } else {
-            produccion = new Produccion();
-            produccion.setCantidadProducto1(producto1);
-            produccion.setCantidadProducto2(producto2);
-            produccion.setCantidadProducto3(producto3);
-            produccion.setCantidadProducto4(producto4);
-            produccion.setMomentoDeCarga(fechaActual);
-        }
-
-        produccionService.save(produccion);
-        model.addAttribute("produccion", produccion);
-        model.addAttribute("turno", turno);
-        return "/" + url;
+    @GetMapping("/produccion/{url}")
+    public String cargaProduccion(@PathVariable("url") String url, Model model) {
+        model.addAttribute("produccion", new Produccion());
+        List<String> productos = Arrays.asList(Produccion.PRODUCTO_1,
+                                                      Produccion.PRODUCTO_2,
+                                                      Produccion.PRODUCTO_3,
+                                                      Produccion.PRODUCTO_4);
+        model.addAttribute("productos",productos );
+//        log.info("Productos: " + productos);
+        List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+//        log.info("lineas: " + lineas);
+        model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+        model.addAttribute("ordenesCerradas", produccionService.traerCerradas());
+        
+        
+        model.addAttribute("url", url);
+        return "produccion";
     }
+    
+    
+     @PostMapping("/cargaOrdenDeTrabajo")
+    public String cargaOrdenDeTrabajo(@RequestParam("url")String url, Model model,  Produccion produccion) {
+        
+        produccion.setEstado("abierta");
+        produccion.setInicio(LocalDateTime.now());
+        produccionService.save(produccion);
+         model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+        model.addAttribute("url",url);
+        return "produccion";
+    }
+    
+     @GetMapping("/historialOrdenes/{url}")
+    public String cerrarOrdenDeTrabajo(  @PathVariable("url") String url, Model model) {
+        
+         model.addAttribute("ordenesCerradas", produccionService.traerCerradas());
+        
+        
+//        produccionService.save(produccion);
+        model.addAttribute("url",url);
+        return "historialProduccion";
+    }
+    
+    
+    
+    
 
 }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <!--<meta http-equiv="refresh" content="10">-->
+
+    <head th:replace="plantillas/plantilla::head">
+        <title>Lista de tareas</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <style>
+        .grafico {
+            width: 100%;
+            /*min-height: 400px;*/
+        }
+        .hora {
+            margin-left: 10px; /* Agregar espacio a la izquierda de la hora */
+            font-weight: bold; /* Ejemplo de hacer la hora más destacada */
+            color: #333; /* Cambiar el color de la hora, si es necesario */
+            border:solid 1px;
+        }
+    </style>
+
+    <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+
+        <!--poner datatables o, si se complica, adaptar el filtro de abajo-->
+        <!--        <section  class="py-2 mb-4  bg-light">
+                    <form th:action="@{/filtrar}" method="post"   class="form-group">
+                        <div class="container">
+                            <label  for="palabraClave">filtrar: </label>
+                            <input type="text"  name="palabraClave" id="palabraClave" th:value="${palabraClave}"placeholder="digite valor a buscar" autocomplete="off"/>
+                            <input th:type="submit"  th:value="buscar" class="btn btn-primary "/>
+                        </div>
+                    </form>
+                </section>-->
+
+
+
+        <div class="container ">
+            <br/><h2>Registro histórico</h2><br/>
+            <table class="table table-bordered table-hover table-sm "  >
+                <thead class="thead-light " >
+                    <tr > 
+                        <th >Numero de orden</th>
+                        <th >Producto</th>
+                        <th >Cantidad</th>
+                        <th >Linea</th>
+                        <th >inicio</th>
+                        <th >fin</th>
+                        <th >detalle</th>
+                    </tr>
+                </thead>
+                <tbody >
+                    <tr th:each="orden: ${ordenesCerradas}">
+                        <td th:text="${orden.ordenDeTrabajo}">Numero de orden</td>
+                        <td th:text="${orden.producto}">producto</td>
+                        <td th:text="${orden.cantidad}">cantidad</td>
+                        <td th:text="${orden.linea}">linea</td>
+                        <!--<td th:text="${orden.inicio}">linea</td>-->
+                        <td>
+                            <span th:text="${#temporals.format(orden.inicio, 'dd/MM/yyy')}"></span>
+                            <span th:text="${#temporals.format(orden.inicio, 'HH:mm')}" class="hora"></span>
+                        </td>
+                        <!--<td th:text="${orden.fin}">linea</td>-->
+                        <td>
+                            <span th:text="${#temporals.format(orden.fin, 'dd/MM/yyy')}"></span>
+                            <span th:text="${#temporals.format(orden.fin, 'HH:mm')}" class="hora"></span>
+                        </td>
+
+
+                        <td th:id="detalle+${orden.id}">
+                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${orden.id}" th:id="${orden.id}"  class="btn btn-primary ">detalle</a></span>
+
+                            <div class="modal fade bd-example-modal-lg" th:id="'modalDetalle' + ${orden.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-xl" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+
+                       
+
+
+
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+
+
+                        <a th:href="@{/produccion/}+${url}" class="btn btn-primary btn-block">
+                            Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+
+
+        <footer th:replace="plantillas/plantilla::footer"></footer>
+    </body>
+</html>

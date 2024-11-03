@@ -119,35 +119,11 @@ public class Controlador {
 
         }
         model.addAttribute("tecnicos", tecnicoService.findAll());
+        
+        List<Produccion> oTs = produccionService.traerAbiertas();
 
-        LocalDateTime fechaActual = LocalDateTime.now();
-
-        String turno = Convertidor.obtenerTurno(fechaActual);
-        LocalDateTime inicioRango=null;
-        LocalDateTime finRango=null;
-        if (turno.equals("turno 1")) {
-            inicioRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
-            finRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
-        }
-        if (turno.equals("turno 2")) {
-            inicioRango = fechaActual.withHour(14).withMinute(0).withSecond(0).withNano(0);
-            finRango = fechaActual.withHour(22).withMinute(0).withSecond(0).withNano(0);
-        }
-        if (turno.equals("turno 3")) {
-            
-            finRango = fechaActual.withHour(6).withMinute(0).withSecond(0).withNano(0);
-            inicioRango=fechaActual.minusDays(1);
-            inicioRango = inicioRango.withHour(22).withMinute(0).withSecond(0).withNano(0);
-        }
-        log.info("fecha actual: "+fechaActual);
-        log.info("turno: "+turno);
-        log.info("inicio rango: "+inicioRango);
-        log.info("fin rango: "+finRango);
-        Produccion produccion = produccionService.traerPorRangoHorario(inicioRango, finRango);
-
-       if(produccion==null)produccion=new Produccion();
-        model.addAttribute("produccion", produccion);
-        model.addAttribute("turno", turno);
+        if(oTs!=null)
+        model.addAttribute("oTs", oTs);
          
         
         
