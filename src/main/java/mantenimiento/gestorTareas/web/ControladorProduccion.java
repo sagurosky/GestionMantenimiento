@@ -90,6 +90,21 @@ public class ControladorProduccion {
         return "produccion";
     }
     
+     @GetMapping("/cerrarOrdenDeTrabajo/{id}")
+    public String cerrarOrdenDeTrabajo(  @PathVariable("id") Long id,@RequestParam("url")String url, Model model,  Produccion produccion) {
+        
+        Produccion prod=produccionService.findById(produccion.getId()).orElse(null);
+        prod.setFin(LocalDateTime.now());
+        prod.setEstado("cerrada");
+        produccionService.save(prod);
+         model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+         
+//        log.info("id: "+produccion.getId());
+        
+        model.addAttribute("url",url);
+        return "produccion";
+    }
+    
      @GetMapping("/historialOrdenes/{url}")
     public String cerrarOrdenDeTrabajo(  @PathVariable("url") String url, Model model) {
         
@@ -100,8 +115,18 @@ public class ControladorProduccion {
         model.addAttribute("url",url);
         return "historialProduccion";
     }
-    
-    
+     @GetMapping("/eliminarOrden/{id}")
+    public String eliminarOrden(  @PathVariable("id") Long id,@RequestParam("url")String url, Model model ) {
+        model.addAttribute("produccion", new Produccion());
+        Produccion prod=produccionService.findById(id).orElse(null);
+        produccionService.delete(prod);
+         model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+        
+        
+//        produccionService.save(produccion);
+        model.addAttribute("url",url);
+        return "produccion";
+    }
     
     
 

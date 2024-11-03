@@ -148,7 +148,7 @@
                         <td th:text="${orden.producto}">producto</td>
                         <td th:text="${orden.cantidad}">cantidad</td>
                         <td th:text="${orden.linea}">linea</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarOrden/}+${orden.id}" >eliminar</a></td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarOrden/}+${orden.id}+ '?url=' + ${url}" >eliminar</a></td>
                         
 
                     </tr>
