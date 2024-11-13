@@ -11,6 +11,7 @@ mantenimiento\gestorTareas\dominio\Informe.class
 mantenimiento\gestorTareas\servicio\ActivoService.class
 mantenimiento\gestorTareas\GestorTareasApplication.class
 mantenimiento\gestorTareas\dominio\Activo.class
+mantenimiento\gestorTareas\dominio\Producto.class
 mantenimiento\gestorTareas\servicio\ServicioImpl.class
 mantenimiento\gestorTareas\dominio\Evaluacion.class
 mantenimiento\gestorTareas\web\ControladorTecnicos.class
@@ -32,6 +33,7 @@ mantenimiento\gestorTareas\web\equipos\ControladorEquipos.class
 mantenimiento\gestorTareas\web\Controlador.class
 mantenimiento\gestorTareas\web\ControladorProduccion.class
 mantenimiento\gestorTareas\web\ControladorAjax.class
+mantenimiento\gestorTareas\servicio\ProductoService.class
 mantenimiento\gestorTareas\dominio\Asignacion.class
 mantenimiento\gestorTareas\dominio\Tarea.class
 mantenimiento\gestorTareas\dominio\Tecnico.class

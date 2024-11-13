@@ -12,11 +12,6 @@ import lombok.Data;
 
 public class Produccion implements Serializable {
 
-    
-    public static final String PRODUCTO_1="producto1";
-    public static final String PRODUCTO_2="producto2";
-    public static final String PRODUCTO_3="producto3";
-    public static final String PRODUCTO_4="producto4";
 
     public static final String LINEA_1="adulto2";
     public static final String LINEA_2="adulto3";
@@ -24,10 +19,7 @@ public class Produccion implements Serializable {
     public static final String LINEA_4="adulto5";
     public static final String LINEA_5="aposito";
     
-    private static String cadencia1;
-    private static String cadencia2;
-    private static String cadencia3;
-    private static String cadencia4;
+    
     
     
     
@@ -42,7 +34,9 @@ public class Produccion implements Serializable {
     
     private String ordenDeTrabajo;
     private String estado;
-    private String producto;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producto")
+    private Producto producto;
     private String cantidad;
     private String linea;
     

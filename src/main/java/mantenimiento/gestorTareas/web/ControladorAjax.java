@@ -131,4 +131,47 @@ public class ControladorAjax {
         model.put("cierrePlanta2", cierrePlanta2);
         return model;
     }
+    
+    
+    @GetMapping("/traerDatos/{id}")
+    @ResponseBody//con esta anotacion springboot no va a intentar abrir un htrml con el nombre de lo que pongo en return
+    public Object traerDatos(Produccion produccion) {
+        Map<String,Object> datos=new HashMap<>();
+        
+        Produccion prod=produccionService.findById(produccion.getId()).orElse(null);
+        
+        datos.put("prod", prod);
+        
+        log.info("linea: "+Convertidor.deCamelCase(prod.getLinea()));
+        log.info("inicio: "+ prod.getInicio().toString());
+        log.info("fin: "+prod.getFin().toString());
+        
+        List<Tarea> tareasEnRango=new ArrayList<>();
+        tareasEnRango=tareaService.traerPorLineaEnRangoDeFecha(Convertidor.deCamelCase(prod.getLinea()), prod.getInicio().toString(), prod.getFin().toString());
+        
+        
+        log.info("tamaño: "+tareasEnRango.size());
+        
+        Long minutosInactiva=0L;
+            for (Tarea tarea : tareasEnRango) {
+                minutosInactiva+=Duration.between(tarea.getMomentoDetencion(), (tarea.getMomentoLiberacion().isAfter(prod.getFin()))?prod.getFin():tarea.getMomentoLiberacion()).toMinutes();
+                log.info("minutos : "+minutosInactiva);
+           
+            }
+        
+        
+        datos.put("minutosInactiva",minutosInactiva);
+        
+//        
+//        for (Tarea tarea : tareasEnRango) {
+//          log.info("########## "+tarea.getId());  
+//        }
+            
+        
+        
+        
+        return datos;
+    }
+    
+    
 }

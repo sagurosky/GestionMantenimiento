@@ -15,6 +15,7 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Preventivo.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\WebConfig.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Activo.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ProductoService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\AsignacionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ProduccionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\EncriptarPassword.java
@@ -31,6 +32,7 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\InformeDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ServicioImpl.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Informe.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Producto.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\equipos\ControladorEquipos.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Produccion.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\UsuarioService.java

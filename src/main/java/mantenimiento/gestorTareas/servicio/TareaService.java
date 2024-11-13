@@ -27,12 +27,13 @@ public interface TareaService extends JpaRepository<Tarea,Long> {
     
     
     @Query("SELECT t FROM Tarea t  WHERE "
-        + "t.estado ='cerrada' and "
-            + "t.activo=?1 and "
-            + "t.activo.momentoDetencion >= ?2 and "
-             + "t.activo.momentoDetencion <= ?3")
-    public List<Tarea> traerCerradasPorActivoEnRangoDeFecha(Activo activo, LocalDateTime  fechainicio, LocalDateTime  fechaFin );
-  
+            + "t.activo.nombre LIKE CONCAT('%', ?1, '%') AND "
+//            + "t.activo.momentoDetencion >= ?2 and "
+//             + "t.activo.momentoDetencion <= ?3")
+//    public List<Tarea> traerPorLineaEnRangoDeFecha(String linea, LocalDateTime  fechainicio, LocalDateTime  fechaFin );
+   + "t.momentoDetencion >= STR_TO_DATE(?2, '%Y-%m-%dT%H:%i:%s') AND "
+        + "t.momentoDetencion <= STR_TO_DATE(?3, '%Y-%m-%dT%H:%i:%s')")
+public List<Tarea> traerPorLineaEnRangoDeFecha(String linea, String fechaInicio, String fechaFin);
     
       @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1")
     public List<Tarea> traerPorTecnico(Tecnico tecnico );

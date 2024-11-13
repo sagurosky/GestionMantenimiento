@@ -10,9 +10,11 @@ import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Preventivo;
 import mantenimiento.gestorTareas.dominio.Produccion;
+import mantenimiento.gestorTareas.dominio.Producto;
 import mantenimiento.gestorTareas.servicio.ActivoService;
 import mantenimiento.gestorTareas.servicio.AsignacionService;
 import mantenimiento.gestorTareas.servicio.ProduccionService;
+import mantenimiento.gestorTareas.servicio.ProductoService;
 import mantenimiento.gestorTareas.servicio.TareaService;
 import mantenimiento.gestorTareas.servicio.Servicio;
 import mantenimiento.gestorTareas.servicio.TecnicoService;
@@ -53,15 +55,13 @@ public class ControladorProduccion {
     AsignacionService asignacionService;
     @Autowired
     ProduccionService produccionService;
+    @Autowired
+    ProductoService productoService;
 
     @GetMapping("/produccion/{url}")
     public String cargaProduccion(@PathVariable("url") String url, Model model) {
         model.addAttribute("produccion", new Produccion());
-        List<String> productos = Arrays.asList(Produccion.PRODUCTO_1,
-                                                      Produccion.PRODUCTO_2,
-                                                      Produccion.PRODUCTO_3,
-                                                      Produccion.PRODUCTO_4);
-        model.addAttribute("productos",productos );
+         model.addAttribute("productos",productoService.findAll());
 //        log.info("Productos: " + productos);
         List<String> lineas=Arrays.asList(Produccion.LINEA_1,
                                                   Produccion.LINEA_2,
@@ -81,7 +81,13 @@ public class ControladorProduccion {
     
      @PostMapping("/cargaOrdenDeTrabajo")
     public String cargaOrdenDeTrabajo(@RequestParam("url")String url, Model model,  Produccion produccion) {
-        
+         List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+         model.addAttribute("productos",productoService.findAll());
         produccion.setEstado("abierta");
         produccion.setInicio(LocalDateTime.now());
         produccionService.save(produccion);
@@ -98,7 +104,13 @@ public class ControladorProduccion {
         prod.setEstado("cerrada");
         produccionService.save(prod);
          model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
-         
+          List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+         model.addAttribute("productos",productoService.findAll());
 //        log.info("id: "+produccion.getId());
         
         model.addAttribute("url",url);
@@ -109,11 +121,22 @@ public class ControladorProduccion {
     public String cerrarOrdenDeTrabajo(  @PathVariable("url") String url, Model model) {
         
          model.addAttribute("ordenesCerradas", produccionService.traerCerradas());
-        
-        
-//        produccionService.save(produccion);
         model.addAttribute("url",url);
         return "historialProduccion";
+    }
+     @GetMapping("/configuracionOrdenes/{url}")
+    public String configuracionOrdenes(  @PathVariable("url") String url, Model model) {
+        model.addAttribute("productos",productoService.findAll());
+       List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+        model.addAttribute("producto",new Producto());
+        
+        model.addAttribute("url",url);
+        return "configuracionOrdenes";
     }
      @GetMapping("/eliminarOrden/{id}")
     public String eliminarOrden(  @PathVariable("id") Long id,@RequestParam("url")String url, Model model ) {
@@ -121,13 +144,57 @@ public class ControladorProduccion {
         Produccion prod=produccionService.findById(id).orElse(null);
         produccionService.delete(prod);
          model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
-        
-        
+         List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+         model.addAttribute("productos",productoService.findAll());        
 //        produccionService.save(produccion);
         model.addAttribute("url",url);
         return "produccion";
     }
     
     
-
+  @PostMapping("/nuevoProducto")
+    public String nuevoProducto(@RequestParam("url")String url, Model model,  Producto producto) {
+        
+        
+        productoService.save(producto);
+       
+         model.addAttribute("produccion", new Produccion());
+          model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+        model.addAttribute("url",url);
+         List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+               model.addAttribute("producto",new Producto());
+         model.addAttribute("productos",productoService.findAll());
+        return "configuracionOrdenes";
+    }
+      @GetMapping("/eliminarProducto/{id}")
+    public String eliminarProducto(  @PathVariable("id") Long id,@RequestParam("url")String url, Model model ) {
+        
+        
+        model.addAttribute("produccion", new Produccion());
+        Producto prod=productoService.findById(id).orElse(null);
+        productoService.delete(prod);
+         model.addAttribute("ordenesAbiertas", produccionService.traerAbiertas());
+         List<String> lineas=Arrays.asList(Produccion.LINEA_1,
+                                                  Produccion.LINEA_2,
+                                                  Produccion.LINEA_3,
+                                                  Produccion.LINEA_4,
+                                                  Produccion.LINEA_5);
+        model.addAttribute("lineas",lineas);
+         model.addAttribute("productos",productoService.findAll());
+         model.addAttribute("producto",new Producto());
+        
+//        produccionService.save(produccion);
+        model.addAttribute("url",url);
+        return "configuracionOrdenes";
+    }
 }

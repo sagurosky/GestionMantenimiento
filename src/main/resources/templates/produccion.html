@@ -20,7 +20,7 @@
             <section  class="py-4 mb-4 bg-light">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-3" >
+                        <div class="col-md-2" >
                             <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
                               <a 
                                          href="#" 
@@ -29,10 +29,16 @@
                                          class="btn btn-primary ">nueva carga</a>   
                             <!--</a>-->
                         </div>
-                        <div class="col-md-3" >
+                        <div class="col-md-2" >
                             <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
                               <a th:href="@{/historialOrdenes/}+${url}"
                                          class="btn btn-primary ">historial</a>   
+                            <!--</a>-->
+                        </div>
+                        <div class="col-md-2" >
+                            <!--<a th:href="@{/sugerenciaPreventivo/}+${activo.id}" class="btn btn-primary btn-block" th:text="'Sugerencia de preventivo'">-->
+                              <a th:href="@{/configuracionOrdenes/}+${url}"
+                                         class="btn btn-primary ">configuración</a>   
                             <!--</a>-->
                         </div>
 
@@ -64,8 +70,8 @@
                                                     <!--<input type="text" th:field="*{producto}"class="form-control" oninput="reiniciarContador()"/>-->
                                                     <select name="producto"class="form-control" onselect="reiniciarContador()">
                                                      <option th:each="producto : ${productos}"
-                                                             th:value="${producto}"
-                                                             th:text="${producto}">
+                                                             th:value="${producto.id}"
+                                                             th:text="${producto.nombre}">
                                                      </option>
                                                      </select>
                                                     
@@ -145,7 +151,7 @@
                             
                         </td>
                         <td sec:authorize="not hasRole('ROLE_ADMIN') and not hasRole('ROLE_PROD')" th:text="${orden.estado}">estado </td>
-                        <td th:text="${orden.producto}">producto</td>
+                        <td th:text="${orden.producto.nombre}">producto</td>
                         <td th:text="${orden.cantidad}">cantidad</td>
                         <td th:text="${orden.linea}">linea</td>
                         <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarOrden/}+${orden.id}+ '?url=' + ${url}" >eliminar</a></td>

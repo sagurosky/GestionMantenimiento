@@ -57,7 +57,7 @@
                 <tbody >
                     <tr th:each="orden: ${ordenesCerradas}">
                         <td th:text="${orden.ordenDeTrabajo}">Numero de orden</td>
-                        <td th:text="${orden.producto}">producto</td>
+                        <td th:text="${orden.producto.nombre}">producto</td>
                         <td th:text="${orden.cantidad}">cantidad</td>
                         <td th:text="${orden.linea}">linea</td>
                         <!--<td th:text="${orden.inicio}">linea</td>-->
@@ -73,23 +73,70 @@
 
 
                         <td th:id="detalle+${orden.id}">
-                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${orden.id}" th:id="${orden.id}"  class="btn btn-primary ">detalle</a></span>
+                            <span><a href="#" data-toggle="modal" th:data-target="'#modalDetalle' + ${orden.id}" th:id="${orden.id}"  class="btn btn-primary" onclick="traerDatos(this.id)">detalle</a></span>
 
                             <div class="modal fade bd-example-modal-lg" th:id="'modalDetalle' + ${orden.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-xl" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <h5 class="modal-title" id="exampleModalLabel">Informe: </h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
+                                        </div>    
+                                            <div class=''>                                                    
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'tiempo total: '"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <label id="tiempoTotal"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'ratio : '"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <div class='row'> <label id="ratioMin"></label> </div>    
+                                                         <div class='row'><label id="ratioHr"></label> </div>    
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'tiempo de inactividad [min]: '"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <label id="minutosInactiva"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'Ratio efectivo: '" title="ratio solo considerando linea en funcionamiento (descontando detenciones)"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <div class='row'><label id="ratioEfectivoMin"></label>  </div>    
+                                                       <div class='row'> <label id="ratioEfectivoHr"></label>  </div>    
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>    
+                                          
                                         </div>
                                         
 
                                     </div>
                                 </div>
                             </div>
-                        </td>
 
 
                        
@@ -115,7 +162,67 @@
                 </div>
             </div>
         </section>
+        <script>
+            
+            
+           let datos = new Map();
+            
+            function traerDatos(id){
+                $.ajax({
+                    url: '/traerDatos/'+id,   // La URL del método en tu controlador
+                    type: 'GET',                  // Método HTTP  
+                    success: function(response) {
 
+                        // Convertir el objeto JSON a un Map
+                         datos = new Map(Object.entries(response));
+                        pisar(datos);
+
+                    },
+                    error: function(error) {
+                        console.error("Error en actualizacion de estados", error);
+                    }
+                });
+            }
+            
+            
+            
+            
+         function pisar(datos)
+         { 
+
+//           Object.entries(datos).forEach(function([key, value]) {
+//            let tiempoEnMinutos;
+//            if(key=="prod")
+//            {
+//                tiempoEnMinutos=Math.floor((new Date(value.fin)-new Date(value.inicio))/60000);
+//                document.getElementById("tiempoTotal").innerText=""+Math.floor(tiempoEnMinutos/60)+":"+tiempoEnMinutos%60+" hs";
+//                document.getElementById("ratioMin").innerText=""+(value.cantidad/tiempoEnMinutos).toFixed(2)+" unidades/min ";
+//                document.getElementById("ratioHr").innerText=""+(value.cantidad/(tiempoEnMinutos/60)).toFixed(2)+" unidades/hr";
+//            
+//            }
+//            
+//            if(key=="minutosInactiva")
+//            {
+//                document.getElementById("minutosInactiva").innerText=value;
+//                document.getElementById("ratioEfectivo").innerText=value;
+//                
+//            }
+//
+//                }); 
+            let prod=datos.get("prod");
+            
+            let tiempoEnMinutos=Math.floor((new Date(prod.fin)-new Date(prod.inicio))/60000);
+            document.getElementById("tiempoTotal").innerText=""+Math.floor(tiempoEnMinutos/60)+":"+tiempoEnMinutos%60+" hs";
+            document.getElementById("ratioMin").innerText=""+(prod.cantidad/tiempoEnMinutos).toFixed(2)+" unidades/min ";
+            document.getElementById("ratioHr").innerText=""+(prod.cantidad/(tiempoEnMinutos/60)).toFixed(2)+" unidades/hr";
+            
+            let minutosInactiva=datos.get("minutosInactiva");
+            document.getElementById("minutosInactiva").innerText=minutosInactiva;
+            document.getElementById("ratioEfectivoMin").innerText=""+(prod.cantidad/(tiempoEnMinutos-minutosInactiva)).toFixed(2)+" unidades/min ";
+            document.getElementById("ratioEfectivoHr").innerText=""+(prod.cantidad/((tiempoEnMinutos-minutosInactiva)/60)).toFixed(2)+" unidades/hr";
+    }
+            
+        </script>
 
 
 
