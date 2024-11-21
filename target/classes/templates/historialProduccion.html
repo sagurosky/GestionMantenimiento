@@ -98,17 +98,6 @@
                                                 </div>
                                                 <div class='row'>
                                                     <div class='col'>
-                                                         <label th:text="'ratio : '"></label>
-                                                    </div>    
-                                                    <div class='col'>
-                                                        <div class='row'> <label id="ratioMin"></label> </div>    
-                                                         <div class='row'><label id="ratioHr"></label> </div>    
-                                                    </div>    
-                                                    <div class='col'>
-                                                    </div>
-                                                </div>
-                                                <div class='row'>
-                                                    <div class='col'>
                                                          <label th:text="'tiempo de inactividad [min]: '"></label>
                                                     </div>    
                                                     <div class='col'>
@@ -119,10 +108,32 @@
                                                 </div>
                                                 <div class='row'>
                                                     <div class='col'>
-                                                         <label th:text="'Ratio efectivo: '" title="ratio solo considerando linea en funcionamiento (descontando detenciones)"></label>
+                                                         <label th:text="'Cadencia teórica : '"></label>
                                                     </div>    
                                                     <div class='col'>
-                                                        <div class='row'><label id="ratioEfectivoMin"></label>  </div>    
+                                                        <div class='row'> <label id="ratioTeorico" ></label> </div>    
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'Cadencia real : '"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <!--<div class='row'> <label id="ratioMin"></label> </div>-->    
+                                                         <div class='row'><label id="ratioHr"></label> </div>    
+                                                    </div>    
+                                                    <div class='col'>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class='row'>
+                                                    <div class='col'>
+                                                         <label th:text="'Cadencia efectiva: '" title="cadencia con linea en funcionamiento (descontando detenciones)"></label>
+                                                    </div>    
+                                                    <div class='col'>
+                                                        <!--<div class='row'><label id="ratioEfectivoMin"></label>  </div>-->    
                                                        <div class='row'> <label id="ratioEfectivoHr"></label>  </div>    
                                                     </div>    
                                                     <div class='col'>
@@ -213,13 +224,18 @@
             
             let tiempoEnMinutos=Math.floor((new Date(prod.fin)-new Date(prod.inicio))/60000);
             document.getElementById("tiempoTotal").innerText=""+Math.floor(tiempoEnMinutos/60)+":"+tiempoEnMinutos%60+" hs";
-            document.getElementById("ratioMin").innerText=""+(prod.cantidad/tiempoEnMinutos).toFixed(2)+" unidades/min ";
+//            document.getElementById("ratioMin").innerText=""+(prod.cantidad/tiempoEnMinutos).toFixed(2)+" unidades/min ";
             document.getElementById("ratioHr").innerText=""+(prod.cantidad/(tiempoEnMinutos/60)).toFixed(2)+" unidades/hr";
             
             let minutosInactiva=datos.get("minutosInactiva");
             document.getElementById("minutosInactiva").innerText=minutosInactiva;
-            document.getElementById("ratioEfectivoMin").innerText=""+(prod.cantidad/(tiempoEnMinutos-minutosInactiva)).toFixed(2)+" unidades/min ";
+//            document.getElementById("ratioEfectivoMin").innerText=""+(prod.cantidad/(tiempoEnMinutos-minutosInactiva)).toFixed(2)+" unidades/min ";
             document.getElementById("ratioEfectivoHr").innerText=""+(prod.cantidad/((tiempoEnMinutos-minutosInactiva)/60)).toFixed(2)+" unidades/hr";
+           
+        
+            document.getElementById("ratioTeorico").innerText=""+datos.get("cadenciaTeorica")+" unidades/hr";
+            
+            
     }
             
         </script>

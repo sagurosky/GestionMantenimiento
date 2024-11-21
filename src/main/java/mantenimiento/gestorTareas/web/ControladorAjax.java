@@ -161,6 +161,18 @@ public class ControladorAjax {
         
         
         datos.put("minutosInactiva",minutosInactiva);
+       
+        String cadenciaTeorica="";
+        
+        if(prod.getLinea().equals("adulto2"))cadenciaTeorica=prod.getProducto().getCadenciaAdulto2();
+        if(prod.getLinea().equals("adulto3"))cadenciaTeorica=prod.getProducto().getCadenciaAdulto3();
+        if(prod.getLinea().equals("adulto4"))cadenciaTeorica=prod.getProducto().getCadenciaAdulto4();
+        if(prod.getLinea().equals("adulto5"))cadenciaTeorica=prod.getProducto().getCadenciaAdulto5();
+        if(prod.getLinea().equals("aposito"))cadenciaTeorica=prod.getProducto().getCadenciaAposito();
+        
+        
+        datos.put("cadenciaTeorica",cadenciaTeorica);
+        
         
 //        
 //        for (Tarea tarea : tareasEnRango) {

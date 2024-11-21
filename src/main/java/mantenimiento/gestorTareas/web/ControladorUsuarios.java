@@ -180,10 +180,9 @@ public class ControladorUsuarios {
         
        Usuario nuevoUsuario=new Usuario();
        
-
         nuevoUsuario.setUsername(usuario.getUsername());
-        
-        nuevoUsuario.setPassword(EncriptarPassword.encriptarPassword(usuario.getPassword()));
+        log.info("EEEEE "+usuarioReq.getPassword());
+        nuevoUsuario.setPassword(EncriptarPassword.encriptarPassword(usuarioReq.getPassword()));
         
         List<Rol> roles=new ArrayList<>();
         for (String role : rolesReq) {
@@ -230,7 +229,7 @@ public class ControladorUsuarios {
         
         
          usuarioDao.delete(usuario);
-        
+        usuarioDao.flush();;
         usuarioDao.save(nuevoUsuario);
 
         return "redirect:/gestionUsuarios";
