@@ -12,6 +12,7 @@ import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
 import mantenimiento.gestorTareas.dominio.Usuario;
 import mantenimiento.gestorTareas.servicio.Servicio;
+import mantenimiento.gestorTareas.servicio.TecnicoService;
 import mantenimiento.gestorTareas.servicio.UsuarioService;
 import mantenimiento.gestorTareas.util.EncriptarPassword;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class ControladorUsuarios {
     UsuarioDao usuarioDao;
     @Autowired
     RolDao rolDao;
+    @Autowired
+    TecnicoService tecnicoService;
 
     
     @PostMapping("/generarAdmin")
@@ -181,14 +184,15 @@ public class ControladorUsuarios {
        Usuario nuevoUsuario=new Usuario();
        
         nuevoUsuario.setUsername(usuario.getUsername());
-        log.info("EEEEE "+usuarioReq.getPassword());
         nuevoUsuario.setPassword(EncriptarPassword.encriptarPassword(usuarioReq.getPassword()));
+        
         
         List<Rol> roles=new ArrayList<>();
         for (String role : rolesReq) {
             Rol rol=new Rol();
             rol.setNombre(role);
             rol.setUsuario(nuevoUsuario);
+            
             roles.add(rol);
         }
          nuevoUsuario.setRoles(roles);
@@ -228,10 +232,47 @@ public class ControladorUsuarios {
         }
         
         
-         usuarioDao.delete(usuario);
-        usuarioDao.flush();;
-        usuarioDao.save(nuevoUsuario);
-
+//        if (rol.getNombre().equals("ROLE_ADMIN")) {
+//
+//            Rol rolMant = new Rol();
+//             rolMant.setUsuario(rol.getUsuario());
+//            rolMant.setNombre("ROLE_MANT");
+//            rolDao.save(rolMant);
+//            
+//            Rol rolProd = new Rol();
+//            rolProd.setUsuario(rol.getUsuario());
+//            rolProd.setNombre("ROLE_PROD");
+//            rolDao.save(rolProd);
+//            
+//            Rol rolTec = new Rol();
+//            rolTec.setUsuario(rol.getUsuario());
+//            rolTec.setNombre("ROLE_TECNICO");
+//            rolDao.save(rolTec);
+//            
+//            Rol rolMonitor = new Rol();
+//            rolMonitor.setUsuario(rol.getUsuario());
+//            rolMonitor.setNombre("ROLE_MONITOR");
+//            rolDao.save(rolMonitor);
+//
+//        }
+       usuarioDao.save(nuevoUsuario);
+        
+        for (Rol role : nuevoUsuario.getRoles()) {
+            role.setUsuario(nuevoUsuario);
+         rolDao.save(role);
+         rolDao.flush();
+        }
+        
+        
+        if (usuario.getRoles().stream().anyMatch(rol -> "ROLE_TECNICO".equals(rol.getNombre())) &&
+            usuario.getRoles().stream().noneMatch(rol -> "ROLE_ADMIN".equals(rol.getNombre()))) 
+        {
+            Tecnico tecnico = tecnicoService.traerPorUsuario(usuario);
+            tecnico.setUsuario(nuevoUsuario);
+            tecnicoService.save(tecnico);
+        }
+        usuarioDao.delete(usuario);
+        
         return "redirect:/gestionUsuarios";
     }
 

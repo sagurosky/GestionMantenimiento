@@ -4,25 +4,66 @@
         <title>Gestor de mantenimiento</title>
     </head>
     <body>
+        <header th:replace="plantillas/plantilla::header">lista de tareas</header>
+       
         <div class="container">
-            <h1>Editar usuario</h1>
+             <div class="text-center">
+                <h1>Editar usuario</h1>
+             </div>
+            <br>
+             <div class="card mx-auto"style="width: 50rem;"> 
             <form method="POST" th:action="@{/guardarUsuarioEditado}" th:object="${usuario}" class="form-group">
-                <label for="username">usuario</label>
-                <input type="text" name="username" id="username" th:field="*{username}"/>
+               <div class="card-header ">
+                <label th:text="'usuario '+*{username}">usuario</label>
+               </div> 
+                
+               <div class="row">
+                        <div class="col-3"></div>   
+                        <div class="col-6">
+                     <div class="card-body "> 
+                
+                         
+                         
+                <div class="row"> 
+                    <div class="col" >
+                       <div class="form-floating  ">
+                          <input type="text"  class="form-control" th:id="floatingInput"th:name="username" placeHolder="usuario"th:field="*{username}">
+                          <label for="floatingInput">usuario</label>
+                      </div><span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">error en nombre</span>
+                   </div> 
+                </div>         
+                  <input hidden="true" type="text" name="username" id="username" th:field="*{idUsuario}"/>
+                  
+                  
+                <div class="row"> 
+                    <div class="col" >
+                       <div class="form-floating  ">
+                          <input type="password"  class="form-control" th:id="floatingInput"th:name="password" placeHolder="password" th:field="*{password}"th:value="${usuario.password}">
+                          <label for="floatingInput">nuevo password:</label>
+                      </div> <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error en password</span>
+                   </div> 
+                </div>         
+                         
+                         
+                         
+                         
+                         
+<!--                <input type="text" name="username" id="username" th:field="*{username}"/>
                 <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">error en nombre</span>
                 <input hidden="true" type="text" name="username" id="username" th:field="*{idUsuario}"/>
-                <br/>
+                <br/>-->
 
-                <label for="password">Password</label>
+<!--                <label for="password">Password</label>
                 <input type="password" name="password" id="password" th:field="*{password}"th:value="${usuario.password}"/>
-                <!--<input type="text" name="password" id="password" value="${usuario.password}""/>-->
-                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error en password</span>
+                <input type="text" name="password" id="password" value="${usuario.password}""/>
+                <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">error en password</span>-->
 
                 <br/>
                 <br/>
 
-                <h2 >Rol: </h2>
-                <br/>
+                <h4 >Roles: </h4>
+                
+                <div class="card-body">
                 <!--da error si no hago la comprobacion de nulidad-->
                  <th:block th:if="${usuario.roles != null and not #lists.isEmpty(usuario.roles)}">
                     <input type="checkbox" id="rolAdministrador" name="rol" value="ROLE_ADMIN"  
@@ -37,7 +78,7 @@
                            th:checked="${#lists.contains(usuario.roles.![nombre], 'ROLE_PROD')}"/>
                     <label for="rolProduccion">Produccion</label>
                     <br/>
-                    <input type="checkbox" id="rolTecnico" name="rol" value="ROLE_TECNICO" 
+                    <input type="checkbox" id="rolTecnico" name="rol" value="ROLE_TECNICO" disabled="true" title="no podes convertir un usuario a técnico, los tecnicos deben ser generados como nuevos para cargar sus datos"
                            th:checked="${#lists.contains(usuario.roles.![nombre], 'ROLE_TECNICO')}"/>
                     <label for="rolTecnico">Técnico</label>
                     <br/>
@@ -61,14 +102,20 @@
                     <input type="checkbox" id="rolMonitor" name="rol" value="ROLE_MONITOR"/>
                     <label for="rolMonitor">Monitor</label>
                 </th:block>
+                </div>
                 <br/>
 
 
                 <br/>
-
+            </div> 
+                        </div>
+                        <div class="col-3"></div>
+                     </div> 
                 <input type="submit" value="guardar" class="btn btn-primary"/>
                 <a th:href="@{/gestionUsuarios}" th:text="regresar" class="btn btn-primary"></a>
             </form>
+                 
+        </div>
         </div>
     </body>
 </html>

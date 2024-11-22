@@ -79,9 +79,9 @@ public class Controlador {
         //si el usuario logueado es un técnico y el apellido es null significa que fue recien creado
         //por lo tanto lo redirijo a tecnicoDatosPersonales para que cargue su informacion;
         Usuario usuario = usuarioDao.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
         if (usuario.getRoles().get(0).getNombre().equals("ROLE_TECNICO")) {
             Tecnico tecnico = tecnicoService.traerPorUsuario(usuario);
+      
             if (tecnico.getApellido() == null) {
                 model.addAttribute("tecnico", tecnico);
                 return "tecnicoDatosPersonales";

@@ -6,9 +6,9 @@
     </head>
     <body>
         <header th:replace="plantillas/plantilla::header">lista de tareas</header>
-
+<div class="container">
         <h1 >Usuarios registrados</h1>
-            <div class="container">
+            
                 <table class="table table-bordered table-hover table-sm ">
                     <thead class="thead-light ">
                         <tr>
@@ -64,15 +64,16 @@
 
                     </script>
                 </table>
+        <a th:href="@{/crearUsuario/}" class="btn btn-primary">crear usuario</a>
+
+
+        <a th:href="@{/}" class="btn btn-primary" >volver</a>
             </div>
         
         
         
         
-        <a th:href="@{/crearUsuario/}" class="btn btn-primary">crear usuario</a>
-
-
-        <a th:href="@{/}" class="btn btn-primary" >volver</a>
+        
 
         <footer th:replace="plantillas/plantilla::footer"></footer>
     </body>
