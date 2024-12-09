@@ -27,6 +27,12 @@ public interface TareaService extends JpaRepository<Tarea,Long> {
     
     
     @Query("SELECT t FROM Tarea t  WHERE "
+        + "t.estado !='cerrada' and "
+            + "t.activo=?1")
+    public List<Tarea> traerNoCerradaPorActivo(Activo activo );
+    
+    
+    @Query("SELECT t FROM Tarea t  WHERE "
             + "t.activo.nombre LIKE CONCAT('%', ?1, '%') AND "
 //            + "t.activo.momentoDetencion >= ?2 and "
 //             + "t.activo.momentoDetencion <= ?3")
@@ -35,8 +41,11 @@ public interface TareaService extends JpaRepository<Tarea,Long> {
         + "t.momentoDetencion <= STR_TO_DATE(?3, '%Y-%m-%dT%H:%i:%s')")
 public List<Tarea> traerPorLineaEnRangoDeFecha(String linea, String fechaInicio, String fechaFin);
     
-      @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1")
+      @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1 AND t.estado = 'cerrada'")
     public List<Tarea> traerPorTecnico(Tecnico tecnico );
+     
+    @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1 AND t.estado = 'cerrada' and (t.informe is null or t.informe.estadoInforme='pendiente')")
+    public List<Tarea> traerPorInformePendiente(Tecnico tecnico );
    
     
     

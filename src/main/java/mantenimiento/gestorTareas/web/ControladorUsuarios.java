@@ -183,10 +183,8 @@ public class ControladorUsuarios {
         
        Usuario nuevoUsuario=new Usuario();
        
-        nuevoUsuario.setUsername(usuario.getUsername());
+        nuevoUsuario.setUsername(usuarioReq.getUsername());
         nuevoUsuario.setPassword(EncriptarPassword.encriptarPassword(usuarioReq.getPassword()));
-        
-        
         List<Rol> roles=new ArrayList<>();
         for (String role : rolesReq) {
             Rol rol=new Rol();
@@ -272,6 +270,7 @@ public class ControladorUsuarios {
             tecnicoService.save(tecnico);
         }
         usuarioDao.delete(usuario);
+        
         
         return "redirect:/gestionUsuarios";
     }

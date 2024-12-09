@@ -24,6 +24,7 @@ import mantenimiento.gestorTareas.datos.UsuarioDao;
 import mantenimiento.gestorTareas.dominio.Activo;
 import mantenimiento.gestorTareas.dominio.Asignacion;
 import mantenimiento.gestorTareas.dominio.Evaluacion;
+import mantenimiento.gestorTareas.dominio.Informe;
 import mantenimiento.gestorTareas.dominio.Produccion;
 import mantenimiento.gestorTareas.dominio.Tarea;
 import mantenimiento.gestorTareas.dominio.Tecnico;
@@ -48,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import mantenimiento.gestorTareas.util.Convertidor;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Controller
 @Slf4j
@@ -127,6 +129,17 @@ public class Controlador {
          
         
         
+       
+         
+        
+        
+        
+        
+        
+        
+        
+        
+        
         return "layoutPlanta3";
     }
 
@@ -176,8 +189,8 @@ public class Controlador {
     }
 
     @PostMapping("/guardar")
-    public String guardar(Model model, @Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen) {
-
+    public String guardar(Model model, @Valid Tarea tarea, Errors errores, @RequestParam("file") MultipartFile imagen,@RequestParam(value="activo", required = false) String activoReq ) {
+        
         if (errores.hasErrors()) {
             log.info("hay errores" + errores.getAllErrors());
             return "crearTarea";
@@ -208,11 +221,16 @@ public class Controlador {
         if(tarea.getAfectaProduccion().equals("no"))tarea.getActivo().setEstado("operativa condicionada");
         else tarea.getActivo().setEstado("detenida");
         
+        Informe informe=new Informe();
+        informe.setEstadoInforme("pendiente");
+        tarea.setInforme(informe);
         
         activo.save(tarea.getActivo());
 
         servicio.guardar(tarea);
         model.addAttribute("tareas", tareaService.traerNoCerradas());
+        String url=activoService.findById(Long.parseLong(activoReq)).orElse(null).getNombre();
+        if(activoReq!=null)return "redirect:/"+Convertidor.aCamelCase(url);
         return "redirect:/tareas";
     }
 
@@ -283,19 +301,28 @@ public class Controlador {
     }
 
     @GetMapping("/liberarSolicitud/{id}")
-    public String liberar(Model model, Tarea tarea) {
+    public String liberar( @RequestHeader(value = "Referer", required = false) String origen, Model model, Tarea tarea) {
         Tarea t = servicio.encontrar(tarea);
         t.setEstado("liberada");
         t.getActivo().setEstado("liberada");
         t.setMomentoLiberacion(LocalDateTime.now());
         servicio.guardar(t);
+          if(origen.contains(Convertidor.aCamelCase( t.getActivo().getNombre())))
+          {
+                String url=activoService.findById(t.getActivo().getId()).orElse(null).getNombre();
+                 return "redirect:/"+Convertidor.aCamelCase(url);
+          }
+       
         model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "redirect:/tareas";
     }
 
     @GetMapping("/asignarSolicitud/{id}")
-    public String asignar(@RequestParam("motivoDemoraAsignacion") String motivoDemoraAsignacion, @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, Model model, Tarea tarea) {
-
+    public String asignar(
+            @RequestParam("motivoDemoraAsignacion") String motivoDemoraAsignacion, 
+           @RequestParam(value="activoReq", required = false) String activoReq, 
+            @RequestParam(value = "tecnicosIds", required = false) List<Long> tecnicosIds, 
+            Model model, Tarea tarea) {
         Tarea t = servicio.encontrar(tarea);
         List<Asignacion> asignaciones = new ArrayList<>();
 
@@ -313,6 +340,9 @@ public class Controlador {
         t.setMotivoDemoraAsignacion(motivoDemoraAsignacion);
         servicio.guardar(t);
         model.addAttribute("tareas", tareaService.traerNoCerradas());
+        model.addAttribute("tarea", t);
+        String url=activoService.findById(Long.parseLong(activoReq)).orElse(null).getNombre();
+        if(activoReq!=null)return "redirect:/"+Convertidor.aCamelCase(url);
         return "redirect:/tareas";
     }
 
@@ -335,6 +365,7 @@ public class Controlador {
             @RequestParam(required = false, name = "iniciativa") String iniciativa,
             @RequestParam(required = false, name = "autogestion") String autogestion,
             @RequestParam(required = false, name = "formacionContinua") String formacionContinua,
+            @RequestHeader(value = "Referer", required = false) String origen,
             Model model, Tarea tarea) {
 
         Tarea t = servicio.encontrar(tarea);
@@ -366,6 +397,14 @@ public class Controlador {
 //        t.getActivo().setMomentoDetencion(null);
         servicio.guardar(t);
 
+        if(origen.contains(Convertidor.aCamelCase( t.getActivo().getNombre())))
+          {
+                String url=activoService.findById(t.getActivo().getId()).orElse(null).getNombre();
+                 return "redirect:/"+Convertidor.aCamelCase(url);
+          }
+        
+        
+        
         model.addAttribute("tareas", tareaService.traerNoCerradas());
         return "redirect:/tareas";
     }
@@ -388,6 +427,12 @@ public class Controlador {
 
         return "registro";
     }
+    
+   
+    
+    
+    
+    
 
 //    
 //    // Método para calcular la diferencia de tiempo entre dos LocalDateTime

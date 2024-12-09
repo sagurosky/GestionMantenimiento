@@ -30,6 +30,23 @@ public class Informe implements Serializable {
     @Column(name = "id")
     private Long id;
     
-    private String detalle;
+    private String descripcion;
+    private String acciones;
+    private String materiales;
+    private String estadoFinal;
+    private String pruebas;
+    private String causaRaiz;
+    private String categoriaCausaRaiz;
+    private String pregunta1;
+    private String pregunta2;
+    private String pregunta3;
+    private String pregunta4;
+    private String pregunta5;
+    private String seguimiento;
+    private String recomendaciones;
+    private String imagen;
+    private String estadoInforme;
+    
+    
     
 }

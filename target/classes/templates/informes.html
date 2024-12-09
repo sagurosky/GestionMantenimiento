@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.tymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:temporals="http://www.thymeleaf.org/extras/thymeleaf-temporals">
+
+
+    <!--<meta http-equiv="refresh" id="metaRefresh" content="60">-->
+
+        <head th:replace="plantillas/plantilla::head">
+            <title>Lista de tareas</title>
+            <meta charset="UTF-8"/>
+           
+        </head>
+
+        <body>
+            <header th:replace="plantillas/plantilla::header">lista de preventivos</header>
+            <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
+                Serás redirigido en: <span id="tiempoRestante">60</span> segundos
+            </div>
+            
+            <div class="container ">
+                <table class="table table-bordered table-hover table-sm "  >
+                    <thead class="thead-light " >
+                        <tr > 
+                            <th >fecha</th>
+                            <th >activo</th>
+                            <th >estado</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')">técnico</th>
+                            <th  sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
+                            <th sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')or hasRole('ROLE_TECNICO')">acción</th>
+
+                        </tr>
+                    </thead>
+                    <tbody >
+                        <tr th:each="tarea :${tareas}">
+
+                        <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                        <td th:text="${tarea.activo.nombre}">activo</td>
+                        <td th:text="${tarea.informe.estadoInforme}">estado informe</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')"><div th:each="tecnico : ${todosLosTecnicos}"><div th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"></div></div>técnico</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarInforme/}+${informe.id}"class="btn btn-secondary btn-sm" >eliminar</a></td>
+                        
+                        <td  sec:authorize="hasRole('ROLE_TECNICO')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='pendiente'}">
+                            <a th:href="@{/generarInforme/}+${tarea.id}+ '?url=' + ${url}" class="btn btn-secondary btn-sm">generar informe</a>
+                        </td>
+                        <td  sec:authorize="hasRole('ROLE_MANT')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='generado'}"}>
+                            <a th:href="@{/generarInforme/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">validar</a>
+                        </td>
+                        <td   th:if="${tarea.informe.estadoInforme=='generado'}">
+                            </td>
+                         
+
+                    </tr>
+                </tbody>
+            </table>
+                
+                
+                
+                
+        </div>
+         <section  class="py-4 mb-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2" >
+                        <a th:href="@{/}+${url}" class="btn btn-primary btn-block">
+                             Volver
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        
+      
+
+        
+        
+        
+
+
+        
+        
+         <script>
+             
+                function reiniciarContador(element) {
+                   segundosRestantes=120;
+                }
+             
+             
+             
+                var segundosRestantes = 120; // Define el tiempo inicial en segundos
+
+                // Función para actualizar dinámicamente el tiempo restante y realizar la redirección
+                function actualizarTiempoRestante() {
+                    // Actualizar el contenido del span con el tiempo restante
+                    document.getElementById('tiempoRestante').textContent = segundosRestantes;
+
+                    // Disminuir el tiempo restante en 1 segundo
+                    segundosRestantes--;
+
+                    // Verificar si se alcanzó el tiempo límite
+                    if (segundosRestantes < 0) {
+                        // Realizar la redirección después de 60 segundos
+                        window.location.href = '/';
+                    } else {
+                        // Llamar a esta función nuevamente después de 1 segundo
+                        setTimeout(actualizarTiempoRestante, 1000); // 1000 milisegundos = 1 segundo
+                    }
+                }
+
+                // Llamar a la función para iniciar el contador
+                actualizarTiempoRestante();
+           </script>
+    </body>
+</html>

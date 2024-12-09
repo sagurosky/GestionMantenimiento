@@ -78,9 +78,24 @@
                            th:checked="${#lists.contains(usuario.roles.![nombre], 'ROLE_PROD')}"/>
                     <label for="rolProduccion">Produccion</label>
                     <br/>
-                    <input type="checkbox" id="rolTecnico" name="rol" value="ROLE_TECNICO" disabled="true" title="no podes convertir un usuario a técnico, los tecnicos deben ser generados como nuevos para cargar sus datos"
+                    <input type="checkbox" id="rolTecnico" name="rol" value="ROLE_TECNICO"  onclick="chequearTecnico(this)" title="no podes convertir un usuario a técnico, los tecnicos deben ser generados como nuevos para cargar sus datos"
                            th:checked="${#lists.contains(usuario.roles.![nombre], 'ROLE_TECNICO')}"/>
                     <label for="rolTecnico">Técnico</label>
+                    <script>
+                        function chequearTecnico(elemento)
+                        {
+                            if(elemento.checked===true)
+                            {
+                                elemento.checked=false;
+                                alert("no podes convertir un usuario a técnico, los tecnicos deben ser generados como nuevos para cargar sus datos");
+                            }else if(elemento.checked===false)
+                            {
+                                elemento.checked=true;
+                                alert("no podes cambiar el rol de un tecnico, eliminalo y generá un usuario nuevo con otro rol");
+                            }
+                            
+                        }
+                    </script>    
                     <br/>
                     <input type="checkbox" id="rolMonitor" name="rol" value="ROLE_MONITOR"
                            th:checked="${#lists.contains(usuario.roles.![nombre], 'ROLE_MONITOR')}"/>

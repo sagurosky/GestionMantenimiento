@@ -62,7 +62,7 @@
                             
                             <div class="form-group">
                                 <label  for="descripcion">descripcion del problema</label>
-                                <input type="text" th:field="*{descripcion}"class="form-control" required="true"/>
+                                <input type="text" th:field="*{descripcion}"class="form-control" required="true"maxlength="1000"/>
                             </div>
                           <div class="form-group">
                             <label for="afectaProduccionSelect">Afecta producción</label>
@@ -96,7 +96,7 @@
                                 <a th:if="*{activo!=null}" class="btn btn-primary" th:href="@{/*{activo.nombre}}" th:text="regresar"></a>-->
                             
                                 
-                                <a th:if="*{activo != null}" class="btn btn-primary" th:href="@{/activo/}+ ${activo.id}" th:text="'Regresar a ' + *{activo.nombre}"></a>
+                                <a th:if="*{activo != null}" class="btn btn-primary" th:href="@{/activo/}+ ${activo.id}" th:text="'volver'"></a>
                                 
                                 <a th:if="*{activo == null}" class="btn btn-primary" th:href="@{/tareas}" th:text="'Regresar'"></a>
                             </div>                        

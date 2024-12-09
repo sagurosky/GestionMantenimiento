@@ -28,7 +28,7 @@ public class Preventivo implements Serializable {
     private String estado;
     private String solicita;
     private String validacionMantenimiento;
-    
+     private String imagen;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "activo")
     private Activo activo;

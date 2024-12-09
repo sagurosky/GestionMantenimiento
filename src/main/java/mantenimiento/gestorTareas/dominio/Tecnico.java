@@ -59,6 +59,8 @@ public class Tecnico implements Serializable {
     private String proyectosDestacados;
     private String promedioEvaluaciones;
     private String notasAdicionales;
+    private String cantidadPreventivos;
+    private String cantidadInformes;
 
     //datos desempeño 
     private String satisfaccionClienteInterno;

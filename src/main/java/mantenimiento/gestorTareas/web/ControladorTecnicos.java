@@ -81,7 +81,7 @@ public class ControladorTecnicos {
     public String verPerfilTecnico(@RequestParam("id") Long id, @RequestParam("url") String url, Model model) {
         Tecnico tecnico = tecnicoService.findById(id).orElse(null);
         model.addAttribute("tecnico", tecnico);
-        model.addAttribute("url", url);
+        model.addAttribute("url", Convertidor.aCamelCase(url));
 
         //me queda pendiente usar reflexion para hacer automatico al agregar una propiedad a la entidad
 

@@ -43,6 +43,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -631,7 +632,7 @@ public class ControladorEquipos {
         model.addAttribute("url",url);
         model.addAttribute("activo",activoSeleccionado);
         model.addAttribute("preventivos",preventivoService.traerPorActivo(activoSeleccionado));
-        
+         model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
         
         return "Preventivos";
     }
@@ -656,7 +657,7 @@ public class ControladorEquipos {
     
     @PostMapping("/guardarSugerencia/{id}")
 //    public String guardarSugerencia(@Param("descripcion")String descripcion, Model model,  Activo activoRequest,Preventivo preventivo) {
-    public String guardarSugerencia( Model model,  Activo activoRequest,Preventivo preventivo) {
+    public String guardarSugerencia( Model model, @RequestParam("file") MultipartFile imagen,  Activo activoRequest,Preventivo preventivo) {
       
 //        Preventivo preventivo=new Preventivo();
 //        preventivo.setDescripcion(descripcion);
@@ -668,6 +669,26 @@ public class ControladorEquipos {
           Authentication aut = SecurityContextHolder.getContext().getAuthentication();
         preventivo.setSolicita(aut.getName());
          
+        if (!imagen.isEmpty()) {
+            // Path directorioImagenes = Paths.get("src//main//resources//static//imagenes");
+            // String ruta = directorioImagenes.toFile().getAbsolutePath();
+            //voy a usar un directorio no relativo para evitar la necesidad de actualizar
+            //cada vez que se agrega una imagen nueva
+            String ruta = "c://AppTareas//recursos";
+            try {
+                byte[] bytes = imagen.getBytes();
+                Path rutaCompleta = Paths.get(ruta + "//" + imagen.getOriginalFilename());
+                log.info("ruta: " + rutaCompleta);
+                Files.write(rutaCompleta, bytes);
+                preventivo.setImagen(imagen.getOriginalFilename());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        
 //        activo.save(activoSeleccionado);
         preventivoService.save(preventivo);
         String url = Convertidor.aCamelCase(activoSeleccionado.getNombre());
@@ -698,10 +719,18 @@ public class ControladorEquipos {
         return "redirect:/preventivos/" + preventivoBd.getActivo().getId();
     }
     
-    @GetMapping("/cerrarPreventivo/{id}")
-    public String cerrarPreventivo(Model model, Preventivo preventivo) {
+//    @GetMapping("/cerrarPreventivo/{id}")
+//    public String cerrarPreventivo(Model model, Preventivo preventivo) {
         
-        Preventivo preventivoBd=preventivoService.findById(preventivo.getId()).orElse(null);
+    @PostMapping("/cerrarPreventivo/{id}")
+    public String cerrarPreventivo(@PathVariable Long id, @RequestParam("tecnicosIds") List<Long> tecnicosIds) {
+    
+        for (Long tecnicosId : tecnicosIds) {
+            
+            tecnicoService.incrementarPreventivo(tecnicosId);
+        
+        }
+        Preventivo preventivoBd=preventivoService.findById(id).orElse(null);
         preventivoBd.setEstado("cerrado");
        preventivoService.save(preventivoBd);
        
@@ -875,7 +904,10 @@ public class ControladorEquipos {
         model.addAttribute("estados", Arrays.asList("detenida", "operativa", "disponible","operativa condicionada"));
         
        
-        
+        var tareasActivo = tareaService.traerNoCerradaPorActivo(activo);
+        var tareaActivo=(tareasActivo.size()>0)?tareasActivo.get(0):null;
+        model.addAttribute("tarea", tareaActivo);
+        model.addAttribute("todosLosTecnicos", tecnicoService.findAll());
         
         
 
