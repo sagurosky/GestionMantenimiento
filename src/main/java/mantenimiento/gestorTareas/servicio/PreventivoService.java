@@ -10,7 +10,7 @@ public interface PreventivoService extends JpaRepository<Preventivo,Long> {
     
     
     @Query("SELECT t FROM Preventivo t  WHERE "
-            + "t.activo=?1")
+            + "t.activo=?1 ")
     public List<Preventivo> traerPorActivo(Activo activo );
     
     @Query("SELECT t FROM Preventivo t  WHERE "

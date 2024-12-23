@@ -222,7 +222,7 @@ public class Controlador {
         else tarea.getActivo().setEstado("detenida");
         
         Informe informe=new Informe();
-        informe.setEstadoInforme("pendiente");
+        informe.setEstadoInforme("noEvaluado");
         tarea.setInforme(informe);
         
         activo.save(tarea.getActivo());

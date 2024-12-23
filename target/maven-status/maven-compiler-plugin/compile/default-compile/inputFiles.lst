@@ -17,12 +17,14 @@ C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Activo.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ProductoService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\AsignacionService.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorInformes.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\ProduccionService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\util\EncriptarPassword.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Tecnico.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\web\ControladorAjax.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\ActivoDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Asignacion.java
+C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\servicio\InformeService.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\datos\UsuarioDao.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\dominio\Rol.java
 C:\Users\daniel\Desktop\gestorTareasV4\src\main\java\mantenimiento\gestorTareas\GestorTareasApplication.java

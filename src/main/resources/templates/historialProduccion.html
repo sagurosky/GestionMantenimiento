@@ -91,7 +91,7 @@
                                                          <label th:text="'tiempo total: '"></label>
                                                     </div>    
                                                     <div class='col'>
-                                                        <label id="tiempoTotal"></label>
+                                                        <label th:id="tiempoTotal+${orden.id}"></label>
                                                     </div>    
                                                     <div class='col'>
                                                     </div>
@@ -101,7 +101,7 @@
                                                          <label th:text="'tiempo de inactividad [min]: '"></label>
                                                     </div>    
                                                     <div class='col'>
-                                                        <label id="minutosInactiva"></label>
+                                                        <label th:id="minutosInactiva+${orden.id}"></label>
                                                     </div>    
                                                     <div class='col'>
                                                     </div>
@@ -111,7 +111,7 @@
                                                          <label th:text="'Cadencia teórica : '"></label>
                                                     </div>    
                                                     <div class='col'>
-                                                        <div class='row'> <label id="ratioTeorico" ></label> </div>    
+                                                        <div class='row'> <label th:id="ratioTeorico+${orden.id}" ></label> </div>    
                                                     </div>    
                                                     <div class='col'>
                                                     </div>
@@ -122,7 +122,7 @@
                                                     </div>    
                                                     <div class='col'>
                                                         <!--<div class='row'> <label id="ratioMin"></label> </div>-->    
-                                                         <div class='row'><label id="ratioHr"></label> </div>    
+                                                         <div class='row'><label th:id="ratioHr+${orden.id}"></label> </div>    
                                                     </div>    
                                                     <div class='col'>
                                                     </div>
@@ -134,7 +134,7 @@
                                                     </div>    
                                                     <div class='col'>
                                                         <!--<div class='row'><label id="ratioEfectivoMin"></label>  </div>-->    
-                                                       <div class='row'> <label id="ratioEfectivoHr"></label>  </div>    
+                                                       <div class='row'> <label th:id="ratioEfectivoHr+${orden.id}"></label>  </div>    
                                                     </div>    
                                                     <div class='col'>
                                                     </div>
@@ -221,19 +221,19 @@
 //
 //                }); 
             let prod=datos.get("prod");
-            
             let tiempoEnMinutos=Math.floor((new Date(prod.fin)-new Date(prod.inicio))/60000);
-            document.getElementById("tiempoTotal").innerText=""+Math.floor(tiempoEnMinutos/60)+":"+tiempoEnMinutos%60+" hs";
+            console.log("tiempo: "+tiempoEnMinutos);
+            document.getElementById("tiempoTotal"+prod.id).innerText=""+Math.floor(tiempoEnMinutos/60)+":"+tiempoEnMinutos%60+" hs";
 //            document.getElementById("ratioMin").innerText=""+(prod.cantidad/tiempoEnMinutos).toFixed(2)+" unidades/min ";
-            document.getElementById("ratioHr").innerText=""+(prod.cantidad/(tiempoEnMinutos/60)).toFixed(2)+" unidades/hr";
+            document.getElementById("ratioHr"+prod.id).innerText=""+(prod.cantidad/(tiempoEnMinutos/60)).toFixed(2)+" unidades/hr";
             
             let minutosInactiva=datos.get("minutosInactiva");
-            document.getElementById("minutosInactiva").innerText=minutosInactiva;
+            document.getElementById("minutosInactiva"+prod.id).innerText=minutosInactiva;
 //            document.getElementById("ratioEfectivoMin").innerText=""+(prod.cantidad/(tiempoEnMinutos-minutosInactiva)).toFixed(2)+" unidades/min ";
-            document.getElementById("ratioEfectivoHr").innerText=""+(prod.cantidad/((tiempoEnMinutos-minutosInactiva)/60)).toFixed(2)+" unidades/hr";
+            document.getElementById("ratioEfectivoHr"+prod.id).innerText=""+(prod.cantidad/((tiempoEnMinutos-minutosInactiva)/60)).toFixed(2)+" unidades/hr";
            
         
-            document.getElementById("ratioTeorico").innerText=""+datos.get("cadenciaTeorica")+" unidades/hr";
+            document.getElementById("ratioTeorico"+prod.id).innerText=""+datos.get("cadenciaTeorica")+" unidades/hr";
             
             
     }

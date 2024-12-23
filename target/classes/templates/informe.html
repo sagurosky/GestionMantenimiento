@@ -32,6 +32,13 @@
                         .popover {
                             max-width: 500px; /* Ensanchar el popover */
                         }
+                        .titulo{
+                             font-weight: bold;
+                        }
+                        
+                        
+                        
+                        
                     </style>
 
                     <body>
@@ -53,8 +60,8 @@
 
                         <body>
                             <div class="container mt-5">
-                                <h2 class="mb-4">Informe</h2>
-                               <form th:action="@{/guardarInforme}" method="post" th:object="${tarea.informe}" enctype="multipart/form-data" class="was-validated">
+                                <h1 class="mb-4" style="text-align: center">Informe</h1>
+                               <form th:action="@{/guardarInforme}" method="post" th:object="${tarea.informe}" enctype="multipart/form-data" class="">
                                     <input type="hidden"  id="id" th:field="*{id}"  >
                                     <input type="hidden"  id="url" th:field="${url}"  >
                                 <h4 class="mb-4">Datos intervencion </h4>
@@ -67,31 +74,35 @@
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="activo">Activo</label>
-                                            <input type="text" class="form-control" id="activo"th:field="${tarea.activo.nombre}" redonly="true" >
+                                            <label class="titulo">Activo</label>
+                                            <input type="text" class="form-control" id="activo"th:field="${tarea.activo.nombre}" readonly="true" >
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="categoria">Categoría</label>
+                                            <label class="titulo">Categoría</label>
                                             <input type="text" class="form-control" id="categoria"th:field="${tarea.categoriaTecnica}"  readonly="true" >
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="Interventores"  >Interventores</label>
-
-                                            <select id="Interventores" name="tecnicosIds" multiple class="form-control">
-                                                <option th:each="tecnico : ${todosLosTecnicos}" 
-                                                        th:value="${tecnico.id}" 
-                                                        th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"
-                                                         th:selected="${#lists.contains(idsTecnicosAsignados, tecnico.id)}">
-                                                </option>
-                                            </select>
+                                        <div class="card bg-light col-md-6">
+                                             <div class="row  card-body ">
+                                                 <div class="col-4">
+                                                    <label class="titulo"  >Interventores: </label>
+                                                 </div>
+                                                 <div class="col-8">
+                                                    <div th:each="asignacion : ${tarea.asignaciones}">
+                                                        <div th:text="${asignacion.tecnico.apellido} + ' ' + ${asignacion.tecnico.nombre}">
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                             </div>    
                                         </div>
+                                        
                                         <div class="form-group col-md-6">
 <!--                                            <label for="especialidad">Edad</label>
                                             <input type="text" class="form-control" id="edad"th:field="*{edad}" disabled="true">-->
                                         </div>
                                     </div>
+                                    <br>
 
                                     <div class="form-row">
 <!--                                        <div class="form-group col-md-6">
@@ -103,23 +114,23 @@
                                             <input type="email" class="form-control" id="email"th:field="*{email}">
                                         </div>-->
                                    <div class="form-row">
-                                        <label for="descripciónInicial">Descripción inicial del solicitador: ${tarea.solicita}</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="'descripción inicial del cliente interno al momento de dar aviso de la detención del activo'"></i></span>
+                                       <label class="titulo">Descripción inicial del solicitador: </label>&nbsp;<span class="titulo" th:text="${tarea.solicita}"></span>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="descripción inicial del cliente interno al momento de dar aviso de la detención del activo"></i></span>
                                     </div> 
 
-                                    <textarea class="form-control" id="descripciónInicial" th:field="${tarea.descripcion}"></textarea>   
+                                    <textarea class="form-control" id="descripciónInicial" th:field="${tarea.descripcion}"readonly="true"></textarea>   
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="responsable">Departamento responsable</label>
-                                            <input type="text" class="form-control" id="responsable"th:field="${tarea.departamentoResponsable}">
+                                            <label class="titulo">Departamento responsable</label>
+                                            <input type="text" class="form-control" id="responsable"th:field="${tarea.departamentoResponsable}"readonly="true">
                                         </div>
 
                                     </div>
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="tiempoDetenido">Tiempo detenido</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Títulos obtenidos (secundario, terciario, universitario), cursos, especializaciones, etc' "></i></span>
-                                           <input type="text" class="form-control" id="tiempoDetenido">
+                                            <label class="titulo">Tiempo detenido</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Tiempo total de activo detenido hasta su liberación"></i></span>
+                                           <input type="text" class="form-control" id="tiempoDetenido" th:value="${tiempoDetenido}"readonly="true">
                                         </div>
                                     </div>
                                     
@@ -127,19 +138,19 @@
                                     <br>
                                         <h4 class="mt-4">Informe</h4>
                                         <div class="form-row">
-                                            <label for="descripcionInforme">Acerca de mi</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="descripción del problema desde el punto de vista del interventor' "></i></span>
+                                            <label for="descripcionInforme">Descripción</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="descripción del problema desde el punto de vista del interventor "></i></span>
                                         </div> 
 
                                         <textarea class="form-control" id="descripcionInforme" th:field="*{descripcion}"></textarea>
                                         
                                         <div class="form-row">
-                                            <label for="acciones">Acerca de mi</label>&nbsp;&nbsp;<span><i class="fa-regular fa-exclamation custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="acciones para la resolución, este campo es muy importante, intente ser claro y objetivo' "></i></span>
+                                            <label for="acciones">Acciones</label>&nbsp;&nbsp;<span><i class="fa-solid fa-circle-exclamation custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="acciones para la resolución, este campo es muy importante, intente ser claro y objetivo' "></i></span>
                                         </div> 
 
                                         <textarea class="form-control" id="acciones" th:field="*{acciones}"></textarea>
                                         
                                         <div class="form-row">
-                                            <label for="pruebas">Acerca de mi</label>&nbsp;&nbsp;<span><i class="fa-regular fa-exclamation custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="acciones para la resolución, este campo es muy importante, intente ser claro y objetivo' "></i></span>
+                                            <label for="pruebas">Pruebas realizadas</label>&nbsp;&nbsp;<span><i class="fa-regular fa-circle-question custom-popover" tabindex="0" data-container="body" data-trigger="focus"data-toggle="popover"data-placement="right" data-content="Pruebas realizadas para comprobar el buen funcionamiento luego de la intervención, ej: se realizaron 5 ciclos en vacío y dos com producto "></i></span>
                                         </div> 
 
                                         <textarea class="form-control" id="pruebas" th:field="*{pruebas}"></textarea>

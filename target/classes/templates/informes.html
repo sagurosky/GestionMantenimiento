@@ -14,51 +14,157 @@
         </head>
 
         <body>
-            <header th:replace="plantillas/plantilla::header">lista de preventivos</header>
+            <header th:replace="plantillas/plantilla::header">lista de informes</header>
             <div class="modal-dialog" style="position: fixed; top: 50px; right: 20px; z-index: 1030;">
                 Serás redirigido en: <span id="tiempoRestante">60</span> segundos
             </div>
             
             <div class="container ">
-                <table class="table table-bordered table-hover table-sm "  >
-                    <thead class="thead-light " >
-                        <tr > 
-                            <th >fecha</th>
-                            <th >activo</th>
-                            <th >estado</th>
-                            <th  sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')">técnico</th>
-                            <th  sec:authorize="hasRole('ROLE_ADMIN')">eliminar</th>
-                            <th sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')or hasRole('ROLE_TECNICO')">acción</th>
+                
+                
+                
+                <div sec:authorize="hasRole('ROLE_TECNICO') or hasRole('ROLE_MANT')">
+                    <h3> seleccionar intervenciones que requieran informes</h3>
+                        <table  class="table table-bordered table-hover table-sm "  >
+                            <thead class="thead-light " >
+                                <tr > 
+                                    <th >Fecha</th>
+                                    <th >Activo</th>
+                                    <th >Descripción</th>
+                                    <th sec:authorize="hasRole('ROLE_MANT')">Técnico/s</th>
+                                    <th >Acción</th>
 
-                        </tr>
-                    </thead>
-                    <tbody >
-                        <tr th:each="tarea :${tareas}">
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr th:each="tarea :${tareasNoEvaluadas}">
+                                    <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                                    <td th:text="${tarea.activo.nombre}">activo</td>
+                                    <td th:text="${tarea.descripcion}">descripción</td>
+                                     <td sec:authorize="hasRole('ROLE_MANT')"><div th:each="asignacion : ${tarea.asignaciones}"><div th:text="${asignacion.tecnico.apellido} + ' ' + ${asignacion.tecnico.nombre}"></div></div></td>
+                              
+                                    <td >
+                                        <a th:href="@{/seleccionarTareaParaInforme/}+${tarea.id}+ '?url=' + ${url}"class="btn btn-secondary btn-sm" >Seleccionar</a>
+                                        <a sec:authorize="hasRole('ROLE_MANT')" th:href="@{/descartarTareaParaInforme/}+${tarea.id}+ '?url=' + ${url}"class="btn btn-secondary btn-sm" >Descartar</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+                
+                <br>
+               
+                <div sec:authorize="hasRole('ROLE_TECNICO') or hasRole('ROLE_MANT')">
+                      <h3>Informes pendientes de generar</h3>
+                          <table  class="table table-bordered table-hover table-sm "  >
+                              <thead class="thead-light " >
+                                  <tr > 
+                                      <th >Fecha</th>
+                                      <th >Activo</th>
+                                      <th >Descripción</th>
+                                      <th >Acción</th>
 
-                        <td th:text="${tarea.momentoLiberacion}" >fecha</td>
-                        <td th:text="${tarea.activo.nombre}">activo</td>
-                        <td th:text="${tarea.informe.estadoInforme}">estado informe</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')"><div th:each="tecnico : ${todosLosTecnicos}"><div th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"></div></div>técnico</td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarInforme/}+${informe.id}"class="btn btn-secondary btn-sm" >eliminar</a></td>
+                                  </tr>
+                              </thead>
+                              <tbody >
+                                  <div sec:authorize="hasRole('ROLE_TECNICO')"> <tr  th:each="tarea :${tareasInformePendienteTecnico}"><
+                                  
+                                      <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                                      <td th:text="${tarea.activo.nombre}">activo</td>
+                                      <td th:text="${tarea.descripcion}">descripción</td>
+                                      <td sec:authorize="hasRole('ROLE_TECNICO')">
+                                          <a  th:href="@{/generarInforme/}+${tarea.id}+ '?url=' + ${url}" class="btn btn-secondary btn-sm">generar informe</a>
+                                      </td>
+                                       <td sec:authorize="hasRole('ROLE_MANT') or hasRole('ROLE_ADMIN')">informe pendiente de: <div th:each="asignacion : ${tarea.asignaciones}"><div th:text="${asignacion.tecnico.apellido} + ' ' + ${asignacion.tecnico.nombre}"></div></div></td>
+                                  </tr>
+                                  </div>   
+                                  <div sec:authorize="hasRole('ROLE_MANT') or hasRole('ROLE_ADMIN')">
+                                      <tr th:each="tarea :${tareasInformePendiente}">                                  
+                                        <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                                        <td th:text="${tarea.activo.nombre}">activo</td>
+                                        <td th:text="${tarea.descripcion}">descripción</td>
+                                        <td sec:authorize="hasRole('ROLE_TECNICO')">
+                                            <a  th:href="@{/generarInforme/}+${tarea.id}+ '?url=' + ${url}" class="btn btn-secondary btn-sm">generar informe</a>
+                                        </td>
+                                         <td sec:authorize="hasRole('ROLE_MANT') or hasRole('ROLE_ADMIN')">informe pendiente de: <div th:each="asignacion : ${tarea.asignaciones}"><div th:text="${asignacion.tecnico.apellido} + ' ' + ${asignacion.tecnico.nombre}"></div></div></td>
+                                    </tr>
+                                  </div>   
+                              </tbody>
+                          </table>
+                  </div>
+                    
+                    <br>
                         
-                        <td  sec:authorize="hasRole('ROLE_TECNICO')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='pendiente'}">
-                            <a th:href="@{/generarInforme/}+${tarea.id}+ '?url=' + ${url}" class="btn btn-secondary btn-sm">generar informe</a>
-                        </td>
-                        <td  sec:authorize="hasRole('ROLE_MANT')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='generado'}"}>
-                            <a th:href="@{/generarInforme/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">validar</a>
-                        </td>
-                        <td   th:if="${tarea.informe.estadoInforme=='generado'}">
-                            </td>
-                         
+                  <div sec:authorize="hasRole('ROLE_MANT')">
+                      <h3> validar informes generados</h3>
+                          <table  class="table table-bordered table-hover table-sm "  >
+                              <thead class="thead-light " >
+                                  <tr > 
+                                      <th >Fecha</th>
+                                      <th >Activo</th>
+                                      <th >Descripción</th>
+                                      <th >Acción</th>
 
-                    </tr>
-                </tbody>
-            </table>
-                
-                
+                                  </tr>
+                              </thead>
+                              <tbody >
+                                  <tr th:each="tarea :${tareasAprobados}">
+                                      <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                                      <td th:text="${tarea.activo.nombre}">activo</td>
+                                      <td th:text="${tarea.descripcion}">descripción</td>
+                                      <td >
+                                          <a th:href="@{/verInforme/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">ver informe</a>
+                                          <a th:href="@{/validar/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">validar</a>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                  </div>
+                   
+                        <br>
+                            
+                     <div >
+                      <h3> Informes aprobados</h3>
+                          <table  class="table table-bordered table-hover table-sm "  >
+                              <thead class="thead-light " >
+                                  <tr > 
+                                      <th >Fecha</th>
+                                      <th >Activo</th>
+                                      <th >Descripción</th>
+                                      <th >Ver</th>
+
+                                  </tr>
+                              </thead>
+                              <tbody >
+                                  <tr th:each="tarea :${tareasNoAprobadas}">
+                                      <td th:text="${tarea.momentoLiberacion}" >fecha</td>
+                                      <td th:text="${tarea.activo.nombre}">activo</td>
+                                      <td th:text="${tarea.descripcion}">descripción</td>
+                                      <td >
+                                          <a th:href="@{/verInforme/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">ver informe</a>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                  </div>
+                        
+                    
+<!--                                
+                                <td sec:authorize="hasRole('ROLE_ADMIN')or hasRole('ROLE_MANT')"><div th:each="tecnico : ${todosLosTecnicos}"><div th:text="${tecnico.apellido} + ' ' + ${tecnico.nombre}"></div></div>técnico</td>
+                                <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/eliminarInforme/}+${informe.id}"class="btn btn-secondary btn-sm" >eliminar</a></td>
+
+                                <td  sec:authorize="hasRole('ROLE_TECNICO')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='pendiente'}">
+                                    <a th:href="@{/generarInforme/}+${tarea.id}+ '?url=' + ${url}" class="btn btn-secondary btn-sm">generar informe</a>
+                                </td>
+                                <td  sec:authorize="hasRole('ROLE_MANT')or hasRole('ROLE_ADMIN')" th:if="${tarea.informe.estadoInforme=='generado'}"}>
+                                    <a th:href="@{/generarInforme/}+${tarea.informe.id}" class="btn btn-secondary btn-sm">validar</a>
+                                </td>
+                                <td   th:if="${tarea.informe.estadoInforme=='generado'}">
+                                    </td>-->
                 
                 
         </div>
+            
          <section  class="py-4 mb-4 bg-light">
             <div class="container">
                 <div class="row">

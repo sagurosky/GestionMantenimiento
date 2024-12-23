@@ -44,8 +44,11 @@ public List<Tarea> traerPorLineaEnRangoDeFecha(String linea, String fechaInicio,
       @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1 AND t.estado = 'cerrada'")
     public List<Tarea> traerPorTecnico(Tecnico tecnico );
      
-    @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1 AND t.estado = 'cerrada' and (t.informe is null or t.informe.estadoInforme='pendiente')")
-    public List<Tarea> traerPorInformePendiente(Tecnico tecnico );
+    @Query("SELECT t FROM Tarea t JOIN t.asignaciones a WHERE a.tecnico = ?1 AND t.estado = 'cerrada' and  t.informe.estadoInforme= ?2")
+    public List<Tarea> traerPorTecnicoYEstadoInforme(Tecnico tecnico, String estado );
+  
+    @Query("SELECT t FROM Tarea t  WHERE  t.estado = 'cerrada' and  t.informe.estadoInforme=?1")
+    public List<Tarea> traerPorEstadoInforme(String estado );
    
     
     
